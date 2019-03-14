@@ -7,7 +7,7 @@ def get_now():
 class Clock:
 	def __init__(self):
 		self.origin = 0
-	# Start the Clock
+	# Start/Retst the Clock
 	def reset(self):
 		self.origin = get_now()
 	# Get passed ms
@@ -18,3 +18,16 @@ class Clock:
 		return self.getPassed() / 1000
 
 # TODO(roy4801): Add timer and refactor asset.py:90
+class Timer:
+	def __init__(self, lim=0):
+		self.clk = Clock()
+		self.limit = lim
+	# Start/Reset the timer
+	def reset(self):
+		self.clk.reset()
+	# If the timer ends, it returns true.
+	def timeout(self):
+		if self.clk.getPassed() >= self.limit:
+			return True
+		else:
+			return False

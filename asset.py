@@ -2,7 +2,7 @@ import pygame
 import os
 
 from utils import GET_PATH
-from clock import Clock
+from clock import Timer
 
 gameDisplay = None
 
@@ -46,14 +46,15 @@ class Sprite:
 		# for SP_ANIMATE
 		self.frameNum = 0
 		self.nowFrame = startFrame
-		self.drawFrameCnt = 0
 		self.fps = fps
 		self.ani = ani
-		self.clk = None
+		# self.clk = None
+		self.timer = None
 		self.start = False
 
-		# flag
+		# for ANI_ONCE
 		self.draw_once = False
+		self.drawFrameCnt = 0
 
 		# static sprite
 		if self.t == SP_STATIC:
@@ -63,7 +64,7 @@ class Sprite:
 			self.frameNum = 1
 		# animated sprite
 		elif self.t == SP_ANIMATE:
-			self.clk = Clock()
+			self.timer = Timer(1000/self.fps)
 			dir_list = os.listdir(GET_PATH('image', ''))
 			print(dir_list)
 			cnt = 0
@@ -89,21 +90,21 @@ class Sprite:
 		if self.t == SP_ANIMATE and not (self.ani == ANI_ONCE and self.draw_once):
 			if not self.start:
 				# start the timer
-				self.clk.reset()
+				self.timer.reset()
 				self.start = True
 			else:
 				# if timeout
-				if self.clk.getPassed() > 1000 / self.fps:
+				if self.timer.timeout():
 					self.nowFrame += 1
 					self.drawFrameCnt += 1
-					# %= frameNum
+					# self.nowFrame %= frameNum
 					if self.nowFrame >= self.frameNum:
 						self.nowFrame = 0
 						# if is `ANI_ONCE` and draw `frameNum` frames
 						if self.ani == ANI_ONCE and self.drawFrameCnt >= self.frameNum:
 							self.draw_once = True
 					# reset clock
-					self.clk.reset()
+					self.timer.reset()
 		# draw the image on the screen
 		gameDisplay.blit(self.imageList[self.nowFrame].img, (x, y))
 
