@@ -30,6 +30,8 @@ class Image:
 	def loadImage(self, filename):
 		self.img = pygame.image.load(GET_PATH('image', filename))
 
+# TODO(roy4801): Add re matching file names
+
 '''
 Sprite
 '''
@@ -44,10 +46,14 @@ class Sprite:
 		# for SP_ANIMATE
 		self.frameNum = 0
 		self.nowFrame = startFrame
+		self.drawFrameCnt = 0
 		self.fps = fps
 		self.ani = ani
 		self.clk = None
 		self.start = False
+
+		# flag
+		self.draw_once = False
 
 		# static sprite
 		if self.t == SP_STATIC:
@@ -68,28 +74,45 @@ class Sprite:
 			# load {name}{000}.png ~ {name}{cnt}.png
 			for i in range(cnt):
 				self.imageList.append(Image('{}{:03d}.png'.format(name, i)))
-
-	# draw the sprite on the screen
+	'''
+	draw(x, y)
+		draw the sprite on the screen
+	return: if ani == ANI_ONCE && draw_once == true then return true meaning it draw one complete cycle (frameNum)
+	, otherwise return false
+	'''
 	def draw(self, x, y):
 		# Get gameDisplay
 		global gameDisplay
 		if gameDisplay == None:
 			gameDisplay = pygame.display.get_surface()
 		# Actual draw
-		if self.t == SP_ANIMATE:
+		if self.t == SP_ANIMATE and not (self.ani == ANI_ONCE and self.draw_once):
 			if not self.start:
+				# start the timer
 				self.clk.reset()
 				self.start = True
 			else:
-				# print('{} = {}'.format(self.name, self.clk.getPassed()))
 				# if timeout
 				if self.clk.getPassed() > 1000 / self.fps:
 					self.nowFrame += 1
-					if self.nowFrame >= self.frameNum: # %= frameNum
+					self.drawFrameCnt += 1
+					# %= frameNum
+					if self.nowFrame >= self.frameNum:
 						self.nowFrame = 0
+						# if is `ANI_ONCE` and draw `frameNum` frames
+						if self.ani == ANI_ONCE and self.drawFrameCnt >= self.frameNum:
+							self.draw_once = True
 					# reset clock
 					self.clk.reset()
+		# draw the image on the screen
 		gameDisplay.blit(self.imageList[self.nowFrame].img, (x, y))
+
+		if self.ani == ANI_ONCE and self.draw_once:
+			self.draw_once = False
+			self.drawFrameCnt = 0
+			return True
+		else:
+			return False
 
 	def copy(self):
 		newSprite = Sprite(self.t, self.name, self.fps, self.ani, 0)

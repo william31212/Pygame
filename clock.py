@@ -16,3 +16,5 @@ class Clock:
 	# Get passed sec
 	def getPassedSec(self):
 		return self.getPassed() / 1000
+
+# TODO(roy4801): Add timer and refactor asset.py:90
