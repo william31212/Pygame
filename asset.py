@@ -97,7 +97,7 @@ class Sprite:
 				if self.timer.timeout():
 					self.nowFrame += 1
 					self.drawFrameCnt += 1
-					# self.nowFrame %= frameNum
+					# self.nowFrame %= self.frameNum
 					if self.nowFrame >= self.frameNum:
 						self.nowFrame = 0
 						# if is `ANI_ONCE` and draw `frameNum` frames
