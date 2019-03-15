@@ -34,6 +34,7 @@ class Image:
 
 '''
 Sprite
+	Positionable 2D image supporting static and animated sprite
 '''
 class Sprite:
 	def __init__(self, t, name, fps=0, ani=ANI_NONE, startFrame=0):
@@ -115,15 +116,19 @@ class Sprite:
 		else:
 			return False
 
+	'''
+	copy()
+		Return a copy of self
+	'''
 	def copy(self):
 		newSprite = Sprite(self.t, self.name, self.fps, self.ani, 0)
 		return newSprite
 
-	def __repr__(self):
-		return object.__repr__(self)
 	'''
 	For print()
 	'''
+	def __repr__(self):
+		return object.__repr__(self)
 	def __str__(self):
 		info = '{}:  {}\n\t'.format(self.name, self.__repr__())
 		info += 'type = {}\n\t'.format('SP_STATIC' if self.t == 0 else 'SP_ANIMATE')
