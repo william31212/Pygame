@@ -1,9 +1,13 @@
 import pygame
+<<<<<<< HEAD
 import time
+=======
+>>>>>>> 59fdef8107036237e672b9bf1e9799773852607a
 
 # TODO(roy4801): Implement this
 
 class KeyHandler:
+<<<<<<< HEAD
 	def __init__(self,x,y):
 		self.x = x
 		self.y = y
@@ -38,3 +42,10 @@ class KeyHandler:
 			elif key[pygame.K_SPACE]:
 				print("stop")
 
+=======
+	def __init__(self):
+		pass
+
+	def set_key(self):
+		pass
+>>>>>>> 59fdef8107036237e672b9bf1e9799773852607a
