@@ -5,16 +5,19 @@ from Input import *
 
 
 def main():
-	Man = KeyHandler()
+	keyboard = KeyHandler()
 
 	pygame.key.set_repeat(10, 50)
 
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
-				Man.set_key(event.key)
+				repeat = False
+				if keyboard.get_key_state(event.key):
+					repeat = True
+				keyboard.set_key_state(event.key, True, repeat)
 			elif event.type == pygame.KEYUP:
-				Man.set_key(event.key)
+				keyboard.set_key_state(event.key, False, False)
 
 
 

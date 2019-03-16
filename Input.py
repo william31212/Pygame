@@ -1,30 +1,37 @@
-import pygame
-import time
+import pygame, time
+
+KEY_UP    = 0
+KEY_DOWN  = 1
+KEY_LEFT  = 2
+KEY_RIGHT = 3
+KEY_TOTAL = 4
+
 
 class KeyHandler:
-
-	def set_key(self,KeyHandle):
-
-		# distance moved in 5 frame
-
-		if KeyHandle == pygame.K_ESCAPE or KeyHandle == pygame.K_q:
-			pygame.quit()
-		# go_down
-		if KeyHandle == pygame.K_DOWN:
-			print("Down")
-		# go_up
-		if KeyHandle == pygame.K_UP:
-			print("UP")
-		# go_right
-		if KeyHandle == pygame.K_RIGHT:
-			print("Right")
-		# go_left
-		if KeyHandle == pygame.K_LEFT:
-			print("Left")
-		# game_stop
-		if KeyHandle == pygame.K_SPACE:
-			print("Stop")
-
+	def __init__(self):
+		self.keymap = {
+			pygame.K_UP  : KEY_UP,
+			pygame.K_DOWN  : KEY_DOWN,
+			pygame.K_LEFT  : KEY_LEFT,
+			pygame.K_RIGHT : KEY_RIGHT
+		}
+		self.key_state  = [False] * KEY_TOTAL
+		self.key_repeat = [False] * KEY_TOTAL
+	
+	def set_key_state(self, key, press, repeat):
+		if not key in self.keymap:
+			# TODO(roy4801): Replace with the logger
+			print('[Warning] The key ({}) isn\'t in the keymap'.format(pygame.key.name(key)))
+		else:
+			idx = self.keymap[key]
+			self.key_state[idx] = press
+			self.key_repeat[idx] = repeat
+	# TODO(roy4801): Change the return type to tuple (press, repeat)
+	def get_key_state(self, key):
+		if not key in self.keymap:
+			return False
+		else:
+			return self.key_state[self.keymap[key]]
 
 MOUSE_L = 0
 MOUSE_M = 1
