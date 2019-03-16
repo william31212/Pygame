@@ -2,8 +2,6 @@ import sys, pygame
 sys.path.append("../")
 from Input import *
 
-
-
 def main():
 	keyboard = KeyHandler()
 

@@ -1,11 +1,13 @@
 import pygame, time
 
+'''
+KeyHandler: Process and handle the keyboard event
+'''
 KEY_UP    = 0
 KEY_DOWN  = 1
 KEY_LEFT  = 2
 KEY_RIGHT = 3
 KEY_TOTAL = 4
-
 
 class KeyHandler:
 	def __init__(self):
@@ -26,13 +28,22 @@ class KeyHandler:
 			idx = self.keymap[key]
 			self.key_state[idx] = press
 			self.key_repeat[idx] = repeat
-	# TODO(roy4801): Change the return type to tuple (press, repeat)
+	# get current key state (press, repeat)
 	def get_key_state(self, key):
 		if not key in self.keymap:
 			return (False, False)
 		else:
-			return (self.key_state[self.keymap[key]], self.key_repeat[self.keymap[key]])
+			idx = self.keymap[key]
+			return (self.key_state[idx], self.key_repeat[idx])
+	# for print()
+	def __repr__(self):
+		return object.__repr__(self)
+	def __str__(self):
+		info = self.__repr__()
 
+'''
+MouseHandler: Process and handle the mouse event
+'''
 MOUSE_L = 0
 MOUSE_M = 1
 MOUSE_R = 2
