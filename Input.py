@@ -29,9 +29,9 @@ class KeyHandler:
 	# TODO(roy4801): Change the return type to tuple (press, repeat)
 	def get_key_state(self, key):
 		if not key in self.keymap:
-			return False
+			return (False, False)
 		else:
-			return self.key_state[self.keymap[key]]
+			return (self.key_state[self.keymap[key]], self.key_repeat[self.keymap[key]])
 
 MOUSE_L = 0
 MOUSE_M = 1

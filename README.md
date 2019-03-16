@@ -8,7 +8,7 @@
 ## Installation
 
 ```
-pip install pygame "pyimgui[pygame]"
+pip install pygame "imgui[pygame]"
 ```
 
 ## Documentation
