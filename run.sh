@@ -1,5 +1,7 @@
 #!/bin/bash
 
 if [[ ! "$1" == "" ]] && [[ ! "$2" == "" ]]; then
-	python3 $1/$2.py
+	pushd $1 > /dev/null
+	python3 $2.py
+	popd > /dev/null
 fi

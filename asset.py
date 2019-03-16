@@ -4,8 +4,6 @@ import os
 from utils import GET_PATH
 from clock import Timer
 
-gameDisplay = None
-
 # For SP_ANIMATE
 Clock_list = {}
 
@@ -84,9 +82,7 @@ class Sprite:
 	'''
 	def draw(self, x, y):
 		# Get gameDisplay
-		global gameDisplay
-		if gameDisplay == None:
-			gameDisplay = pygame.display.get_surface()
+		gameDisplay = pygame.display.get_surface()
 		# Actual draw
 		if self.t == SP_ANIMATE and not (self.ani == ANI_ONCE and self.draw_once):
 			if not self.start:
