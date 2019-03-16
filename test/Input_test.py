@@ -1,5 +1,5 @@
-import pygame
-
+import sys, pygame
+sys.path.append("../")
 from Input import *
 
 
