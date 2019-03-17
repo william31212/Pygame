@@ -44,9 +44,12 @@ class KeyHandler:
 '''
 MouseHandler: Process and handle the mouse event
 '''
-MOUSE_L = 0
-MOUSE_M = 1
-MOUSE_R = 2
+MOUSE_L      = 0
+MOUSE_M      = 1
+MOUSE_R      = 2
+MOUSE_WHUP   = 3
+MOUSE_WHDOWN = 4
+MOUSE_TOTAL  = 5
 # TODO(roy4801): Implement this
 class MouseHandler:
 	def __init__(self):
@@ -54,14 +57,14 @@ class MouseHandler:
 		self.y = 0
 		self.rel_x = 0
 		self.rel_y = 0
-		self.btn = [False] * 3
+		self.btn = [False] * MOUSE_TOTAL
 
 	def set_motion(self, pos, rel, btns):
 		self.x = pos[0]
 		self.y = pos[1]
 		self.rel_x = rel[0]
 		self.rel_y = rel[1]
-		for i in range(len(self.btn)):
+		for i in range(len(btns)):
 			self.btn[i] = False if btns[i] == 0 else True
 
 	def set_mbtn_down(self, pos, btn):
@@ -88,4 +91,8 @@ class MouseHandler:
 		info += 'btn[{}] = {}'.format('MOUSE_M', self.btn[MOUSE_M])
 		info += '\n    '
 		info += 'btn[{}] = {}'.format('MOUSE_R', self.btn[MOUSE_R])
+		info += '\n    '
+		info += 'btn[{}] = {}'.format('MOUSE_WHUP', self.btn[MOUSE_WHUP])
+		info += '\n    '
+		info += 'btn[{}] = {}'.format('MOUSE_WHDOWN', self.btn[MOUSE_WHDOWN])
 		return info

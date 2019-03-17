@@ -1,5 +1,5 @@
-import pygame
-import pprint
+import pygame, os
+sys.path.append("../")
 
 from clock import Clock
 from asset import *
@@ -106,9 +106,7 @@ while True:
 			s_right.draw(pos[0], pos[1])
 		else:
 			s2.draw(pos[0], pos[1])
-
 	# Render
 	pygame.display.update()
 
 	clock.tick(60)
-	

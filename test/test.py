@@ -1,4 +1,5 @@
-import pygame
+import pygame, os
+sys.path.append("../")
 
 display_width  = 640
 display_height = 480
