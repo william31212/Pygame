@@ -1,5 +1,9 @@
 import pygame, sys, random
 
+sys.path.append("../")
+import utils
+
+utils.SET_ROOT('..')
 def load_se(name, num):
 	ll = []
 	for i in range(num):
