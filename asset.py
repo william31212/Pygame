@@ -38,7 +38,7 @@ class Image:
 		self.resize = resize
 		self.rot_deg = rotate
 		# TODO(roy4801): move the GET_PATH to outside
-		self.img = pygame.image.load(GET_PATH('image', filename))
+		self.img = pygame.image.load(filename)
 		if resize != (0, 0):
 			self.img = pygame.transform.scale(self.img, resize)
 		if rotate != 0.:
@@ -47,7 +47,7 @@ class Image:
 	rotate(deg) -> Image
 		rotate image by deg degrees (counter-clockwise)
 	'''
-	def rotate(self, deg=0., rotate_type=IMAGE_ROT_PT):
+	def rotate(self, deg=0., rotate_type=IMAGE_POS_CENT):
 		self.rot_deg += deg
 		if deg != 0.:
 			self.rot_img = pygame.transform.rotate(self.img, deg)
@@ -109,22 +109,22 @@ class Sprite:
 		# static sprite
 		if self.t == SP_STATIC:
 			img = Image()
-			img.loadImage(name, resize, rotate)
+			img.loadImage(name[0] + name[1], resize, rotate)
 			self.imageList.append(img)
 			self.frameNum = 1
 		# animated sprite
 		elif self.t == SP_ANIMATE:
 			self.timer = Timer(1000/self.fps)
-			dir_list = os.listdir(GET_PATH('image', ''))
+			dir_list = os.listdir(name[0])
 			print(dir_list)
 			cnt = 0
 			for item in dir_list:
-				if item.startswith(name):
+				if item.startswith(name[1]):
 					cnt += 1
 			self.frameNum = cnt
 			# load {name}{000}.png ~ {name}{cnt}.png
 			for i in range(cnt):
-				self.imageList.append(Image('{}{:03d}.png'.format(name, i), resize, rotate))
+				self.imageList.append(Image('{}{:03d}.png'.format(name[0]+name[1], i), resize, rotate))
 	'''
 	draw(x, y)
 		draw the sprite on the screen

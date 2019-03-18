@@ -14,16 +14,16 @@ clock = pygame.time.Clock()
 pygame.init()
 
 # Load a sttic sprite
-s1 = Sprite(SP_STATIC, 'attackA000.png')
+s1 = Sprite(SP_STATIC, GET_PATH(IMG_SPRITE, 'attackA000.png'))
 
 # Load a animate sprite
-s2 = Sprite(SP_ANIMATE, 'stand', 20, ANI_LOOP)
+s2 = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'stand'), 20, ANI_LOOP)
 s3 = s2.copy()
 s3.nowFrame = 3
 
-s_right = Sprite(SP_ANIMATE, 'walkFront', 15, ANI_LOOP)
-s_left = Sprite(SP_ANIMATE, 'walkBack', 15, ANI_LOOP)
-attack_a = Sprite(SP_ANIMATE, 'attackA', 15, ANI_ONCE)
+s_right = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'walkFront'), 15, ANI_LOOP)
+s_left = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'walkBack'), 15, ANI_LOOP)
+attack_a = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'attackA'), 15, ANI_ONCE)
 
 # TODO(roy4801): user this in the future
 # pp = pprint.PrettyPrinter(indent=4)
