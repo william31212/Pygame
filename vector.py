@@ -2,7 +2,7 @@ import sys,pygame
 import math
 
 RAD_TO_DEG = 180 / math.pi
-
+DEG_TO_RAD = math.pi / 180
 class Vec2:
 	"""docstring for Vec2"""
 	def __init__(self, x, y):
@@ -38,3 +38,12 @@ class Vec2:
 
 	def angle(self, other):
 		return math.acos((self * other) / (self.vec_len() * other.vec_len())) * RAD_TO_DEG
+
+	def rotate(self, theta=0.0):
+		# print(math.sin(math.radians(theta)) )
+		sin_t = round(math.sin(math.radians(theta)), 15)
+		cos_t = round(math.cos(math.radians(theta)), 15)
+		x = cos_t * self.x - sin_t * self.y
+		y = sin_t * self.x + cos_t * self.y
+		self.x = x
+		self.y = y

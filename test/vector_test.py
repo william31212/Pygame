@@ -55,10 +55,10 @@ def main():
 	ang = myvec.angle(secvec)
 	print("angle: {}".format(ang))
 
-	myvec = Vec2(0, 1);
-	secvec = Vec2(1, 0)
-	ang = myvec.angle(secvec)
-	print("angle: {}".format(ang))
-
+	# rotate
+	myvec = Vec2(2, 2);
+	# print("rotate: {} {}".format(myvec.x,myvec.y))
+	myvec.rotate(90)
+	print("rotate: {} {}".format(myvec.x,myvec.y))
 if __name__ == '__main__':
 	main()
