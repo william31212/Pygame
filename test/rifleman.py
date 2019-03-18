@@ -11,14 +11,16 @@ SET_ROOT('..')
 display_width = 800
 display_height = 600
 
-rifleman_down = Sprite(SP_ANIMATE, "winchester_down", 3, ANI_LOOP,0,1)
-rifleman_right = Sprite(SP_ANIMATE, "winchester_right", 3, ANI_LOOP,0,1)
-rifleman_left = Sprite(SP_ANIMATE, "winchester_left", 3, ANI_LOOP,0,1)
-rifleman_up = Sprite(SP_ANIMATE, "winchester_up", 3, ANI_LOOP,0,1)
+rifleman_down = Sprite(SP_ANIMATE, "winchester_down", 3, ANI_LOOP,0, (200, 200))
+rifleman_right = Sprite(SP_ANIMATE, "winchester_right", 3, ANI_LOOP, 0, (200, 200))
+rifleman_left = Sprite(SP_ANIMATE, "winchester_left", 3, ANI_LOOP, 0, (200, 200))
+rifleman_up = Sprite(SP_ANIMATE, "winchester_up", 3, ANI_LOOP, 0, (200, 200))
 
 
 pos = [10, 10]
 state = 2
+
+clock = pygame.time.Clock()
 
 def main():
 
@@ -75,15 +77,8 @@ def main():
 		if state == 4:
 			rifleman_right.draw(pos[0],pos[1])
 
-
-
-
 		pygame.display.update()
-		clock = pygame.time.Clock()
 		clock.tick(60)
-
-
-
 
 if __name__ == "__main__":
 	pygame.init()

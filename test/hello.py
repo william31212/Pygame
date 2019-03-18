@@ -16,7 +16,8 @@ def main():
 
     size = 800, 600
 
-    pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGL)
+    screen = pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGLBLIT)
+
 
     io = imgui.get_io()
     io.fonts.add_font_default()
@@ -80,7 +81,9 @@ def main():
         #       does not support fill() on OpenGL sufraces
         gl.glClearColor(0.5, 0.5, 0.5, 1)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        
         imgui.render()
+        # pygame.draw.rect(screen, (255, 0, 0), (0, 0, 100, 100))
 
         pygame.display.flip()
         clock.tick(60)

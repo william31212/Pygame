@@ -9,7 +9,7 @@ SOUND_SOUND = 2
 # TODO(roy4801): Implement this
 class SoundFile;
 	def __init__(self):
-		self.t = 
-
+		# self.t = 
+		pass
 	def load_sound_file(self, t):
-
+		pass

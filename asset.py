@@ -19,26 +19,70 @@ ANI_LOOP = 2
 '''
 Image
 '''
+IMAGE_POS_LT   = 0
+IMAGE_POS_CENT = 1 # TODO(roy4801): Implement this
+
 class Image:
-	def __init__(self, filename=None, resize=None):
+	def __init__(self, filename=None, resize=(0, 0), rotate=0.):
 		# asset image
 		self.img = None
 		self.resize = resize
+		self.rot_deg = rotate
+		self.rot_img = None
 		if filename != None:
-			self.loadImage(filename,resize)
-	def loadImage(self, filename ,resize=None):
+			self.loadImage(filename, resize, rotate)
+	'''
+	loadImage(filename, resize, rotate) -> None
+	'''
+	def loadImage(self, filename ,resize=(0, 0), rotate=0.):
 		self.resize = resize
-		if resize == None:
-			self.img = pygame.image.load(GET_PATH('image', filename))
+		self.rot_deg = rotate
+		# TODO(roy4801): move the GET_PATH to outside
+		self.img = pygame.image.load(GET_PATH('image', filename))
+		if resize != (0, 0):
+			self.img = pygame.transform.scale(self.img, resize)
+		if rotate != 0.:
+			self.rot_img = pygame.transform.rotate(self.img, rotate)
+	'''
+	rotate(deg) -> Image
+		rotate image by deg degrees (counter-clockwise)
+	'''
+	def rotate(self, deg=0., rotate_type=IMAGE_ROT_PT):
+		self.rot_deg += deg
+		if deg != 0.:
+			self.rot_img = pygame.transform.rotate(self.img, deg)
+		return self
+	'''
+	resize(resize=(0, 0)) -> Image
+	'''
+	def resize(self, resize=(0, 0)):
+		self.resize = resize
+		if resize != (0, 0):
+			self.img = pygame.transform.scale(self.img, resize)
+		return self
+	# TODO(roy4801): Implement this
+	def draw(self, x, y):
+		gameDisplay = pygame.display.get_surface()
+		img = None
+		if self.rot_deg != 0.:
+			img = self.rot_img
 		else:
-			self.img = pygame.transform.scale(pygame.image.load(str(GET_PATH('image', filename))), resize)
+			img = self.img
+		gameDisplay.blit(img, (x, y))
+
+	def get_width(self):
+		return self.img.get_width()
+	def get_height(self):
+		return self.img.get_height()
+	def get_rect(self):
+		return (self.get_width(), self.get_height())
 # TODO(roy4801): Add re matching file names
 '''
 Sprite
 	Positionable 2D image supporting static and animated sprite
 '''
 class Sprite:
-	def __init__(self,t, name, fps=0, ani=ANI_NONE, startFrame=0, resize=None):
+	def __init__(self,t, name, fps=0, ani=ANI_NONE, startFrame=0, resize=(0, 0), rotate=0.):
 		self.imageList = []
 		# sprite type
 		self.t = t
@@ -58,13 +102,14 @@ class Sprite:
 		self.draw_once = False
 		self.drawFrameCnt = 0
 
-		# for resize
+		# transform
 		self.resize = resize
+		self.rotate = rotate
 
 		# static sprite
 		if self.t == SP_STATIC:
 			img = Image()
-			img.loadImage(name,resize)
+			img.loadImage(name, resize, rotate)
 			self.imageList.append(img)
 			self.frameNum = 1
 		# animated sprite
@@ -79,14 +124,13 @@ class Sprite:
 			self.frameNum = cnt
 			# load {name}{000}.png ~ {name}{cnt}.png
 			for i in range(cnt):
-				self.imageList.append(Image('{}{:03d}.png'.format(name, i), resize))
+				self.imageList.append(Image('{}{:03d}.png'.format(name, i), resize, rotate))
 	'''
 	draw(x, y)
 		draw the sprite on the screen
 	return: if ani == ANI_ONCE && draw_once == true then return true meaning it draw one complete cycle (frameNum)
 	, otherwise return false
 	'''
-
 	def draw(self, x, y):
 		# Get gameDisplay
 		gameDisplay = pygame.display.get_surface()
