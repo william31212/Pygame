@@ -16,33 +16,29 @@ ANI_NONE = 0
 ANI_ONCE = 1
 ANI_LOOP = 2
 
-# resize
-resize_x = 200
-resize_y = 200
 '''
 Image
 '''
 class Image:
-	def __init__(self,filename=None,resize=0):
+	def __init__(self, filename=None, resize=None):
 		# asset image
 		self.img = None
 		self.resize = resize
 		if filename != None:
 			self.loadImage(filename,resize)
-	def loadImage(self, filename,resize=0):
+	def loadImage(self, filename ,resize=None):
 		self.resize = resize
-		if resize == 0:
+		if resize == None:
 			self.img = pygame.image.load(GET_PATH('image', filename))
-		if resize == 1:
-			self.img = pygame.transform.scale(pygame.image.load(str(GET_PATH('image', filename))), (resize_x, resize_y))
+		else:
+			self.img = pygame.transform.scale(pygame.image.load(str(GET_PATH('image', filename))), resize)
 # TODO(roy4801): Add re matching file names
-
 '''
 Sprite
 	Positionable 2D image supporting static and animated sprite
 '''
 class Sprite:
-	def __init__(self,t, name, fps=0, ani=ANI_NONE, startFrame=0, resize=0):
+	def __init__(self,t, name, fps=0, ani=ANI_NONE, startFrame=0, resize=None):
 		self.imageList = []
 		# sprite type
 		self.t = t
@@ -83,7 +79,7 @@ class Sprite:
 			self.frameNum = cnt
 			# load {name}{000}.png ~ {name}{cnt}.png
 			for i in range(cnt):
-				self.imageList.append(Image('{}{:03d}.png'.format(name, i),resize))
+				self.imageList.append(Image('{}{:03d}.png'.format(name, i), resize))
 	'''
 	draw(x, y)
 		draw the sprite on the screen

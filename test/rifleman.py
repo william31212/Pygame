@@ -4,6 +4,9 @@ sys.path.append("../")
 from clock import Clock
 from Input import *
 from asset import *
+from utils import *
+
+SET_ROOT('..')
 
 display_width = 800
 display_height = 600

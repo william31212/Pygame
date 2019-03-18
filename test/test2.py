@@ -1,9 +1,11 @@
-import pygame, os
+import pygame, os, sys
 sys.path.append("../")
 
 from clock import Clock
 from asset import *
+from utils import *
 
+SET_ROOT('..')
 
 gameDisplay = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('test')
