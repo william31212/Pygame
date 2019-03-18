@@ -16,18 +16,25 @@ ANI_NONE = 0
 ANI_ONCE = 1
 ANI_LOOP = 2
 
+# resize
+resize_x = 200
+resize_y = 200
 '''
 Image
 '''
 class Image:
-	def __init__(self, filename=None):
+	def __init__(self,filename=None,resize=0):
 		# asset image
 		self.img = None
+		self.resize = resize
 		if filename != None:
-			self.loadImage(filename)
-	def loadImage(self, filename):
-		self.img = pygame.image.load(GET_PATH('image', filename))
-
+			self.loadImage(filename,resize)
+	def loadImage(self, filename,resize=0):
+		self.resize = resize
+		if resize == 0:
+			self.img = pygame.image.load(GET_PATH('image', filename))
+		if resize == 1:
+			self.img = pygame.transform.scale(pygame.image.load(str(GET_PATH('image', filename))), (resize_x, resize_y))
 # TODO(roy4801): Add re matching file names
 
 '''
@@ -35,7 +42,7 @@ Sprite
 	Positionable 2D image supporting static and animated sprite
 '''
 class Sprite:
-	def __init__(self, t, name, fps=0, ani=ANI_NONE, startFrame=0):
+	def __init__(self,t, name, fps=0, ani=ANI_NONE, startFrame=0, resize=0):
 		self.imageList = []
 		# sprite type
 		self.t = t
@@ -55,10 +62,13 @@ class Sprite:
 		self.draw_once = False
 		self.drawFrameCnt = 0
 
+		# for resize
+		self.resize = resize
+
 		# static sprite
 		if self.t == SP_STATIC:
 			img = Image()
-			img.loadImage(name)
+			img.loadImage(name,resize)
 			self.imageList.append(img)
 			self.frameNum = 1
 		# animated sprite
@@ -73,13 +83,14 @@ class Sprite:
 			self.frameNum = cnt
 			# load {name}{000}.png ~ {name}{cnt}.png
 			for i in range(cnt):
-				self.imageList.append(Image('{}{:03d}.png'.format(name, i)))
+				self.imageList.append(Image('{}{:03d}.png'.format(name, i),resize))
 	'''
 	draw(x, y)
 		draw the sprite on the screen
 	return: if ani == ANI_ONCE && draw_once == true then return true meaning it draw one complete cycle (frameNum)
 	, otherwise return false
 	'''
+
 	def draw(self, x, y):
 		# Get gameDisplay
 		gameDisplay = pygame.display.get_surface()
