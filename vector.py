@@ -1,11 +1,9 @@
 import sys,pygame
 import math
 
-RAD_TO_DEG = 180 / math.pi
-DEG_TO_RAD = math.pi / 180
 class Vec2:
-	"""docstring for Vec2"""
-	def __init__(self, x, y):
+	""" math two dim vector"""
+	def __init__(self, x=0., y=0.):
 		self.x = x
 		self.y = y
 
@@ -14,36 +12,52 @@ class Vec2:
 
 	def __sub__(self, other):
 		return Vec2(self.x - other.x, self.y - other.y)
-
+    # dot
 	def __mul__(self, other):
 		return (self.x * other.x) + (self.y * other.y)
 
 	def __eq__(self, other):
-		if self.x == other.x and self.y == other.y:
-			return True
-		else:
-			return False
+		return self.x == other.x and self.y == other.y
+
+	def __ne__(self, other):
+		return self != other
+
+	def dot(self, other):
+		return self * other
 
 	def scale(self, mag=1):
 		self.x *= mag
 		self.y *= mag
+		return self
 
 	def vec_len(self):
 		return math.sqrt((self.x * self.x) + (self.y * self.y))
 
 	def normal(self):
-		divider = math.sqrt((self.x * self.x) + (self.y * self.y))
-		self.x /= divider
-		self.y /= divider
+		nor = self.copy()
+		divider = self.vec_len()
+		nor.x /= divider
+		nor.y /= divider
+		return nor
 
 	def angle(self, other):
-		return math.acos((self * other) / (self.vec_len() * other.vec_len())) * RAD_TO_DEG
+		return math.degrees(math.acos((self * other) / (self.vec_len() * other.vec_len())))
 
 	def rotate(self, theta=0.0):
-		# print(math.sin(math.radians(theta)) )
 		sin_t = round(math.sin(math.radians(theta)), 15)
 		cos_t = round(math.cos(math.radians(theta)), 15)
 		x = cos_t * self.x - sin_t * self.y
 		y = sin_t * self.x + cos_t * self.y
 		self.x = x
 		self.y = y
+		return self
+
+	def copy(self):
+		return Vec2(self.x, self.y)
+
+	def __repr__(self):
+		return object.__repr__(self)
+	def __str__(self):
+		info = 'x = {:.3f}, y = {:.3f}'.format(self.x, self.y)
+		info += ' ' + self.__repr__()
+		return info

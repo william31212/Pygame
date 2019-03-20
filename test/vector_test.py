@@ -12,13 +12,13 @@ def main():
 	myvec = Vec2(2,3);
 	secvec = Vec2(4,5);
 	myvec = myvec + secvec
-	print("add: x:{} y:{}".format(myvec.x,myvec.y))
+	print("add: {}".format(myvec))
 
 	# for sub
 	myvec = Vec2(2,3);
 	secvec = Vec2(4,5);
 	myvec = myvec - secvec
-	print("sub: x:{} y:{}".format(myvec.x,myvec.y))
+	print("sub: {}".format(myvec))
 
 	# for dot
 	myvec = Vec2(2,3);
@@ -37,17 +37,17 @@ def main():
 	# for scale
 	myvec = Vec2(2,3);
 	myvec.scale(3);
-	print("scale: x:{} y:{}".format(myvec.x,myvec.y))
+	print("scale: {}".format(myvec))
 
 	# for vec_len
-	myvec = Vec2(2,3);
+	myvec = Vec2(3,4);
 	length = myvec.vec_len()
 	print("length: {}".format(length))
 
 	# for normal
-	myvec = Vec2(2,3);
+	myvec = Vec2(1, 1);
 	nor = myvec.normal()
-	print("normal: {} {}".format(myvec.x,myvec.y))
+	print("normal: {}".format(nor))
 
 	# for angle
 	myvec = Vec2(2, 2);
@@ -59,6 +59,6 @@ def main():
 	myvec = Vec2(2, 2);
 	# print("rotate: {} {}".format(myvec.x,myvec.y))
 	myvec.rotate(90)
-	print("rotate: {} {}".format(myvec.x,myvec.y))
+	print("rotate: {}".format(myvec))
 if __name__ == '__main__':
 	main()
