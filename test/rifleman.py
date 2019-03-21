@@ -5,16 +5,17 @@ from clock import Clock
 from Input import *
 from asset import *
 from utils import *
+from tile import *
 
 SET_ROOT('..')
 
 display_width = 800
 display_height = 600
 
-rifleman_down = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_down'), 3, ANI_LOOP,0, (200, 200))
-rifleman_right = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_right'), 3, ANI_LOOP, 0, (200, 200))
-rifleman_left = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_left'), 3, ANI_LOOP, 0, (200, 200))
-rifleman_up = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_up'), 3, ANI_LOOP, 0, (200, 200))
+rifleman_down = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_down'), 3, ANI_LOOP,0, (100, 100))
+rifleman_right = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_right'), 3, ANI_LOOP, 0, (100, 100))
+rifleman_left = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_left'), 3, ANI_LOOP, 0, (100, 100))
+rifleman_up = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_up'), 3, ANI_LOOP, 0, (100, 100))
 
 pos = [10, 10]
 state = 2
@@ -29,10 +30,13 @@ def main():
 	handle_key_name = {KEY_UP:'KEY_UP', KEY_DOWN:'KEY_DOWN', KEY_LEFT:'KEY_LEFT', KEY_RIGHT:'KEY_RIGHT'}
 	gameDisplay = pygame.display.set_mode((display_width,display_height))
 	keyboard = KeyHandler()
+	gameDisplay = pygame.display.set_mode((800,640))
+	maps = TiledMap("./level1.tmx")
+	maps_img = maps.make_map()
 
 	while True:
 
-		gameDisplay.fill((163, 148, 128))
+		gameDisplay.blit(maps_img, (0,0))
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
