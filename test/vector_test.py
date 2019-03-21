@@ -56,7 +56,7 @@ def main():
 	print("angle: {}".format(ang))
 
 	# rotate
-	myvec = Vec2(2, 2);
+	myvec = Vec2(1, 0);
 	# print("rotate: {} {}".format(myvec.x,myvec.y))
 	myvec.rotate(90)
 	print("rotate: {}".format(myvec))
