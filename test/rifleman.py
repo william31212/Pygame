@@ -29,8 +29,6 @@ def main():
 	keyboard = KeyHandler()
 	handle_keys = [KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT]
 	handle_key_name = {KEY_UP:'KEY_UP', KEY_DOWN:'KEY_DOWN', KEY_LEFT:'KEY_LEFT', KEY_RIGHT:'KEY_RIGHT'}
-	gameDisplay = pygame.display.set_mode((display_width,display_height))
-	keyboard = KeyHandler()
 	gameDisplay = pygame.display.set_mode((800,640))
 	maps = TiledMap("./level2.tmx")
 	maps_img = maps.make_map()
@@ -51,27 +49,23 @@ def main():
 			# Keyup
 			elif event.type == pygame.KEYUP:
 				keyboard.set_key_state(event.key, False, False)
-
-		for i in handle_keys:
-			any_pressed = False
-			if keyboard.key_state[i]:
-				if handle_key_name[i] == 'KEY_UP':
-					pos[1] -= 10
-					state = 1
-					# rifleman_up.draw(pos[0],pos[1])
-				if handle_key_name[i] == 'KEY_DOWN':
-					pos[1] += 10
-					state = 2
-					# rifleman_down.draw(pos[0],pos[1])
-				if handle_key_name[i] == 'KEY_LEFT':
-					pos[0] -= 10
-					state = 3
-					# rifleman_left.draw(pos[0],pos[1])
-				if handle_key_name[i] == 'KEY_RIGHT':
-					pos[0] += 10
-					state = 4
-					# rifleman_right.draw(pos[0],pos[1])
-
+				
+		if keyboard.key_state[KEY_UP]:
+			pos[1] -= 10
+			state = 1
+			# rifleman_up.draw(pos[0],pos[1])
+		if keyboard.key_state[KEY_DOWN]:
+			pos[1] += 10
+			state = 2
+			# rifleman_down.draw(pos[0],pos[1])
+		if keyboard.key_state[KEY_LEFT]:
+			pos[0] -= 10
+			state = 3
+			# rifleman_left.draw(pos[0],pos[1])
+		if keyboard.key_state[KEY_RIGHT]:
+			pos[0] += 10
+			state = 4
+			# rifleman_right.draw(pos[0],pos[1])
 
 		##obstacle
 		for tile_object in maps.tmxdata.objects:
@@ -141,11 +135,11 @@ def main():
 		##draw
 		if state == 1:
 			rifleman_up.draw(pos[0],pos[1])
-		if state == 2:
+		elif state == 2:
 			rifleman_down.draw(pos[0],pos[1])
-		if state == 3:
+		elif state == 3:
 			rifleman_left.draw(pos[0],pos[1])
-		if state == 4:
+		elif state == 4:
 			rifleman_right.draw(pos[0],pos[1])
 
 
