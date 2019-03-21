@@ -70,7 +70,8 @@ if __name__ == '__main__':
 	pygame.mixer.init()
 	print(pygame.mixer.get_init())
 	# Load bgm
-	pygame.mixer.music.load('Touhou Koumakyou - the Embodiment of Scarlet Devil.mp3')
+	pygame.mixer.music.load('the_embodiment_of_scarlet_devil.ogg')
+	print('Success to load music {}'.format('the_embodiment_of_scarlet_devil.ogg'))
 	# Load sound effects
 	se_timeout = load_se('se_timeout', 2)
 	se_enep = load_se('se_enep', 3)

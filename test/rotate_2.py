@@ -7,7 +7,6 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 
 def blitRotate(surf, image, pos, originPos, angle):
-
     # calcaulate the axis aligned bounding box of the rotated image
     w, h       = image.get_size()
     box        = [pygame.math.Vector2(p) for p in [(0, 0), (w, 0), (w, -h), (0, -h)]]
@@ -56,7 +55,7 @@ while not done:
     pos = (size[0]//2, size[1]//2)
 
     screen.fill(0)
-    blitRotate(screen, image, pos, (0, 0), angle)
+    blitRotate(screen, image, (200, 200), (0, 0), angle)
     angle += 1
 
     pygame.draw.line(screen, (0, 255, 0), (pos[0]-20, pos[1]), (pos[0]+20, pos[1]), 3)
