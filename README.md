@@ -8,7 +8,7 @@
 ## Installation
 
 ```
-pip install pygame "imgui[pygame]"
+pip install pygame "imgui[pygame]" pyscroll pytmx
 ```
 
 ## Documentation
