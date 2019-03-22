@@ -28,6 +28,9 @@ def change():
 	pos[0] = pos_tmp[0]
 	pos[1] = pos_tmp[1]
 
+# temp helper func
+def to_pygame_rect(x):
+	return (x.Left_x, x.Left_y, x.Right_x - x.Left_x, x.Right_y - x.Left_y)
 
 def main():
 
@@ -40,8 +43,7 @@ def main():
 	maps_img = maps.make_map()
 
 	while True:
-
-		gameDisplay.blit(maps_img, (0,0))
+		# Process event
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -56,6 +58,7 @@ def main():
 			elif event.type == pygame.KEYUP:
 				keyboard.set_key_state(event.key, False, False)
 
+		# Update
 		pos_tmp[0] = pos[0]
 		pos_tmp[1] = pos[1]
 		if keyboard.key_state[KEY_UP]:
@@ -71,59 +74,61 @@ def main():
 			pos[0] += 10
 			state = 4
 
+		rifleman_obs_box = None
+		obs_list = []
+
 		##obstacle
 		for tile_object in maps.tmxdata.objects:
-			rifleman = Rect(pos[0]+30, pos[1]+30, pos[0]+70, pos[1]+70)
-			# print("rifleman : Lx:{} Ly:{} Rx:{} Ry:{}".format(pos[0]+30, pos[1]+30, pos[0]+70, pos[1]+70))
-			# pygame.draw.rect(gameDisplay,(33,44,55), (pos[0]+20, pos[1]+20, 60, 60))
+			rifleman_obs_box = Rect(pos[0]+41, pos[1]+66, pos[0]+60, pos[1]+76)
+			# print("rifleman_obs_box : Lx:{} Ly:{} Rx:{} Ry:{}".format(pos[0]+30, pos[1]+30, pos[0]+70, pos[1]+70))
 			if tile_object.name == 'Pillar':
-				pillar = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				pilliar_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				obs_list.append(pilliar_obs_box)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
-				# pygame.draw.rect(gameDisplay,(233,33,55), (tile_object.x , tile_object.y, tile_object.width , tile_object.height))
-				if pillar.check_rect(rifleman) == True and (state == 1):
+				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
 					change()
-				if pillar.check_rect(rifleman) == True and (state == 2):
+				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
 					change()
-				if pillar.check_rect(rifleman) == True and (state == 3):
+				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
 					change()
-				if pillar.check_rect(rifleman) == True and (state == 4):
+				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
 					change()
 			if tile_object.name == 'grass':
-				grass = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				grass_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				obs_list.append(grass_obs_box)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
-				# pygame.draw.rect(gameDisplay,(233,33,55), (tile_object.x , tile_object.y, tile_object.width , tile_object.height))
-				if grass.check_rect(rifleman) == True and (state == 1):
+				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
 					change()
-				if grass.check_rect(rifleman) == True and (state == 2):
+				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
 					change()
-				if grass.check_rect(rifleman) == True and (state == 3):
+				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
 					change()
-				if grass.check_rect(rifleman) == True and (state == 4):
+				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
 					change()
 			if tile_object.name == 'lava':
-				lava = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				lava_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				obs_list.append(lava_obs_box)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
-				# pygame.draw.rect(gameDisplay,(233,33,55), (tile_object.x , tile_object.y, tile_object.width , tile_object.height))
-				if lava.check_rect(rifleman) == True and (state == 1):
+				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
 					print("you died")
-				if lava.check_rect(rifleman) == True and (state == 2):
+				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
 					print("you died")
-				if lava.check_rect(rifleman) == True and (state == 3):
+				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
 					print("you died")
-				if lava.check_rect(rifleman) == True and (state == 4):
+				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
 					print("you died")
 			if tile_object.name == 'edge':
-				edge = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				edge_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				obs_list.append(edge_obs_box)
 				# print("fucker : Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x, tile_object.y, (tile_object.x + tile_object.width), (tile_object.y+tile_object.height)))
-				# pygame.draw.rect(gameDisplay,(233,33,55), (tile_object.x , tile_object.y, tile_object.width , tile_object.height))
-				# print(edge.check_rect(rifleman))
-				if edge.check_rect(rifleman) == True and (state == 1):
+				# print(edge_obs_box.check_rect(rifleman_obs_box))
+				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
 					change()
-				if edge.check_rect(rifleman) == True and (state == 2):
+				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
 					change()
-				if edge.check_rect(rifleman) == True and (state == 3):
+				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
 					change()
-				if edge.check_rect(rifleman) == True and (state == 4):
+				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
 					change()
 
 		##edge
@@ -137,6 +142,7 @@ def main():
 			pos[1] = -30
 
 		##draw
+		gameDisplay.blit(maps_img, (0,0))
 		if state == 1:
 			rifleman_up.draw(pos[0],pos[1])
 		elif state == 2:
@@ -146,6 +152,12 @@ def main():
 		elif state == 4:
 			rifleman_right.draw(pos[0],pos[1])
 
+		## dbg view ##
+		pygame.draw.circle(gameDisplay, (0xe5, 0, 0xff), (pos[0], pos[1]), 2)
+		for i in obs_list:
+			pygame.draw.rect(gameDisplay,(255, 0, 0), to_pygame_rect(i), 2)
+		pygame.draw.rect(gameDisplay,(0, 0, 255), to_pygame_rect(rifleman_obs_box))
+		## dbg view ##
 
 		pygame.display.update()
 		clock.tick(60)
