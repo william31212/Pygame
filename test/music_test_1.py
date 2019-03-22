@@ -45,7 +45,7 @@ def main():
 					# In real game, this should definitely not be used
 					# Except for creating a new thread for checking if sound completes to play
 					while cur_channel.get_busy():
-						print('Waiting cnt_timeout...')
+						# print('Waiting cnt_timeout...')
 						pygame.time.delay(10)
 					cur_channel = None
 				else:
@@ -55,7 +55,7 @@ def main():
 			elif cnt_enep < 1:
 				if cur_channel != None:
 					while cur_channel.get_busy():
-						print('Waiting cnt_enep...')
+						# print('Waiting cnt_enep...')
 						pygame.time.delay(10)
 					cur_channel = None
 				else:
@@ -64,6 +64,7 @@ def main():
 			else:
 				b_playing = False
 				cnt_timeout = cnt_enep = 0
+			print(cur_channel)
 
 if __name__ == '__main__':
 	pygame.init()
