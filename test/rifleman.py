@@ -19,9 +19,15 @@ rifleman_left = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_left'), 3, A
 rifleman_up = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_up'), 3, ANI_LOOP, 0, (100, 100))
 
 pos = [10, 10]
+pos_tmp = [0, 0]
 state = 2
 
 clock = pygame.time.Clock()
+
+def change():
+	pos[0] = pos_tmp[0]
+	pos[1] = pos_tmp[1]
+
 
 def main():
 
@@ -49,23 +55,21 @@ def main():
 			# Keyup
 			elif event.type == pygame.KEYUP:
 				keyboard.set_key_state(event.key, False, False)
-				
+
+		pos_tmp[0] = pos[0]
+		pos_tmp[1] = pos[1]
 		if keyboard.key_state[KEY_UP]:
 			pos[1] -= 10
 			state = 1
-			# rifleman_up.draw(pos[0],pos[1])
 		if keyboard.key_state[KEY_DOWN]:
 			pos[1] += 10
 			state = 2
-			# rifleman_down.draw(pos[0],pos[1])
 		if keyboard.key_state[KEY_LEFT]:
 			pos[0] -= 10
 			state = 3
-			# rifleman_left.draw(pos[0],pos[1])
 		if keyboard.key_state[KEY_RIGHT]:
 			pos[0] += 10
 			state = 4
-			# rifleman_right.draw(pos[0],pos[1])
 
 		##obstacle
 		for tile_object in maps.tmxdata.objects:
@@ -77,25 +81,25 @@ def main():
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
 				# pygame.draw.rect(gameDisplay,(233,33,55), (tile_object.x , tile_object.y, tile_object.width , tile_object.height))
 				if pillar.check_rect(rifleman) == True and (state == 1):
-					pos[1] += 10
+					change()
 				if pillar.check_rect(rifleman) == True and (state == 2):
-					pos[1] -= 10
+					change()
 				if pillar.check_rect(rifleman) == True and (state == 3):
-					pos[0] += 10
+					change()
 				if pillar.check_rect(rifleman) == True and (state == 4):
-					pos[0] -= 10
+					change()
 			if tile_object.name == 'grass':
 				grass = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
 				# pygame.draw.rect(gameDisplay,(233,33,55), (tile_object.x , tile_object.y, tile_object.width , tile_object.height))
 				if grass.check_rect(rifleman) == True and (state == 1):
-					pos[1] += 10
+					change()
 				if grass.check_rect(rifleman) == True and (state == 2):
-					pos[1] -= 10
+					change()
 				if grass.check_rect(rifleman) == True and (state == 3):
-					pos[0] += 10
+					change()
 				if grass.check_rect(rifleman) == True and (state == 4):
-					pos[0] -= 10
+					change()
 			if tile_object.name == 'lava':
 				lava = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
@@ -114,13 +118,13 @@ def main():
 				# pygame.draw.rect(gameDisplay,(233,33,55), (tile_object.x , tile_object.y, tile_object.width , tile_object.height))
 				# print(edge.check_rect(rifleman))
 				if edge.check_rect(rifleman) == True and (state == 1):
-					pos[1] += 10
+					change()
 				if edge.check_rect(rifleman) == True and (state == 2):
-					pos[1] -= 10
+					change()
 				if edge.check_rect(rifleman) == True and (state == 3):
-					pos[0] += 10
+					change()
 				if edge.check_rect(rifleman) == True and (state == 4):
-					pos[0] -= 10
+					change()
 
 		##edge
 		if pos[0] <= -30:

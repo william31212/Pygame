@@ -185,8 +185,8 @@
   <object id="20" name="lava" x="80" y="363" width="64" height="65"/>
   <object id="21" name="lava" x="622" y="263" width="68" height="72"/>
   <object id="22" name="lava" x="529" y="430" width="62" height="63"/>
-  <object id="23" name="edge" x="332" y="470" width="136" height="51"/>
-  <object id="24" name="edge" x="327" y="378" width="144" height="48"/>
+  <object id="23" name="edge" x="341" y="470" width="121" height="51"/>
+  <object id="24" name="edge" x="340" y="378" width="120" height="48"/>
   <object id="25" name="edge" x="320" y="54" width="159" height="37"/>
   <object id="26" name="edge" x="315" y="146" width="172" height="44"/>
  </objectgroup>
