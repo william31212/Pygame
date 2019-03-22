@@ -109,7 +109,7 @@ class Sound(SoundFile):
 		self.channel = self.sound_file.play()
 	
 	def stop(self):
-		pass
+		self.sound_file.stop()
 	
 	def fade_out(self, ms):
 		self.sound_file.fadeout(ms)
