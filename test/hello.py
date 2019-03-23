@@ -5,7 +5,7 @@ import sys
 import pygame
 import OpenGL.GL as gl
 
-from imgui.integrations.pygame import PygameRenderer
+from imgui_pygame_intergation import PygameRenderer
 import imgui
 
 w_closable = True
@@ -18,7 +18,6 @@ def main():
 
     screen = pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGLBLIT)
 
-
     io = imgui.get_io()
     io.fonts.add_font_default()
     io.display_size = size
@@ -26,6 +25,11 @@ def main():
     renderer = PygameRenderer()
 
     clock = pygame.time.Clock()
+
+    ## Test #######
+    test = pygame.Surface(size)
+    pygame.draw.rect(test, (255, 0, 0), (0, 0, 300, 300))
+    ###############
 
     while 1:
         for event in pygame.event.get():
@@ -82,8 +86,12 @@ def main():
         gl.glClearColor(0.5, 0.5, 0.5, 1)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
         
+        gl.glBegin(gl.GL_LINES);
+        gl.glVertex3f(-1.0, 1.0, 0.0);
+        gl.glVertex3f(1.0, -1.0, 0.0);
+        gl.glEnd();
+
         imgui.render()
-        # pygame.draw.rect(screen, (255, 0, 0), (0, 0, 100, 100))
 
         pygame.display.flip()
         clock.tick(60)
