@@ -39,10 +39,17 @@ def main():
 	handle_keys = [KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT]
 	handle_key_name = {KEY_UP:'KEY_UP', KEY_DOWN:'KEY_DOWN', KEY_LEFT:'KEY_LEFT', KEY_RIGHT:'KEY_RIGHT'}
 	gameDisplay = pygame.display.set_mode((800,640))
+	# surface = pygame.Surface((self.width, self.height))
 	maps = TiledMap("./level2.tmx")
-	maps_img = maps.make_map()
+	maps.render()
+	maps.make_background()
+	gameDisplay.blit(maps.surface,(0,0))
+
+
 
 	while True:
+		maps.make_object()
+		gameDisplay.blit(maps.surface,(0,0))
 		# Process event
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -73,16 +80,19 @@ def main():
 		if keyboard.key_state[KEY_RIGHT]:
 			pos[0] += 10
 			state = 4
+		if keyboard.key_state[KEY_ESC]:
+			pygame.quit()
+			sys.exit()
 
 		rifleman_obs_box = None
 		obs_list = []
 
 		##obstacle
 		for tile_object in maps.tmxdata.objects:
-			rifleman_obs_box = Rect(pos[0]+41, pos[1]+66, pos[0]+60, pos[1]+76)
-			# print("rifleman_obs_box : Lx:{} Ly:{} Rx:{} Ry:{}".format(pos[0]+30, pos[1]+30, pos[0]+70, pos[1]+70))
+			rifleman_obs_box = Rect(pos[0]+41, pos[1]+66, 19, 10)
+
 			if tile_object.name == 'Pillar':
-				pilliar_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				pilliar_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
 				obs_list.append(pilliar_obs_box)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
 				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
@@ -94,7 +104,7 @@ def main():
 				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
 					change()
 			if tile_object.name == 'grass':
-				grass_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				grass_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
 				obs_list.append(grass_obs_box)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
 				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
@@ -106,7 +116,7 @@ def main():
 				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
 					change()
 			if tile_object.name == 'lava':
-				lava_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				lava_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
 				obs_list.append(lava_obs_box)
 				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
 				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
@@ -118,7 +128,7 @@ def main():
 				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
 					print("you died")
 			if tile_object.name == 'edge':
-				edge_obs_box = Rect(tile_object.x, tile_object.y, tile_object.x + tile_object.width, tile_object.y + tile_object.height)
+				edge_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
 				obs_list.append(edge_obs_box)
 				# print("fucker : Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x, tile_object.y, (tile_object.x + tile_object.width), (tile_object.y+tile_object.height)))
 				# print(edge_obs_box.check_rect(rifleman_obs_box))
@@ -142,7 +152,7 @@ def main():
 			pos[1] = -30
 
 		##draw
-		gameDisplay.blit(maps_img, (0,0))
+		# gameDisplay.blit(maps_img, (0,0))
 		if state == 1:
 			rifleman_up.draw(pos[0],pos[1])
 		elif state == 2:
@@ -155,9 +165,11 @@ def main():
 		## dbg view ##
 		pygame.draw.circle(gameDisplay, (0xe5, 0, 0xff), (pos[0], pos[1]), 2)
 		for i in obs_list:
-			pygame.draw.rect(gameDisplay,(255, 0, 0), to_pygame_rect(i), 2)
-		pygame.draw.rect(gameDisplay,(0, 0, 255), to_pygame_rect(rifleman_obs_box))
+
+			pygame.draw.rect(gameDisplay,(255, 0, 0), (i.x , i.y, i.wid, i.hei) , 2)
+		pygame.draw.rect(gameDisplay,(0, 0, 255), (pos[0]+41, pos[1]+66, 19, 10))
 		## dbg view ##
+
 
 		pygame.display.update()
 		clock.tick(60)

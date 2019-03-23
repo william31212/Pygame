@@ -4,17 +4,18 @@ import math
 from utils import GET_PATH
 
 
+# Todo change x, y, w, h
 class Rect:
 	"""docstring for """
-	def __init__(self, Left_x, Left_y, Right_x, Right_y):
-		self.Left_x = Left_x
-		self.Left_y = Left_y
-		self.Right_x = Right_x
-		self.Right_y = Right_y
+	def __init__(self, x, y, wid, hei):
+		self.x = x
+		self.y = y
+		self.wid = wid
+		self.hei = hei
 
 	def check_point(self, point_x=0, point_y=0):
-		if self.Left_x <= point_x and point_x <= self.Right_x:
-			if self.Left_y <= point_y and point_y <= self.Right_y:
+		if self.x <= point_x and point_x <= (self.x + self.wid):
+			if self.y <= point_y and point_y <= (self.y + self.hei):
 				return True
 			else:
 				return False
@@ -22,10 +23,10 @@ class Rect:
 			return False
 	# TODO(william31212): Refactor for performance
 	def check_rect(self, other):
-		for i in range(int(other.Left_x),int(other.Right_x)):
-			if self.Left_x <= i and i <= self.Right_x:
-				for j in range(int(other.Left_y),int(other.Right_y)):
-					if self.Left_y <= j and j <= self.Right_y:
+		for i in range(int(other.x),int(other.x + other.wid)):
+			if self.x <= i and i <= (self.x + self.wid):
+				for j in range(int(other.y),int(other.y + other.hei)):
+					if self.y <= j and j <= (self.y + self.hei):
 						return True
 					else:
 						continue
