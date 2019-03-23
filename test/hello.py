@@ -3,7 +3,8 @@ from __future__ import absolute_import
 import sys
 
 import pygame
-import OpenGL.GL as gl
+from OpenGL.GL import *
+from OpenGL.GLU import *
 
 from imgui_pygame_intergation import PygameRenderer
 import imgui
@@ -16,7 +17,7 @@ def main():
 
     size = 800, 600
 
-    screen = pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGLBLIT)
+    screen = pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGL)
 
     io = imgui.get_io()
     io.fonts.add_font_default()
@@ -27,8 +28,15 @@ def main():
     clock = pygame.time.Clock()
 
     ## Test #######
+    glEnable(GL_TEXTURE_2D)
+    glClearColor(0.0, 0.0, 0.0, 0.0)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluOrtho2D(-1.0, 1.0, -1.0, 1.0)
+    glMatrixMode(GL_MODELVIEW)
+    
     test = pygame.Surface(size)
-    pygame.draw.rect(test, (255, 0, 0), (0, 0, 300, 300))
+    tex_id = None
     ###############
 
     while 1:
@@ -81,15 +89,34 @@ def main():
             imgui.text("AAAA")
             imgui.end()
 
-        # note: cannot use screen.fill((1, 1, 1)) because pygame's screen
-        #       does not support fill() on OpenGL sufraces
-        gl.glClearColor(0.5, 0.5, 0.5, 1)
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        glClearColor(0.5, 0.5, 0.5, 1)
+        glClear(GL_COLOR_BUFFER_BIT)
+
+        test.fill((255, 255, 255))
+        pygame.draw.rect(test, (255, 0, 0), (0, 0, 300, 300))
+        # pygame surface to OpenGL tex
+        ix, iy = test.get_width(), test.get_height()
+        image = pygame.image.tostring(test, "RGBA", True)
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+        tex_id = glGenTextures(1)
+        # print(tex_id)
+        glBindTexture(GL_TEXTURE_2D, tex_id)
+        glTexImage2D(GL_TEXTURE_2D, 0, 3, ix, iy, 0, GL_RGBA, GL_UNSIGNED_BYTE, image)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         
-        gl.glBegin(gl.GL_LINES);
-        gl.glVertex3f(-1.0, 1.0, 0.0);
-        gl.glVertex3f(1.0, -1.0, 0.0);
-        gl.glEnd();
+        ## TEST ##########
+        glLoadIdentity()
+        glTranslatef(0.0, 0.0, 0.0)
+        glBindTexture(GL_TEXTURE_2D, tex_id)
+        # draw
+        glBegin(GL_QUADS)
+        glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0,  0.0)
+        glTexCoord2f(1.0, 0.0); glVertex3f( 1.0, -1.0,  0.0)
+        glTexCoord2f(1.0, 1.0); glVertex3f( 1.0,  1.0,  0.0)
+        glTexCoord2f(0.0, 1.0); glVertex3f(-1.0,  1.0,  0.0)
+        glEnd()
+        ##################
 
         imgui.render()
 
