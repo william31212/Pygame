@@ -7,8 +7,10 @@ from OpenGL.GLU import *
 from imgui_pygame_intergation import PygameRenderer
 import imgui
 
+# states for GUI
 w_closable = True
 cb_another = False
+dg_val = 42.0
 
 def main():
     pygame.init()
@@ -77,10 +79,10 @@ def main():
                 imgui.end_menu()
             imgui.end_main_menu_bar()
 
-        global cb_another, w_closable
+        global cb_another, w_closable, dg_val
 
-        if imgui.begin("Main window"):
-            imgui.begin_child("aaa", 100, -10, border=False)
+        if imgui.begin("Main window")[1]:
+            imgui.begin_child("aaa", 300 , -10, border=False)
             imgui.begin_group()
             
             imgui.text("Toggle")
@@ -91,6 +93,19 @@ def main():
             w_closable = cb_another
 
             imgui.end_group()
+
+            imgui.begin_group()
+            imgui.text("Example: drag float")
+            changed, test_x = imgui.drag_float(
+                "test_x", test_x,
+            )
+            changed, test_y = imgui.drag_float(
+                "test_y", test_y,
+            )
+
+            imgui.text("Changed: {}, x: {:.2f} y: {:.2f}".format(changed, test_x, test_y))
+            imgui.end_group()
+
             imgui.end_child()
             imgui.end()
 
