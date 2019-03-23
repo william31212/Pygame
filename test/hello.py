@@ -1,8 +1,6 @@
 from __future__ import absolute_import
 
-import sys
-
-import pygame
+import pygame, sys
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
@@ -28,15 +26,30 @@ def main():
     clock = pygame.time.Clock()
 
     ## Test #######
+    # Setup OpenGL for 2D rendering
     glEnable(GL_TEXTURE_2D)
     glClearColor(0.0, 0.0, 0.0, 0.0)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluOrtho2D(-1.0, 1.0, -1.0, 1.0)
+    gluOrtho2D(0.0, size[0], size[1], 0.0) # Important
     glMatrixMode(GL_MODELVIEW)
     
-    test = pygame.Surface(size)
+    # new pygame.Surface
+    test = pygame.Surface((300, 300))
+    test_x = 100
+    test_y = 100
+    test.fill((255, 0, 0))
     tex_id = None
+
+    # pygame surface to OpenGL tex
+    ix, iy = test.get_width(), test.get_height()
+    image = pygame.image.tostring(test, "RGBA", True)
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+    tex_id = glGenTextures(1)
+    glBindTexture(GL_TEXTURE_2D, tex_id)
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, ix, iy, 0, GL_RGBA, GL_UNSIGNED_BYTE, image)
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
     ###############
 
     while 1:
@@ -89,32 +102,28 @@ def main():
             imgui.text("AAAA")
             imgui.end()
 
+        # Clean screen
         glClearColor(0.5, 0.5, 0.5, 1)
         glClear(GL_COLOR_BUFFER_BIT)
-
-        test.fill((255, 255, 255))
-        pygame.draw.rect(test, (255, 0, 0), (0, 0, 300, 300))
-        # pygame surface to OpenGL tex
-        ix, iy = test.get_width(), test.get_height()
-        image = pygame.image.tostring(test, "RGBA", True)
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-        tex_id = glGenTextures(1)
-        # print(tex_id)
-        glBindTexture(GL_TEXTURE_2D, tex_id)
-        glTexImage2D(GL_TEXTURE_2D, 0, 3, ix, iy, 0, GL_RGBA, GL_UNSIGNED_BYTE, image)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         
-        ## TEST ##########
+        ## Draw ##########
+        x = test_x
+        y = test_y
+        w = test.get_width()
+        h = test.get_height()
+
+        # Prepare the matrix
+        glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        glTranslatef(0.0, 0.0, 0.0)
+        glTranslatef(x, y, 0.0) # shift to (x, y)
         glBindTexture(GL_TEXTURE_2D, tex_id)
-        # draw
+
+        # Actual draw
         glBegin(GL_QUADS)
-        glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0,  0.0)
-        glTexCoord2f(1.0, 0.0); glVertex3f( 1.0, -1.0,  0.0)
-        glTexCoord2f(1.0, 1.0); glVertex3f( 1.0,  1.0,  0.0)
-        glTexCoord2f(0.0, 1.0); glVertex3f(-1.0,  1.0,  0.0)
+        glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0,  0.0) # Left top
+        glTexCoord2f(1.0, 1.0); glVertex3f(w,  0.0,  0.0)  # Right top
+        glTexCoord2f(1.0, 0.0); glVertex3f(w, h,  0.0)     # Right bottom
+        glTexCoord2f(0.0, 0.0); glVertex3f(0.0, h,  0.0)   # Left bottom
         glEnd()
         ##################
 
