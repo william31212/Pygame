@@ -7,7 +7,8 @@ KEY_UP    = 0
 KEY_DOWN  = 1
 KEY_LEFT  = 2
 KEY_RIGHT = 3
-KEY_TOTAL = 4
+KEY_ESC = 4
+KEY_TOTAL = 5
 
 class KeyHandler:
 	def __init__(self):
@@ -15,7 +16,8 @@ class KeyHandler:
 			pygame.K_UP  : KEY_UP,
 			pygame.K_DOWN  : KEY_DOWN,
 			pygame.K_LEFT  : KEY_LEFT,
-			pygame.K_RIGHT : KEY_RIGHT
+			pygame.K_RIGHT : KEY_RIGHT,
+			pygame.K_ESCAPE : KEY_ESC
 		}
 		self.key_state  = [False] * KEY_TOTAL
 		self.key_repeat = [False] * KEY_TOTAL
