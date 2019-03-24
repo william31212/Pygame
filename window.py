@@ -19,6 +19,9 @@ class Window:
 		self.title = title
 		self.size = size
 		self.win_flag = win_flag
+		self.running = True
+
+		self.handle_list = []
 
 		flag = pygame.DOUBLEBUF
 		flag |= pygame.FULLSCREEN if win_flag & W_FULLSCREEN else 0
@@ -30,27 +33,63 @@ class Window:
 		self.set_caption(title)
 
 		if win_flag & W_OPENGL:
-			# TODO(roy4801): OpenGL init things
+			glEnable(GL_TEXTURE_2D)
+			glClearColor(0.0, 0.0, 0.0, 0.0)
+			#
+			glMatrixMode(GL_PROJECTION)
+			glLoadIdentity()
+			gluOrtho2D(0.0, size[0], size[1], 0.0) # Important
+			#
+			glMatrixMode(GL_MODELVIEW)
 
-	def main_loop(self):
-		self.process_event()
-		self.update()
-		self.draw()
-		self._flip()
+	# Do not overwrite ##########
+	def run(self):
+		self.setup()
 
-	def process_event(self, handle_list):
+		while self.running:
+			self.process_event()
+			self.update()
+			self._clear_screen()
+			self.render()
+			self._flip()
+
+	def process_event(self):
 		for e in pygame.event.get():
 			if e.type == pygame.QUIT:
-				pygame.quit()
-				sys.exit()
+				self.ask_quit()
 			# TODO(roy4801): process events
+			for handle in self.handle_list:
+				handle(e)
+	#############################
+	# need to be implement
+	def setup(self):
+		pass
 
 	def update(self):
 		pass
 
-	def draw(self):
+	def render(self):
 		pass
 
+	def ask_quit(self):
+		self.quit()
+
+	##############################
+	def quit(self):
+		self.running = False
+		pygame.quit()
+		sys.exit()
+
+	def _clear_screen(self):
+		if self.win_flag & W_OPENGL:
+			glClear(GL_COLOR_BUFFER_BIT)
+		else:
+			pygame.display.get_surface().fill((128, 128, 128))
+	
+	def _flip(self):
+		pygame.display.flip()
+
+	# TODO(roy4801): impl
 	def set_icon(self, icon):
 		raise NotImplementedError
 	def get_icon(self):
@@ -58,17 +97,12 @@ class Window:
 
 	def set_caption(self, s):
 		pygame.display.set_caption(s)
+	# TODO(roy4801): impl
 	def get_caption(self):
 		raise NotImplementedError
-
+	# BUG(roy4801): not return True after a full round of hidding and opening
 	def is_focus(self):
 		return pygame.display.get_active()
 
 	def iconify(self):
 		return pygame.display.iconify()
-
-	def _clear_screen(sefl):
-		if self.win_flag & W_OPENGL:
-
-	def _flip(self):
-		pygame.display.flip()
