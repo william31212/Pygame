@@ -5,76 +5,46 @@ import sys
 import pytmx
 import time
 
+import pprint # test
+
+pp = pprint.PrettyPrinter(indent=4)
+
 sys.path.append("../")
 
+# TODO: make them non-global
 lists = []
 obs = []
 from utils import *
 
+def draw_layer(surface, layer, tmxdata):
+    for x, y, gid in layer:
+        # print('{} {} {}'.format(x, y, gid))
+        tile = tmxdata.get_tile_image_by_gid(gid)
+        if tile:
+            surface.blit(tile, (x * tmxdata.tilewidth,
+                                         y * tmxdata.tileheight))
+
+# TODO: load custom attributes
+
 class TiledMap:
-    def __init__(self, filename):
+    def __init__(self, filename, surface):
         tm = pytmx.load_pygame(filename, pixelalpha=True)
         self.width = tm.width * tm.tilewidth
         self.height = tm.height * tm.tileheight
         self.tmxdata = tm
-        self.surface = pygame.Surface((self.width, self.height))
+        self.surface = surface
 
-    def render(self):
+    def pick_layer(self):
         for layer in self.tmxdata.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
                 lists.append(layer)
             if isinstance(layer, pytmx.TiledObjectGroup):
                 obs.append(layer)
+        pp.pprint(lists)
 
-
-    def make_background(self):
-        for iter_lists in lists:
-            if iter_lists == self.tmxdata.get_layer_by_name('background'):
-                for x, y, gid, in iter_lists:
-                    tile = self.tmxdata.get_tile_image_by_gid(gid)
-                    if tile:
-                        self.surface.blit(tile, (x * self.tmxdata.tilewidth,
-                                                 y * self.tmxdata.tileheight))
-    def make_character(self):
-        for iter_lists in lists:
-            if iter_lists == self.tmxdata.get_layer_by_name('bridge'):
-                for x, y, gid, in iter_lists:
-                    tile = self.tmxdata.get_tile_image_by_gid(gid)
-                    if tile:
-                        self.surface.blit(tile, (x * self.tmxdata.tilewidth,
-                                                 y * self.tmxdata.tileheight))
-    def make_object(self):
-        for iter_lists in lists:
-            if iter_lists != self.tmxdata.get_layer_by_name('background'):
-                for x, y, gid, in iter_lists:
-                    tile = self.tmxdata.get_tile_image_by_gid(gid)
-                    if tile:
-                        self.surface.blit(tile, (x * self.tmxdata.tilewidth,
-                                                 y * self.tmxdata.tileheight))
-            if iter_lists != self.tmxdata.get_layer_by_name('character'):
-                for x, y, gid, in iter_lists:
-                    tile = self.tmxdata.get_tile_image_by_gid(gid)
-                    if tile:
-                        self.surface.blit(tile, (x * self.tmxdata.tilewidth,
-                                                 y * self.tmxdata.tileheight))
-    def make_obstacle(self):
-        for x, y, gid, in obs:
-            tile = tmxdata.get_tile_image_by_gid(gid)
-            if tile:
-                surface.blit(tile, (x * self.tmxdata.tilewidth,
-                                    y * self.tmxdata.tileheight))
-    # def make_background(self):
-
-
-    # def make_character(self):
-
-
-    # def make_obstacle(self):
-
-
-
-
-
-
-
-
+    def draw(self, func_draw_char):
+        for i in lists:
+            if i.name == 'character':
+                func_draw_char()
+            else:
+                draw_layer(self.surface, i, self.tmxdata)

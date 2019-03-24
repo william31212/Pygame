@@ -33,23 +33,16 @@ def to_pygame_rect(x):
 	return (x.Left_x, x.Left_y, x.Right_x - x.Left_x, x.Right_y - x.Left_y)
 
 def main():
-
 	global state
 	keyboard = KeyHandler()
 	handle_keys = [KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT]
 	handle_key_name = {KEY_UP:'KEY_UP', KEY_DOWN:'KEY_DOWN', KEY_LEFT:'KEY_LEFT', KEY_RIGHT:'KEY_RIGHT'}
 	gameDisplay = pygame.display.set_mode((800,640))
-	# surface = pygame.Surface((self.width, self.height))
-	maps = TiledMap("./level2.tmx")
-	maps.render()
-	maps.make_background()
-	gameDisplay.blit(maps.surface,(0,0))
 
-
+	maps = TiledMap("./level2.tmx", gameDisplay)
+	maps.pick_layer()
 
 	while True:
-		maps.make_object()
-		gameDisplay.blit(maps.surface,(0,0))
 		# Process event
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -152,20 +145,22 @@ def main():
 			pos[1] = -30
 
 		##draw
-		# gameDisplay.blit(maps_img, (0,0))
-		if state == 1:
-			rifleman_up.draw(pos[0],pos[1])
-		elif state == 2:
-			rifleman_down.draw(pos[0],pos[1])
-		elif state == 3:
-			rifleman_left.draw(pos[0],pos[1])
-		elif state == 4:
-			rifleman_right.draw(pos[0],pos[1])
+		def draw_char():
+			if state == 1:
+				rifleman_up.draw(pos[0],pos[1])
+			elif state == 2:
+				rifleman_down.draw(pos[0],pos[1])
+			elif state == 3:
+				rifleman_left.draw(pos[0],pos[1])
+			elif state == 4:
+				rifleman_right.draw(pos[0],pos[1])
+
+		gameDisplay.fill((0, 0, 0))
+		maps.draw(draw_char)
 
 		## dbg view ##
 		pygame.draw.circle(gameDisplay, (0xe5, 0, 0xff), (pos[0], pos[1]), 2)
 		for i in obs_list:
-
 			pygame.draw.rect(gameDisplay,(255, 0, 0), (i.x , i.y, i.wid, i.hei) , 2)
 		pygame.draw.rect(gameDisplay,(0, 0, 255), (pos[0]+41, pos[1]+66, 19, 10))
 		## dbg view ##
