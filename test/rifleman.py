@@ -81,58 +81,10 @@ def main():
 		obs_list = []
 
 		##obstacle
-		for tile_object in maps.tmxdata.objects:
-			rifleman_obs_box = Rect(pos[0]+41, pos[1]+66, 19, 10)
+		# for tile_object in maps.tmxdata.objects:
+		rifleman_obs_box = Rect(pos[0]+41, pos[1]+66, 19, 10)
+		maps.tile_object(rifleman_obs_box, state, change)
 
-			if tile_object.name == 'Pillar':
-				pilliar_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
-				obs_list.append(pilliar_obs_box)
-				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
-				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
-					change()
-				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
-					change()
-				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
-					change()
-				if pilliar_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
-					change()
-			if tile_object.name == 'grass':
-				grass_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
-				obs_list.append(grass_obs_box)
-				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
-				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
-					change()
-				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
-					change()
-				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
-					change()
-				if grass_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
-					change()
-			if tile_object.name == 'lava':
-				lava_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
-				obs_list.append(lava_obs_box)
-				# print("Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x,tile_object.y,tile_object.x + tile_object.width,tile_object.y+tile_object.height))
-				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
-					print("you died")
-				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
-					print("you died")
-				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
-					print("you died")
-				if lava_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
-					print("you died")
-			if tile_object.name == 'edge':
-				edge_obs_box = Rect(tile_object.x, tile_object.y, tile_object.width, tile_object.height)
-				obs_list.append(edge_obs_box)
-				# print("fucker : Lx:{} Ly:{} Rx:{} Ry:{}".format(tile_object.x, tile_object.y, (tile_object.x + tile_object.width), (tile_object.y+tile_object.height)))
-				# print(edge_obs_box.check_rect(rifleman_obs_box))
-				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 1):
-					change()
-				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 2):
-					change()
-				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 3):
-					change()
-				if edge_obs_box.check_rect(rifleman_obs_box) == True and (state == 4):
-					change()
 
 		##edge
 		if pos[0] <= -30:
