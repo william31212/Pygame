@@ -10,10 +10,12 @@ class App(Window):
 		print('On setup')
 
 	def update(self):
-		print('On update')
+		# print('On update')
+		pass
 
 	def render(self):
-		print('On render')
+		# print('On render')
+		pass
 
 	def ask_quit(self):
 		print('On quit')
@@ -21,7 +23,7 @@ class App(Window):
 
 
 def main():
-	app = App('window_test_1', (800, 600))
+	app = App('window_test_1', (800, 600), W_OPENGL)
 	app.run()
 
 if __name__ == '__main__':

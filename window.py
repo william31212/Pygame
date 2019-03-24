@@ -2,6 +2,11 @@ import pygame, sys
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+# TODO(roy4801): Impl D_SOFTWARE
+D_SOFTWARE = 0
+D_HARDWARE = 1
+DRAW_METHOD = D_SOFTWARE
+
 W_NONE       = 0
 W_FULLSCREEN = 1<<0
 W_OPENGL     = 1<<1
@@ -15,7 +20,7 @@ Window
 Manage the window
 '''
 class Window:
-	def __init__(self, title, size, win_flag=W_NONE):
+	def __init__(self, title, size, win_flag=W_NONE, fps=60):
 		self.title = title
 		self.size = size
 		self.win_flag = win_flag
@@ -31,10 +36,14 @@ class Window:
 
 		self.surface = pygame.display.set_mode(size, flag, 32)
 		self.set_caption(title)
+		self.fps_timer = pygame.time.Clock()
+		self.target_fps = fps
 
 		if win_flag & W_OPENGL:
+			global DRAW_METHOD
+			DRAW_METHOD = D_HARDWARE
 			glEnable(GL_TEXTURE_2D)
-			glClearColor(0.0, 0.0, 0.0, 0.0)
+			glClearColor(0.5, 0.5, 0.5, 0.0)
 			#
 			glMatrixMode(GL_PROJECTION)
 			glLoadIdentity()
@@ -52,6 +61,7 @@ class Window:
 			self._clear_screen()
 			self.render()
 			self._flip()
+			self.fps_timer.tick(self.target_fps)
 
 	def process_event(self):
 		for e in pygame.event.get():

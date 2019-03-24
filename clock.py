@@ -22,12 +22,15 @@ class Timer:
 	def __init__(self, lim=0):
 		self.clk = Clock()
 		self.limit = lim
+		self.prev = 0
 	# Start/Reset the timer
 	def reset(self):
 		self.clk.reset()
 	# If the timer ends, it returns true.
 	def timeout(self):
-		if self.clk.getPassed() >= self.limit:
+		now = self.clk.getPassed()
+		if now >= self.limit:
+			self.prev = now
 			return True
 		else:
 			return False
