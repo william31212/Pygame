@@ -24,21 +24,21 @@ class SoundFile:
 		self.path = path
 
 	def play(self):
-		pass
+		raise NotImplementedError
 	def stop(self):
-		pass
+		raise NotImplementedError
 	def fade_out(self, ms):
-		pass
+		raise NotImplementedError
 	def pause(self):
-		pass
+		raise NotImplementedError
 	def resume(self):
-		pass
+		raise NotImplementedError
 	def set_volume(self, size):
-		pass
+		raise NotImplementedError
 	def get_volume(self):
-		pass
+		raise NotImplementedError
 	def is_playing(self):
-		pass
+		raise NotImplementedError
 
 	def get_name(self):
 		return self.path.split('/')[-1]
