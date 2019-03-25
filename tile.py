@@ -49,13 +49,13 @@ class TiledMap:
 
     def tile_object(self, obs_box, state, func_change):
 
-
         for layer in self.tmxdata.layers:
-
             if isinstance(layer, pytmx.TiledObjectGroup) == True:
                 if layer.properties['collision'] == 1:
                     for object_iter in layer:
                         obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height )
+
+                        print(obs_box.x, obs_box.y)
                         if obs_rec.check_rect(obs_box) == True and (state == 1):
                             func_change()
                         if obs_rec.check_rect(obs_box) == True and (state == 2):

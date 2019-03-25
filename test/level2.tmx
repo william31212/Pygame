@@ -231,7 +231,7 @@
   <object id="13" name="grass" x="543" y="130" width="97" height="75"/>
   <object id="15" name="grass" x="195" y="415" width="91" height="78"/>
   <object id="28" name="edge" x="325" y="108" width="151" height="6"/>
-  <object id="29" name="edge" x="327" y="152" width="147" height="16"/>
+  <object id="29" name="edge" x="327" y="143" width="147" height="25"/>
   <object id="30" name="edge" x="325" y="428" width="151" height="6"/>
   <object id="31" name="edge" x="327" y="476" width="147" height="16"/>
  </objectgroup>

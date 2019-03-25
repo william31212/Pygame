@@ -7,37 +7,20 @@ from asset import *
 from utils import *
 from tile import *
 from shape import *
+from player import *
 
 SET_ROOT('..')
 
 display_width = 800
 display_height = 600
 
-rifleman_down = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_down'), 3, ANI_LOOP,0, (100, 100))
-rifleman_right = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_right'), 3, ANI_LOOP, 0, (100, 100))
-rifleman_left = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_left'), 3, ANI_LOOP, 0, (100, 100))
-rifleman_up = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_up'), 3, ANI_LOOP, 0, (100, 100))
 
-pos = [10, 10]
-pos_tmp = [0, 0]
-state = 2
+# pos = [10, 10]
+# pos_tmp = [0, 0]
+# state = 2
 
 clock = pygame.time.Clock()
 
-##draw
-def draw_char():
-	if state == 1:
-		rifleman_up.draw(pos[0],pos[1])
-	elif state == 2:
-		rifleman_down.draw(pos[0],pos[1])
-	elif state == 3:
-		rifleman_left.draw(pos[0],pos[1])
-	elif state == 4:
-		rifleman_right.draw(pos[0],pos[1])
-
-def change():
-	pos[0] = pos_tmp[0]
-	pos[1] = pos_tmp[1]
 
 # temp helper func
 def to_pygame_rect(x):
@@ -50,6 +33,8 @@ def main():
 	handle_key_name = {KEY_UP:'KEY_UP', KEY_DOWN:'KEY_DOWN', KEY_LEFT:'KEY_LEFT', KEY_RIGHT:'KEY_RIGHT'}
 	gameDisplay = pygame.display.set_mode((800,640))
 
+
+	player = Player(0, 0, 100, 100, 2)
 	maps = TiledMap("./level2.tmx", gameDisplay)
 	maps.pick_layer()
 
@@ -70,56 +55,52 @@ def main():
 			elif event.type == pygame.KEYUP:
 				keyboard.set_key_state(event.key, False, False)
 
+
 		# Update
-		pos_tmp[0] = pos[0]
-		pos_tmp[1] = pos[1]
+		player.store_state()
+
+
 		if keyboard.key_state[KEY_UP]:
-			pos[1] -= 10
-			state = 1
+			player.update_state(player.x, player.y, 1)
 		if keyboard.key_state[KEY_DOWN]:
-			pos[1] += 10
-			state = 2
+			player.update_state(player.x, player.y, 2)
 		if keyboard.key_state[KEY_LEFT]:
-			pos[0] -= 10
-			state = 3
+			player.update_state(player.x, player.y, 3)
 		if keyboard.key_state[KEY_RIGHT]:
-			pos[0] += 10
-			state = 4
+			player.update_state(player.x, player.y, 4)
 		if keyboard.key_state[KEY_ESC]:
 			pygame.quit()
 			sys.exit()
 
-		rifleman_obs_box = None
-		obs_list = []
+
+		# rifleman_obs_box = None
+		# obs_list = []
 
 		##obstacle
 		# for tile_object in maps.tmxdata.objects:
-		rifleman_obs_box = Rect(pos[0]+41, pos[1]+66, 19, 10)
-		maps.tile_object(rifleman_obs_box, state, change)
+		# rifleman_obs_box = Rect(pos[0]+41, pos[1]+66, 19, 10)
+		maps.tile_object(player.obs_box, player.state, player.release_state)
 
 
 		##edge
-		if pos[0] <= -30:
-			pos[0] = 760
-		elif pos[1] <= -30:
-			pos[1] = 640
-		elif pos[0] >= 760:
-			pos[0] = -30
-		elif pos[1] >= 640:
-			pos[1] = -30
-
-
+		if player.x <= -30:
+			player.x = 760
+		elif player.y <= -30:
+			player.y = 640
+		elif player.x >= 760:
+			player.x = -30
+		elif player.y >= 640:
+			player.y = -30
 
 		gameDisplay.fill((0, 0, 0))
-		maps.draw(draw_char)
+		maps.draw(player.draw_char)
 
 		## dbg view ##
-		pygame.draw.circle(gameDisplay, (0xe5, 0, 0xff), (pos[0], pos[1]), 2)
-		for i in obs_list:
-			pygame.draw.rect(gameDisplay,(255, 0, 0), (i.x , i.y, i.wid, i.hei) , 2)
-		pygame.draw.rect(gameDisplay,(0, 0, 255), (pos[0]+41, pos[1]+66, 19, 10))
+		# pygame.draw.circle(gameDisplay, (0xe5, 0, 0xff), (pos[0], pos[1]), 2)
+		# for i in obs_list:
+		# 	pygame.draw.rect(gameDisplay,(255, 0, 0), (i.x , i.y, i.wid, i.hei) , 2)
+		# pygame.draw.rect(gameDisplay,(0, 0, 255), (pos[0]+41, pos[1]+66, 19, 10))
 		## dbg view ##
-
 
 		pygame.display.update()
 		clock.tick(60)
