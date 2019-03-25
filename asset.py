@@ -39,13 +39,7 @@ def _load_image(path):
 	if DRAW_METHOD == D_SOFTWARE:
 		return (image, (w, h))
 	elif DRAW_METHOD == D_HARDWARE:
-		image_str = pygame.image.tostring(image, 'RGBA', True)
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-		tex_id = glGenTextures(1)
-		glBindTexture(GL_TEXTURE_2D, tex_id)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_str)
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+		tex_id = _pygame_surface_to_tex(image)
 		return (tex_id, (w, h))
 
 def _draw_image(img, x, y, w, h):
@@ -67,12 +61,33 @@ def _draw_image(img, x, y, w, h):
 		glEnd()
 		glPopMatrix()
 
+def _pygame_surface_to_tex(surface):
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+	tex_id = glGenTextures(1)
+	glBindTexture(GL_TEXTURE_2D, tex_id)
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface.get_width(), surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, pygame.image.tostring(surface, 'RGBA', True))
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+	return tex_id
+
+def pygame_surface_to_image(surface):
+	img = Image_2('')
+	img.img = _pygame_surface_to_tex(surface)
+	img.w = surface.get_width()
+	img.h = surface.get_height()
+	return img
+
 '''
-image space: left-top: 0, 0; right-bottom
+image space: left-top: (0, 0); right-bottom (1, 1)
 '''
 class Image_2:
 	def __init__(self, path: str, resize_size=(1., 1.), rotate_deg=0., cent_pos=(0., 0.)):
 		self.path = path
+		self.img = None
+		self.w = -1
+		self.h = -1
+
+		# Load image if path
 		if path != None and path != '':
 			img = _load_image(path)
 			self.img = img[0]
@@ -88,6 +103,7 @@ class Image_2:
 		t_h = int(self.h * self.resize_size[1])
 		t_x = x - int(self.w * self.cent_pos[0])
 		t_y = y - int(self.h * self.cent_pos[1])
+		# print('Draw {} {} {} {}'.format(t_x, t_y, t_w, t_h))
 		_draw_image(self.img, t_x, t_y, t_w, t_h)
 
 	def rotate(self, deg=0.):
@@ -99,6 +115,18 @@ class Image_2:
 	def copy(self):
 		tmp = Image_2(self.path, self.resize_size, self.rotate_deg, self.cent_pos)
 		return tmp
+
+	def __repr__(self):
+		return object.__repr__(self)
+	def __str__(self):
+		info = self.__repr__() + '\n  '
+		info += 'Path = {}'.format(self.path) + '\n  '
+		info += 'Img = {}'.format(self.img) + '\n  '
+		info += 'w = {}, h = {}'.format(self.w, self.h) + '\n  '
+		info += 'cent_pos = {}'.format(self.cent_pos) + '\n  '
+		info += 'rotate_deg = {}'.format(self.rotate_deg) + '\n  '
+		info += 'resize_size = {}'.format(self.resize_size) + '\n'
+		return info
 
 class Image:
 	'''

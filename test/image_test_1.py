@@ -1,34 +1,60 @@
-import sys
+import sys, math
 sys.path.append("../")
+
 from window import *
 from asset import *
 from utils import *
+from input import *
 
 import random
 
 SET_ROOT('..')
 
-image = []
-pos = []
-num = 1000
+ball_list = []
+ball_image = None
+move_unit = 10
+
+class Ball:
+	def __init__(self, pos):
+		self.x = pos[0]
+		self.y = pos[1]
+		self.theta = random.uniform(0, 360)
+	def update(self):
+		rad = math.radians(self.theta)
+		self.x += int(move_unit * math.cos(rad))
+		self.y += int(move_unit * math.sin(rad))
+	def draw(self):
+		ball_image.draw(self.x, self.y)
 
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
 		super().__init__(title, size, win_flag)
+		self.keyboard = KeyHandler()
+		self.add_event_handle(self.keyboard.handle_event)
+
+		self.mouse = MouseHandler()
+		self.add_event_handle(self.mouse.handle_event)
 
 	def setup(self):
-		print('On setup')
-		for i in range(num):
-			image.append(Image_2(GET_PATH(IMG_SPRITE, 'attackA000.png'), (1, 1), cent_pos=(0.5, 0.5)))
-			pos.append((random.randint(0, self.size[0]), random.randint(0, self.size[1])))
+		global ball_image
+		ball_image = Image_2('ball.png', (1, 1), 0, (0.5, 0.5))
 
 	def update(self):
-		# print('On update')
-		pass
+		mouse = self.mouse
+		keyboard = self.keyboard
+
+		if mouse.btn[MOUSE_L] and keyboard.key_state[KEY_a]:
+			ball_list.append(Ball((mouse.x, mouse.y)))
+
+		for b in ball_list:
+			b.update()
+
+			if b.x < 0 or b.x > 800 or b.y < 0 or b.y > 600:
+				ball_list.remove(b)
 
 	def render(self):
-		for i in range(num):
-			image[i].draw(pos[i][0], pos[i][1])
+		for b in ball_list:
+			b.draw()
 
 	def ask_quit(self):
 		print('On quit')

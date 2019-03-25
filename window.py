@@ -75,6 +75,10 @@ class Window:
 			# TODO(roy4801): process events
 			for handle in self.handle_list:
 				handle(e)
+
+	def add_event_handle(self, handle):
+		self.handle_list.append(handle)
+
 	#############################
 	# need to be implement
 	def setup(self):
