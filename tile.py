@@ -13,7 +13,7 @@ sys.path.append("../")
 
 # TODO: make them non-global
 lists = []
-obs = []
+
 from utils import *
 from shape import *
 
@@ -23,7 +23,7 @@ def draw_layer(surface, layer, tmxdata):
         tile = tmxdata.get_tile_image_by_gid(gid)
         if tile:
             surface.blit(tile, (x * tmxdata.tilewidth,
-                                         y * tmxdata.tileheight))
+                                y * tmxdata.tileheight))
 
 # TODO: load custom attributes
 
@@ -39,7 +39,6 @@ class TiledMap:
         for layer in self.tmxdata.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
                 lists.append(layer)
-        pp.pprint(lists)
 
     def draw(self, func_draw_char):
         for i in lists:
@@ -50,17 +49,21 @@ class TiledMap:
 
     def tile_object(self, obs_box, state, func_change):
 
-        for object_iter in self.tmxdata.objects:
 
-            if object_iter.name == "lava":
-                continue
-            else:
-                obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height )
-                if obs_rec.check_rect(obs_box) == True and (state == 1):
-                    func_change()
-                if obs_rec.check_rect(obs_box) == True and (state == 2):
-                    func_change()
-                if obs_rec.check_rect(obs_box) == True and (state == 3):
-                    func_change()
-                if obs_rec.check_rect(obs_box) == True and (state == 4):
-                    func_change()
+        for layer in self.tmxdata.layers:
+
+            if isinstance(layer, pytmx.TiledObjectGroup) == True:
+                if layer.properties['collision'] == 1:
+                    for object_iter in layer:
+                        obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height )
+                        if obs_rec.check_rect(obs_box) == True and (state == 1):
+                            func_change()
+                        if obs_rec.check_rect(obs_box) == True and (state == 2):
+                            func_change()
+                        if obs_rec.check_rect(obs_box) == True and (state == 3):
+                            func_change()
+                        if obs_rec.check_rect(obs_box) == True and (state == 4):
+                            func_change()
+                else:
+                    continue
+
