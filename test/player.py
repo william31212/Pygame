@@ -5,7 +5,6 @@ import sys
 import pytmx
 import time
 
-
 sys.path.append("../")
 from utils import *
 from shape import *
@@ -53,7 +52,6 @@ class Player:
         hold_y = self.y
         hold_state = self.state
 
-
     def release_state(self):
         global hold_x,hold_y,hold_state
         self.x = hold_x
@@ -61,7 +59,6 @@ class Player:
         self.state = hold_state
         self.obs_box = Rect(self.x+41 , self.y+66 , 19, 10)
         self.atk_box = Rect(self.x, self.y, 100, 100)
-
 
     def draw_char(self):
         if self.state == 1:
