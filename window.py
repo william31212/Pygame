@@ -73,16 +73,17 @@ class Window:
 	#############################
 	# need to be implement
 	def setup(self):
-		pass
+		raise NotImplementedError
 
 	def update(self):
-		pass
+		raise NotImplementedError
 
 	def render(self):
-		pass
+		raise NotImplementedError
 
 	def ask_quit(self):
-		self.quit()
+		raise NotImplementedError
+		# self.quit()
 
 	##############################
 	def quit(self):
