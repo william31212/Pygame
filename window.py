@@ -2,11 +2,6 @@ import pygame, sys
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-# TODO(roy4801): Impl D_SOFTWARE
-D_SOFTWARE = 0
-D_HARDWARE = 1
-DRAW_METHOD = D_HARDWARE
-
 W_NONE       = 0
 W_FULLSCREEN = 1<<0
 W_OPENGL     = 1<<1
@@ -39,9 +34,7 @@ class Window:
 		self.fps_timer = pygame.time.Clock()
 		self.target_fps = fps
 
-		global DRAW_METHOD
 		if win_flag & W_OPENGL:
-			DRAW_METHOD = D_HARDWARE
 			glEnable(GL_TEXTURE_2D)
 			glEnable(GL_BLEND)
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
@@ -53,8 +46,6 @@ class Window:
 			gluOrtho2D(0.0, size[0], size[1], 0.0) # Important
 			#
 			glMatrixMode(GL_MODELVIEW)
-		else:
-			DRAW_METHOD = D_SOFTWARE
 
 	# Do not overwrite ##########
 	def run(self):
