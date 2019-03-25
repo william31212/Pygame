@@ -53,6 +53,7 @@ def main():
 	maps = TiledMap("./level2.tmx", gameDisplay)
 	maps.pick_layer()
 
+
 	while True:
 		# Process event
 		for event in pygame.event.get():
@@ -107,7 +108,7 @@ def main():
 		elif pos[1] >= 640:
 			pos[1] = -30
 
-		
+
 
 		gameDisplay.fill((0, 0, 0))
 		maps.draw(draw_char)
