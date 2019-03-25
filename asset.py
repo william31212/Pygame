@@ -71,21 +71,34 @@ def _draw_image(img, x, y, w, h):
 image space: left-top: 0, 0; right-bottom
 '''
 class Image_2:
-	def __init__(self, name: str, resize_size=(0, 0), rotate_deg=0., cent_pos=(0, 0)):
-		img = _load_image(name)
-		self.img = img[0]
-		self.w = img[1][0]
-		self.h = img[1][1]
+	def __init__(self, path: str, resize_size=(1., 1.), rotate_deg=0., cent_pos=(0., 0.)):
+		self.path = path
+		if path != None and path != '':
+			img = _load_image(path)
+			self.img = img[0]
+			self.w = img[1][0]
+			self.h = img[1][1]
 
-		self.cent_pos = cent_pos
+		self.cent_pos = cent_pos    # [0.0, 1.0]
 		self.rotate_deg = rotate_deg
-
-		self.w = resize_size[0] if resize_size[0] != 0 else self.w
-		self.h = resize_size[1] if resize_size[1] != 0 else self.h
+		self.resize_size = resize_size # floats
 
 	def draw(self, x, y):
-		_draw_image(self.img, x-self.cent_pos[0], y-self.cent_pos[1], self.w, self.h)
-		
+		t_w = int(self.w * self.resize_size[0])
+		t_h = int(self.h * self.resize_size[1])
+		t_x = x - int(self.w * self.cent_pos[0])
+		t_y = y - int(self.h * self.cent_pos[1])
+		_draw_image(self.img, t_x, t_y, t_w, t_h)
+
+	def rotate(self, deg=0.):
+		raise NotImplementedError
+
+	def resize(self, resize_size=(0, 0)):
+		raise NotImplementedError
+
+	def copy(self):
+		tmp = Image_2(self.path, self.resize_size, self.rotate_deg, self.cent_pos)
+		return tmp
 
 class Image:
 	'''
