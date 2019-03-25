@@ -51,12 +51,16 @@ class TiledMap:
     def tile_object(self, obs_box, state, func_change):
 
         for object_iter in self.tmxdata.objects:
-            obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height )
-            if obs_rec.check_rect(obs_box) == True and (state == 1):
-                func_change()
-            if obs_rec.check_rect(obs_box) == True and (state == 2):
-                func_change()
-            if obs_rec.check_rect(obs_box) == True and (state == 3):
-                func_change()
-            if obs_rec.check_rect(obs_box) == True and (state == 4):
-                func_change()
+
+            if object_iter.name == "lava":
+                continue
+            else:
+                obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height )
+                if obs_rec.check_rect(obs_box) == True and (state == 1):
+                    func_change()
+                if obs_rec.check_rect(obs_box) == True and (state == 2):
+                    func_change()
+                if obs_rec.check_rect(obs_box) == True and (state == 3):
+                    func_change()
+                if obs_rec.check_rect(obs_box) == True and (state == 4):
+                    func_change()

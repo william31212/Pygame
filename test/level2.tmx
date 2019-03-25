@@ -221,8 +221,8 @@
 </data>
  </layer>
  <objectgroup id="10" name="obstacle">
-  <object id="2" name="Pillar" x="193" y="64" width="126.565" height="32"/>
-  <object id="5" name="Pillar" x="481" y="64" width="127" height="31.875"/>
+  <object id="2" name="Pillar" x="193" y="1" width="126.565" height="95"/>
+  <object id="5" name="Pillar" x="481" y="1" width="127" height="94.875"/>
   <object id="6" name="Pillar" x="192" y="608" width="128" height="32"/>
   <object id="7" name="Pillar" x="480" y="608" width="128" height="32"/>
   <object id="13" name="grass" x="543" y="130" width="97" height="75"/>

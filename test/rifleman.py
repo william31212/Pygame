@@ -24,6 +24,17 @@ state = 2
 
 clock = pygame.time.Clock()
 
+##draw
+def draw_char():
+	if state == 1:
+		rifleman_up.draw(pos[0],pos[1])
+	elif state == 2:
+		rifleman_down.draw(pos[0],pos[1])
+	elif state == 3:
+		rifleman_left.draw(pos[0],pos[1])
+	elif state == 4:
+		rifleman_right.draw(pos[0],pos[1])
+
 def change():
 	pos[0] = pos_tmp[0]
 	pos[1] = pos_tmp[1]
@@ -96,16 +107,7 @@ def main():
 		elif pos[1] >= 640:
 			pos[1] = -30
 
-		##draw
-		def draw_char():
-			if state == 1:
-				rifleman_up.draw(pos[0],pos[1])
-			elif state == 2:
-				rifleman_down.draw(pos[0],pos[1])
-			elif state == 3:
-				rifleman_left.draw(pos[0],pos[1])
-			elif state == 4:
-				rifleman_right.draw(pos[0],pos[1])
+		
 
 		gameDisplay.fill((0, 0, 0))
 		maps.draw(draw_char)
