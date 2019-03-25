@@ -3,6 +3,9 @@ import os, re
 
 from clock import Timer
 from utils import *
+from window import *
+
+from OpenGL.GL import *
 
 # For SP_ANIMATE
 Clock_list = {}
@@ -28,6 +31,61 @@ F_ROTATE = 1
 F_ALL    = 2
 # num of flags
 F_TOTAL  = 3
+
+def _load_image(path):
+	image = pygame.image.load(path)
+	w, h = image.get_width(), image.get_height()
+
+	if DRAW_METHOD == D_SOFTWARE:
+		return (image, (w, h))
+	elif DRAW_METHOD == D_HARDWARE:
+		image_str = pygame.image.tostring(image, 'RGBA', True)
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+		tex_id = glGenTextures(1)
+		glBindTexture(GL_TEXTURE_2D, tex_id)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_str)
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+		return (tex_id, (w, h))
+
+def _draw_image(img, x, y, w, h):
+	if DRAW_METHOD == D_SOFTWARE:
+		pass
+	elif DRAW_METHOD == D_HARDWARE:
+		glMatrixMode(GL_MODELVIEW)
+		glPushMatrix()
+		glLoadIdentity()
+		glTranslatef(x, y, 0.0) # shift to (x, y)
+		glBindTexture(GL_TEXTURE_2D, img)
+
+		# Actual draw
+		glBegin(GL_QUADS)
+		glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0,  0.0) # Left top
+		glTexCoord2f(1.0, 1.0); glVertex3f(w,  0.0,  0.0)  # Right top
+		glTexCoord2f(1.0, 0.0); glVertex3f(w, h,  0.0)     # Right bottom
+		glTexCoord2f(0.0, 0.0); glVertex3f(0.0, h,  0.0)   # Left bottom
+		glEnd()
+		glPopMatrix()
+
+'''
+image space: left-top: 0, 0; right-bottom
+'''
+class Image_2:
+	def __init__(self, name: str, resize_size=(0, 0), rotate_deg=0., cent_pos=(0, 0)):
+		img = _load_image(name)
+		self.img = img[0]
+		self.w = img[1][0]
+		self.h = img[1][1]
+
+		self.cent_pos = cent_pos
+		self.rotate_deg = rotate_deg
+
+		self.w = resize_size[0] if resize_size[0] != 0 else self.w
+		self.h = resize_size[1] if resize_size[1] != 0 else self.h
+
+	def draw(self, x, y):
+		_draw_image(self.img, x-self.cent_pos[0], y-self.cent_pos[1], self.w, self.h)
+		
 
 class Image:
 	'''
