@@ -43,9 +43,8 @@ class App(Window):
 		mouse = self.mouse
 		keyboard = self.keyboard
 
-		if mouse.btn[MOUSE_L]:
-			for _ in range(1):
-				ball_list.append(Ball((mouse.x, mouse.y)))
+		for _ in range(10):
+			ball_list.append(Ball((random.randint(0, 800), random.randint(0, 600))))
 
 		for b in ball_list:
 			b.update()

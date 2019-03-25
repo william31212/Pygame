@@ -9,8 +9,8 @@ W_RESIZABLE  = 1<<2 # not impl
 W_NOFRAME    = 1<<3 # not impl
 
 # TODO(roy4801): Have own event queue
-'''
-Window
+#
+'''Window
 
 Manage the window
 '''
@@ -71,7 +71,7 @@ class Window:
 		self.handle_list.append(handle)
 
 	#############################
-	# need to be implement
+	# NEED to be implement
 	def setup(self):
 		raise NotImplementedError
 
