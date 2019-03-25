@@ -67,6 +67,10 @@ def _pygame_surface_to_tex(surface):
 	glPixelStorei(GL_PACK_ALIGNMENT, 1)
 	return tex_id
 
+'''pygame_surface_to_image(surface) -> Image_2
+
+Convert the pygame surface to Image that holds OpenGL texture id
+'''
 def pygame_surface_to_image(surface):
 	img = Image_2('')
 	img.img = _pygame_surface_to_tex(surface)
@@ -74,7 +78,8 @@ def pygame_surface_to_image(surface):
 	img.h = surface.get_height()
 	return img
 
-'''
+'''Image
+
 image space: left-top: (0, 0); right-bottom (1, 1)
 '''
 class Image_2:
@@ -91,19 +96,21 @@ class Image_2:
 			self.w = img[1][0]
 			self.h = img[1][1]
 
-		self.cent_pos = cent_pos    # [0.0, 1.0]
+		self.cent_pos = cent_pos      # [0.0, 1.0]
 		self.rotate_deg = rotate_deg
-		self.resize_size = resize_size # floats
-	# TODO(roy4801): Implement this
+		self.resize_size = resize_size # (float, float)
+
+	# BUG(roy4801): error
 	def __del__(self):
-		img = self.img
-		try:
-			glDeleteTextures([img])
-		except error.GLerror:
-			err = glGetError()
-			if ( err != GL_NO_ERROR ):
-				print('GLERROR: ', gluErrorString( err ))
-				sys.exit()
+		pass
+		# img = self.img
+		# try:
+		# 	glDeleteTextures([img])
+		# except error.GLerror:
+		# 	err = glGetError()
+		# 	if ( err != GL_NO_ERROR ):
+		# 		print('GLERROR: ', gluErrorString( err ))
+		# 		sys.exit()
 
 	def draw(self, x, y):
 		t_w = int(self.w * self.resize_size[0])
@@ -143,6 +150,7 @@ class Image_2:
 	def get_size(self):
 		return (self.w, self.h)
 
+# TODO(roy4801: deprecated
 class Image:
 	'''
 	__init__(name, resize_size, rotate_deg, cent_pos) -> None
@@ -237,6 +245,88 @@ class Image:
 	def get_size(self):
 		return self.img.get_size()
 
+# TODO(roy4801): Implement this
+class Sprite_2:
+	def __init__(self, sprite_type, name, fps=0, animate_type=ANI_NONE, cent_pos=(0, 0), start_frame=0, resize_size=(1., 1.), rotate_deg=0.):
+		self.image_list = []  # image list
+		self.sprite_type = sprite_type # sprite type
+		self.name = name  # name
+		# For SP_ANIMATE
+		self.frame_num = 0
+		self.now_frame = start_frame
+		self.fps = fps
+		self.animate_type = animate_type
+		self.timer = None
+		self.start = False
+		# for ANI_ONCE
+		self.had_draw_once = False
+		self.draw_frame_cnt = 0
+
+		if sprite_type == SP_STATIC:
+			img = Image_2(GET_PATH(IMG_SPRITE, name), resize_size, rotate_deg, cent_pos)
+			self.image_list.append(img)
+			self.frame_num = 1
+		elif sprite_type == SP_ANIMATE:
+			self.timer = Timer(1000/fps)
+			# list dir
+			path = GET_DIR(IMG_SPRITE)
+			dir_list = os.listdir(path)
+			# count frame_num
+			cnt = 0
+			for item in dir_list:
+				if item.startswith(name):
+					cnt += 1
+			self.frame_num = cnt
+			# load {name}{000}.png ~ {name}{cnt}.png
+			for i in range(cnt):
+				self.image_list.append(Image_2('{}{:03d}.png'.format(path + name, i), resize_size, rotate_deg, cent_pos))
+
+	def draw(self, x, y):
+		if self.had_draw_once:
+			self.had_draw_once = False
+			self.draw_frame_cnt = 0
+
+		# Actual draw
+		if self.sprite_type == SP_ANIMATE and not (self.animate_type == ANI_ONCE and self.had_draw_once):
+			if not self.start:
+				# start the timer
+				self.timer.reset()
+				self.start = True
+			else:
+				# if timeout
+				if self.timer.timeout():
+					# next frame
+					self.now_frame += 1
+					self.draw_frame_cnt += 1
+					# self.nowFrame %= self.frame_num
+					if self.now_frame >= self.frame_num:
+						self.now_frame = 0
+						# if is `ANI_ONCE` and draw `frame_num` frames
+						if self.animate_type == ANI_ONCE and self.draw_frame_cnt >= self.frame_num:
+							self.had_draw_once = True
+					# reset clock
+					self.timer.reset()
+		# draw the image on the screen
+		self.image_list[self.now_frame].draw(x, y)
+
+		if self.animate_type == ANI_ONCE and self.had_draw_once:
+			return True
+		else:
+			return False
+
+	def __repr__(self):
+		return object.__repr__(self)
+	def __str__(self):
+		info = '{}:  {}\n\t'.format(self.name, self.__repr__())
+		info += 'type = {}\n\t'.format('SP_STATIC' if self.animate_type == 0 else 'SP_ANIMATE')
+
+		if self.animate_type == SP_ANIMATE:
+			info += 'animate type = {}\n\t'.format('ANI_NONE' if self.animate_type == 0 else 'ANI_ONCE' if self.animate_type == 1 else 'ANI_LOOP' if self.animate_type == 2 else 'ANI_ERROR')
+			info += 'frame_num = {}\n\t'.format(self.frame_num)
+			info += 'now_frame = {}\n\t'.format(self.now_frame)
+			info += 'fps = {}\n\t'.format(self.fps)
+		return info
+
 # 1. TODO(roy4801): Add re matching file names
 # 2. TODO(roy4801): Refactor resize and rotate
 '''
@@ -256,17 +346,12 @@ class Sprite:
 		self.nowFrame = startFrame
 		self.fps = fps
 		self.ani = ani
-		# self.clk = None
 		self.timer = None
 		self.start = False
 
 		# for ANI_ONCE
 		self.draw_once = False
 		self.drawFrameCnt = 0
-
-		# transform
-		self.resize = resize
-		self.rotate = rotate
 
 		# static sprite
 		if self.t == SP_STATIC:
