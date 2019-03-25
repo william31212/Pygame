@@ -13,13 +13,10 @@ def main():
 				pygame.quit()
 				sys.exit()
 			elif e.type == pygame.MOUSEMOTION:
-				# print(e)
 				m.set_motion(e.pos, e.rel, e.buttons)
 			elif e.type == pygame.MOUSEBUTTONDOWN:
-				# print(e)
 				m.set_mbtn_down(e.pos, e.button)
 			elif e.type == pygame.MOUSEBUTTONUP:
-				# print(e)
 				m.set_mbtn_up(e.pos, e.button)
 			print(m)
 

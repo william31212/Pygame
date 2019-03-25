@@ -7,17 +7,30 @@ KEY_UP    = 0
 KEY_DOWN  = 1
 KEY_LEFT  = 2
 KEY_RIGHT = 3
-KEY_ESC = 4
-KEY_TOTAL = 5
+KEY_ESC   = 4
+KEY_a     = 5
+KEY_TOTAL = 6
+
+def _keyboard_handle(keyboard, e):
+	# Keydown
+	if e.type == pygame.KEYDOWN:
+		repeat = False
+		if keyboard.get_key_state(e.key)[0]:
+			repeat = True
+		keyboard.set_key_state(e.key, True, repeat)
+	# Keyup
+	elif e.type == pygame.KEYUP:
+		keyboard.set_key_state(e.key, False, False)
 
 class KeyHandler:
 	def __init__(self):
 		self.keymap = {
-			pygame.K_UP  : KEY_UP,
-			pygame.K_DOWN  : KEY_DOWN,
-			pygame.K_LEFT  : KEY_LEFT,
-			pygame.K_RIGHT : KEY_RIGHT,
-			pygame.K_ESCAPE : KEY_ESC
+			pygame.K_UP     : KEY_UP,
+			pygame.K_DOWN   : KEY_DOWN,
+			pygame.K_LEFT   : KEY_LEFT,
+			pygame.K_RIGHT  : KEY_RIGHT,
+			pygame.K_ESCAPE : KEY_ESC,
+			pygame.K_a      : KEY_a
 		}
 		self.key_state  = [False] * KEY_TOTAL
 		self.key_repeat = [False] * KEY_TOTAL
@@ -37,6 +50,9 @@ class KeyHandler:
 		else:
 			idx = self.keymap[key]
 			return (self.key_state[idx], self.key_repeat[idx])
+
+	def handle_event(self, e):
+		_keyboard_handle(self, e)
 	# for print()
 	def __repr__(self):
 		return object.__repr__(self)
@@ -52,7 +68,15 @@ MOUSE_R      = 2
 MOUSE_WHUP   = 3
 MOUSE_WHDOWN = 4
 MOUSE_TOTAL  = 5
-# TODO(roy4801): Implement this
+
+def _mouse_handle(m, e):
+	if e.type == pygame.MOUSEMOTION:
+		m.set_motion(e.pos, e.rel, e.buttons)
+	elif e.type == pygame.MOUSEBUTTONDOWN:
+		m.set_mbtn_down(e.pos, e.button)
+	elif e.type == pygame.MOUSEBUTTONUP:
+		m.set_mbtn_up(e.pos, e.button)
+
 class MouseHandler:
 	def __init__(self):
 		self.x = 0
@@ -78,6 +102,9 @@ class MouseHandler:
 		self.x = pos[0]
 		self.y = pos[1]
 		self.btn[btn-1] = False
+
+	def handle_event(self, e):
+		_mouse_handle(self, e)
 
 	def __repr__(self):
 		return object.__repr__(self)
