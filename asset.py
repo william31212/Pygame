@@ -6,6 +6,7 @@ from utils import *
 from window import *
 
 from OpenGL.GL import *
+from OpenGL.GLU import *
 
 # For SP_ANIMATE
 Clock_list = {}
@@ -36,38 +37,34 @@ def _load_image(path):
 	image = pygame.image.load(path)
 	w, h = image.get_width(), image.get_height()
 
-	if DRAW_METHOD == D_SOFTWARE:
-		return (image, (w, h))
-	elif DRAW_METHOD == D_HARDWARE:
-		tex_id = _pygame_surface_to_tex(image)
-		return (tex_id, (w, h))
+	tex_id = _pygame_surface_to_tex(image)
+	return (tex_id, (w, h))
 
 def _draw_image(img, x, y, w, h):
-	if DRAW_METHOD == D_SOFTWARE:
-		pass
-	elif DRAW_METHOD == D_HARDWARE:
-		glMatrixMode(GL_MODELVIEW)
-		glPushMatrix()
-		glLoadIdentity()
-		glTranslatef(x, y, 0.0) # shift to (x, y)
-		glBindTexture(GL_TEXTURE_2D, img)
+	glMatrixMode(GL_MODELVIEW)
+	glPushMatrix()
+	glLoadIdentity()
+	glTranslatef(x, y, 0.0) # shift to (x, y)
+	glBindTexture(GL_TEXTURE_2D, img)
 
-		# Actual draw
-		glBegin(GL_QUADS)
-		glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0,  0.0) # Left top
-		glTexCoord2f(1.0, 1.0); glVertex3f(w,  0.0,  0.0)  # Right top
-		glTexCoord2f(1.0, 0.0); glVertex3f(w, h,  0.0)     # Right bottom
-		glTexCoord2f(0.0, 0.0); glVertex3f(0.0, h,  0.0)   # Left bottom
-		glEnd()
-		glPopMatrix()
+	# Actual draw
+	glBegin(GL_QUADS)
+	glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0,  0.0) # Left top
+	glTexCoord2f(1.0, 1.0); glVertex3f(w,  0.0,  0.0)  # Right top
+	glTexCoord2f(1.0, 0.0); glVertex3f(w, h,  0.0)     # Right bottom
+	glTexCoord2f(0.0, 0.0); glVertex3f(0.0, h,  0.0)   # Left bottom
+	glEnd()
+	glBindTexture(GL_TEXTURE_2D, 0) # unbind
+	glPopMatrix()
 
 def _pygame_surface_to_tex(surface):
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 	tex_id = glGenTextures(1)
 	glBindTexture(GL_TEXTURE_2D, tex_id)
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface.get_width(), surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, pygame.image.tostring(surface, 'RGBA', True))
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+	glPixelStorei(GL_PACK_ALIGNMENT, 1)
 	return tex_id
 
 def pygame_surface_to_image(surface):
@@ -97,6 +94,16 @@ class Image_2:
 		self.cent_pos = cent_pos    # [0.0, 1.0]
 		self.rotate_deg = rotate_deg
 		self.resize_size = resize_size # floats
+	# TODO(roy4801): Implement this
+	def __del__(self):
+		img = self.img
+		try:
+			glDeleteTextures([img])
+		except error.GLerror:
+			err = glGetError()
+			if ( err != GL_NO_ERROR ):
+				print('GLERROR: ', gluErrorString( err ))
+				sys.exit()
 
 	def draw(self, x, y):
 		t_w = int(self.w * self.resize_size[0])
@@ -127,6 +134,14 @@ class Image_2:
 		info += 'rotate_deg = {}'.format(self.rotate_deg) + '\n  '
 		info += 'resize_size = {}'.format(self.resize_size) + '\n'
 		return info
+
+	# Getter/Setter
+	def get_width(self):
+		return self.w
+	def get_height(self):
+		return self.h
+	def get_size(self):
+		return (self.w, self.h)
 
 class Image:
 	'''

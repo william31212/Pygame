@@ -43,8 +43,9 @@ class App(Window):
 		mouse = self.mouse
 		keyboard = self.keyboard
 
-		if mouse.btn[MOUSE_L] and keyboard.key_state[KEY_a]:
-			ball_list.append(Ball((mouse.x, mouse.y)))
+		if mouse.btn[MOUSE_L]:
+			for _ in range(1):
+				ball_list.append(Ball((mouse.x, mouse.y)))
 
 		for b in ball_list:
 			b.update()
@@ -58,11 +59,13 @@ class App(Window):
 
 	def ask_quit(self):
 		print('On quit')
+		glDeleteTextures([ball_image.img])
 		self.quit()
 
 def main():
 	app = App('image_test_1', (800, 600), W_OPENGL)
 	app.run()
+
 
 if __name__ == '__main__':
 	main()
