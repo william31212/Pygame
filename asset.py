@@ -3,6 +3,9 @@ import os, re
 
 from clock import Timer
 from utils import *
+from window import *
+
+from OpenGL.GL import *
 
 # For SP_ANIMATE
 Clock_list = {}
@@ -28,6 +31,102 @@ F_ROTATE = 1
 F_ALL    = 2
 # num of flags
 F_TOTAL  = 3
+
+def _load_image(path):
+	image = pygame.image.load(path)
+	w, h = image.get_width(), image.get_height()
+
+	if DRAW_METHOD == D_SOFTWARE:
+		return (image, (w, h))
+	elif DRAW_METHOD == D_HARDWARE:
+		tex_id = _pygame_surface_to_tex(image)
+		return (tex_id, (w, h))
+
+def _draw_image(img, x, y, w, h):
+	if DRAW_METHOD == D_SOFTWARE:
+		pass
+	elif DRAW_METHOD == D_HARDWARE:
+		glMatrixMode(GL_MODELVIEW)
+		glPushMatrix()
+		glLoadIdentity()
+		glTranslatef(x, y, 0.0) # shift to (x, y)
+		glBindTexture(GL_TEXTURE_2D, img)
+
+		# Actual draw
+		glBegin(GL_QUADS)
+		glTexCoord2f(0.0, 1.0); glVertex3f(0.0, 0.0,  0.0) # Left top
+		glTexCoord2f(1.0, 1.0); glVertex3f(w,  0.0,  0.0)  # Right top
+		glTexCoord2f(1.0, 0.0); glVertex3f(w, h,  0.0)     # Right bottom
+		glTexCoord2f(0.0, 0.0); glVertex3f(0.0, h,  0.0)   # Left bottom
+		glEnd()
+		glPopMatrix()
+
+def _pygame_surface_to_tex(surface):
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+	tex_id = glGenTextures(1)
+	glBindTexture(GL_TEXTURE_2D, tex_id)
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface.get_width(), surface.get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, pygame.image.tostring(surface, 'RGBA', True))
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+	return tex_id
+
+def pygame_surface_to_image(surface):
+	img = Image_2('')
+	img.img = _pygame_surface_to_tex(surface)
+	img.w = surface.get_width()
+	img.h = surface.get_height()
+	return img
+
+'''
+image space: left-top: (0, 0); right-bottom (1, 1)
+'''
+class Image_2:
+	def __init__(self, path: str, resize_size=(1., 1.), rotate_deg=0., cent_pos=(0., 0.)):
+		self.path = path
+		self.img = None
+		self.w = -1
+		self.h = -1
+
+		# Load image if path
+		if path != None and path != '':
+			img = _load_image(path)
+			self.img = img[0]
+			self.w = img[1][0]
+			self.h = img[1][1]
+
+		self.cent_pos = cent_pos    # [0.0, 1.0]
+		self.rotate_deg = rotate_deg
+		self.resize_size = resize_size # floats
+
+	def draw(self, x, y):
+		t_w = int(self.w * self.resize_size[0])
+		t_h = int(self.h * self.resize_size[1])
+		t_x = x - int(self.w * self.cent_pos[0])
+		t_y = y - int(self.h * self.cent_pos[1])
+		# print('Draw {} {} {} {}'.format(t_x, t_y, t_w, t_h))
+		_draw_image(self.img, t_x, t_y, t_w, t_h)
+
+	def rotate(self, deg=0.):
+		raise NotImplementedError
+
+	def resize(self, resize_size=(0, 0)):
+		raise NotImplementedError
+
+	def copy(self):
+		tmp = Image_2(self.path, self.resize_size, self.rotate_deg, self.cent_pos)
+		return tmp
+
+	def __repr__(self):
+		return object.__repr__(self)
+	def __str__(self):
+		info = self.__repr__() + '\n  '
+		info += 'Path = {}'.format(self.path) + '\n  '
+		info += 'Img = {}'.format(self.img) + '\n  '
+		info += 'w = {}, h = {}'.format(self.w, self.h) + '\n  '
+		info += 'cent_pos = {}'.format(self.cent_pos) + '\n  '
+		info += 'rotate_deg = {}'.format(self.rotate_deg) + '\n  '
+		info += 'resize_size = {}'.format(self.resize_size) + '\n'
+		return info
 
 class Image:
 	'''

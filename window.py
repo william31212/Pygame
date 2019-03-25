@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 # TODO(roy4801): Impl D_SOFTWARE
 D_SOFTWARE = 0
 D_HARDWARE = 1
-DRAW_METHOD = D_SOFTWARE
+DRAW_METHOD = D_HARDWARE
 
 W_NONE       = 0
 W_FULLSCREEN = 1<<0
@@ -34,15 +34,18 @@ class Window:
 		flag |= pygame.RESIZABLE if win_flag & W_RESIZABLE else 0
 		flag |= pygame.NOFRAME if win_flag & W_NOFRAME else 0
 
-		self.surface = pygame.display.set_mode(size, flag, 32)
+		self.surface = pygame.display.set_mode(size, flag)
 		self.set_caption(title)
 		self.fps_timer = pygame.time.Clock()
 		self.target_fps = fps
 
+		global DRAW_METHOD
 		if win_flag & W_OPENGL:
-			global DRAW_METHOD
 			DRAW_METHOD = D_HARDWARE
 			glEnable(GL_TEXTURE_2D)
+			glEnable(GL_BLEND)
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
 			glClearColor(0.5, 0.5, 0.5, 0.0)
 			#
 			glMatrixMode(GL_PROJECTION)
@@ -50,6 +53,8 @@ class Window:
 			gluOrtho2D(0.0, size[0], size[1], 0.0) # Important
 			#
 			glMatrixMode(GL_MODELVIEW)
+		else:
+			DRAW_METHOD = D_SOFTWARE
 
 	# Do not overwrite ##########
 	def run(self):
@@ -70,6 +75,10 @@ class Window:
 			# TODO(roy4801): process events
 			for handle in self.handle_list:
 				handle(e)
+
+	def add_event_handle(self, handle):
+		self.handle_list.append(handle)
+
 	#############################
 	# need to be implement
 	def setup(self):
@@ -84,7 +93,6 @@ class Window:
 	def ask_quit(self):
 		raise NotImplementedError
 		# self.quit()
-
 	##############################
 	def quit(self):
 		self.running = False
