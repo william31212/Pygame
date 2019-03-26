@@ -14,7 +14,8 @@ import draw_premitive
 SET_ROOT('..')
 
 display_width = 800
-display_height = 600
+display_height = 640
+
 
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
@@ -29,8 +30,8 @@ class App(Window):
 
 	def setup(self):
 		self.player = Player(0, 0, 100, 100, 2)
-		# self.maps = TiledMap("./level2.tmx", gameDisplay)
-		# self.maps.pick_layer()
+		self.maps = TiledMap("./level2.tmx")
+		self.maps.pick_layer()
 
 	def update(self):
 		keyboard = self.keyboard
@@ -51,7 +52,7 @@ class App(Window):
 			pygame.quit()
 			sys.exit()
 
-		# maps.tile_object(player.obs_box, player.state, player.release_state)
+		maps.tile_object(player.obs_box, player.state, player.release_state)
 		if player.x <= -30:
 			player.x = 760
 		elif player.y <= -30:
@@ -60,18 +61,14 @@ class App(Window):
 			player.x = -30
 		elif player.y >= 640:
 			player.y = -30
-		pass
 
 	def render(self):
 		maps = self.maps
-		# maps.draw(player.draw_character)
-		self.player.draw_character()
+		player = self.player
+		maps.draw(player.draw_character)
+		player.draw_character()
 
-		# draw_premitive.rect((255, 0, 0), (0, 0, 100, 100), 1)
-		# draw_premitive.circle((0, 255, 0), [0, 0], 100)
-		# draw_premitive.line((255, 0, 0), (0, 0), (800, 600))
-		draw_premitive.lines((255, 0, 0), False, [(0, 0), (30, 70), (100, 100), (250, 300), (800, 600)])
-		pass
+		maps.dbg_draw_tile_object()
 
 	def ask_quit(self):
 		print('On quit')
