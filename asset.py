@@ -247,51 +247,53 @@ class Image:
 
 # TODO(roy4801): Implement this
 class Sprite_2:
-	def __init__(self, sprite_type, name, fps=0, animate_type=ANI_NONE, cent_pos=(0, 0), start_frame=0, resize_size=(1., 1.), rotate_deg=0.):
-		self.image_list = []  # image list
-		self.sprite_type = sprite_type # sprite type
-		self.name = name  # name
+	def __init__(self, sprite_type, name, fps=0, animate_type=ANI_NONE, cent_pos=(0, 0), start_frame=0, resize_size=(1., 1.), rotate_deg=0., copy=False):
+		self.image_list = []             # image list
+		self.sprite_type = sprite_type   # sprite type
+		self.name = name                 # name
 		# For SP_ANIMATE
-		self.frame_num = 0
-		self.now_frame = start_frame
-		self.fps = fps
-		self.animate_type = animate_type
-		self.timer = None
-		self.start = False
+		self.frame_num = 0               # total images of a animated sprite
+		self.now_frame = start_frame     # current frame
+		self.fps = fps                   # fps
+		self.animate_type = animate_type # ANI_ONCE/ANI_LOOP
+		self.timer = None                # timer
+		self.start = False               # start flag
 		# for ANI_ONCE
 		self.had_draw_once = False
 		self.draw_frame_cnt = 0
 
 		if sprite_type == SP_STATIC:
-			img = Image_2(GET_PATH(IMG_SPRITE, name), resize_size, rotate_deg, cent_pos)
-			self.image_list.append(img)
+			if not copy:
+				img = Image_2(GET_PATH(IMG_SPRITE, name), resize_size, rotate_deg, cent_pos)
+				self.image_list.append(img)
 			self.frame_num = 1
 		elif sprite_type == SP_ANIMATE:
-			self.timer = Timer(1000/fps)
-			# list dir
-			path = GET_DIR(IMG_SPRITE)
-			dir_list = os.listdir(path)
-			# count frame_num
-			cnt = 0
-			for item in dir_list:
-				if item.startswith(name):
-					cnt += 1
-			self.frame_num = cnt
-			# load {name}{000}.png ~ {name}{cnt}.png
-			for i in range(cnt):
-				self.image_list.append(Image_2('{}{:03d}.png'.format(path + name, i), resize_size, rotate_deg, cent_pos))
+			self.timer = Timer(1000/self.fps)
+			if not copy:
+				# list dir
+				path = GET_DIR(IMG_SPRITE)
+				dir_list = os.listdir(path)
+				# count frame_num
+				cnt = 0
+				for item in dir_list:
+					if item.startswith(name):
+						cnt += 1
+				self.frame_num = cnt
+				# load {name}{000}.png ~ {name}{cnt}.png
+				for i in range(cnt):
+					self.image_list.append(Image_2('{}{:03d}.png'.format(path + name, i), resize_size, rotate_deg, cent_pos))
 
 	def copy(self):
-		new_sp = Sprite_2(-1, self.name, self.fps, self.animate_type, self.cent_pos, 0, self.resize_size, self.rotate_deg)
-		new_sp.sprite_type = self.sprite_type
+		# TODO(roy4801): this should be refactor
+		cent_pos = self.image_list[0].cent_pos
+		resize_size = self.image_list[0].resize_size
+		rotate_deg = self.image_list[0].rotate_deg
+		new_sp = Sprite_2(SP_ANIMATE, self.name, self.fps, self.animate_type, cent_pos, 0, resize_size, rotate_deg, True)
 		new_sp.image_list = self.image_list
+		new_sp.frame_num = len(self.image_list)
 		return new_sp
 
 	def draw(self, x, y):
-		if self.had_draw_once:
-			self.had_draw_once = False
-			self.draw_frame_cnt = 0
-
 		# Actual draw
 		if self.sprite_type == SP_ANIMATE and not (self.animate_type == ANI_ONCE and self.had_draw_once):
 			if not self.start:
@@ -315,10 +317,13 @@ class Sprite_2:
 		# draw the image on the screen
 		self.image_list[self.now_frame].draw(x, y)
 
-		if self.animate_type == ANI_ONCE and self.had_draw_once:
-			return True
-		else:
-			return False
+	def is_draw_once(self):
+		return self.animate_type == ANI_ONCE and self.had_draw_once
+
+	def reset_draw_once(self):
+		if self.had_draw_once:
+			self.had_draw_once = False
+			self.draw_frame_cnt = 0
 
 	def __repr__(self):
 		return object.__repr__(self)

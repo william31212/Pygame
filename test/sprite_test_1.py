@@ -13,12 +13,13 @@ class Character:
 	def __init__(self, x, y):
 		self.x = x
 		self.y = y
+		self.sp = sp.copy()
 
 	def update(self):
 		pass
 
 	def draw(self):
-		sp.draw(self.x, self.y)
+		self.sp.draw(self.x, self.y)
 
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
@@ -33,7 +34,7 @@ class App(Window):
 
 	def setup(self):
 		global sp
-		sp = Sprite_2(SP_ANIMATE, 'stand', 15, ANI_LOOP, (0.5, 0.5))
+		sp = Sprite_2(SP_ANIMATE, 'stand', 15, ANI_ONCE, (0.5, 0.5))
 		print(sp)
 
 	def update(self):
@@ -49,6 +50,8 @@ class App(Window):
 			i.update()
 
 		print('Now: {}'.format(len(self.ch_list)))
+		tmp = [True for i in self.ch_list if not i.sp.had_draw_once]
+		print('Running: {}'.format(len(tmp)))
 
 	def render(self):
 		ch_list = self.ch_list
