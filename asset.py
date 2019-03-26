@@ -281,6 +281,12 @@ class Sprite_2:
 			for i in range(cnt):
 				self.image_list.append(Image_2('{}{:03d}.png'.format(path + name, i), resize_size, rotate_deg, cent_pos))
 
+	def copy(self):
+		new_sp = Sprite_2(-1, self.name, self.fps, self.animate_type, self.cent_pos, 0, self.resize_size, self.rotate_deg)
+		new_sp.sprite_type = self.sprite_type
+		new_sp.image_list = self.image_list
+		return new_sp
+
 	def draw(self, x, y):
 		if self.had_draw_once:
 			self.had_draw_once = False
@@ -318,9 +324,9 @@ class Sprite_2:
 		return object.__repr__(self)
 	def __str__(self):
 		info = '{}:  {}\n\t'.format(self.name, self.__repr__())
-		info += 'type = {}\n\t'.format('SP_STATIC' if self.animate_type == 0 else 'SP_ANIMATE')
+		info += 'type = {}\n\t'.format('SP_STATIC' if self.sprite_type == SP_STATIC else 'SP_ANIMATE')
 
-		if self.animate_type == SP_ANIMATE:
+		if self.sprite_type == SP_ANIMATE:
 			info += 'animate type = {}\n\t'.format('ANI_NONE' if self.animate_type == 0 else 'ANI_ONCE' if self.animate_type == 1 else 'ANI_LOOP' if self.animate_type == 2 else 'ANI_ERROR')
 			info += 'frame_num = {}\n\t'.format(self.frame_num)
 			info += 'now_frame = {}\n\t'.format(self.now_frame)

@@ -9,7 +9,6 @@ from input import *
 SET_ROOT('..')
 
 sp = None
-
 class Character:
 	def __init__(self, x, y):
 		self.x = x
@@ -19,7 +18,7 @@ class Character:
 		pass
 
 	def draw(self):
-		pass
+		sp.draw(self.x, self.y)
 
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
@@ -30,19 +29,31 @@ class App(Window):
 		self.mouse = MouseHandler()
 		self.add_event_handle(self.mouse.handle_event)
 
+		self.ch_list = []
+
 	def setup(self):
 		global sp
 		sp = Sprite_2(SP_ANIMATE, 'stand', 15, ANI_LOOP, (0.5, 0.5))
+		print(sp)
 
 	def update(self):
 		mouse = self.mouse
 		keyboard = self.keyboard
+		#
+		ch_list = self.ch_list
 
-		pass
+		if keyboard.key_state[KEY_a]:
+			ch_list.append(Character(random.randint(0, 800), random.randint(0, 600)))
+
+		for i in ch_list:
+			i.update()
+
+		print('Now: {}'.format(len(self.ch_list)))
 
 	def render(self):
-		sp.draw(400, 300)
-		pass
+		ch_list = self.ch_list
+		for i in ch_list:
+			i.draw()
 
 	def ask_quit(self):
 		self.quit()
