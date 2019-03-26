@@ -10,6 +10,7 @@ W_NOFRAME    = 1<<3 # not impl
 
 def _init():
 	pygame.init()
+	pygame.mixer.init()
 
 # TODO(roy4801): Have own event queue
 #
