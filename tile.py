@@ -76,8 +76,8 @@ class TiledMap:
 		for layer in self.tmxdata.layers:
 			if isinstance(layer, pytmx.TiledObjectGroup) and layer.properties['collision'] == 1:
 				for obj_iter in layer:
-					print((obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height))
-					draw_premitive.rect((255, 0, 0), (obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height), 0)
+					# print((obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height))
+					draw_premitive.rect((255, 0, 0), (obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height), 1)
 
 	def get_map_width(self):
 		return self.width
