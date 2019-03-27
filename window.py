@@ -8,6 +8,10 @@ W_OPENGL     = 1<<1
 W_RESIZABLE  = 1<<2 # not impl
 W_NOFRAME    = 1<<3 # not impl
 
+def _init():
+	pygame.init()
+	pygame.mixer.init()
+
 # TODO(roy4801): Have own event queue
 #
 '''Window
@@ -16,6 +20,7 @@ Manage the window
 '''
 class Window:
 	def __init__(self, title, size, win_flag=W_NONE, fps=60):
+		_init()
 		self.title = title
 		self.size = size
 		self.win_flag = win_flag

@@ -37,7 +37,7 @@ class App(Window):
 
 	def setup(self):
 		global ball_image
-		ball_image = Image_2('ball.png', (1, 1), 0, (0.5, 0.5))
+		ball_image = Image('ball.png', (1, 1), 0, (0.5, 0.5))
 
 	def update(self):
 		mouse = self.mouse

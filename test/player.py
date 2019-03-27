@@ -16,19 +16,18 @@ hold_state = 0
 
 
 class Player:
-    def __init__(self, x, y, wid, hei, state):
+    def __init__(self, x, y, width, height, state):
         self.x = x
         self.y = y
-        self.wid = wid
-        self.hei = hei
+        self.width = width
+        self.height = height
         self.state = state
         self.obs_box = Rect(self.x+41 , self.y+66 , 19, 10)
         self.atk_box = Rect(self.x, self.y, 100, 100)
-        self.rifleman_down = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_down'), 3, ANI_LOOP,0, (100, 100))
-        self.rifleman_right = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_right'), 3, ANI_LOOP, 0, (100, 100))
-        self.rifleman_left = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_left'), 3, ANI_LOOP, 0, (100, 100))
-        self.rifleman_up = Sprite(SP_ANIMATE, GET_PATH(IMG_SPRITE, 'winchester_up'), 3, ANI_LOOP, 0, (100, 100))
-
+        self.rifleman_down = Sprite(SP_ANIMATE, 'winchester_down', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.rifleman_right = Sprite(SP_ANIMATE, 'winchester_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.rifleman_left = Sprite(SP_ANIMATE, 'winchester_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.rifleman_up = Sprite(SP_ANIMATE, 'winchester_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
 
     def update_state(self, x, y, state):
         if state == 1:
@@ -60,7 +59,7 @@ class Player:
         self.obs_box = Rect(self.x+41 , self.y+66 , 19, 10)
         self.atk_box = Rect(self.x, self.y, 100, 100)
 
-    def draw_char(self):
+    def draw_character(self):
         if self.state == 1:
             self.rifleman_up.draw(self.x, self.y)
         elif self.state == 2:

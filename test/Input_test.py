@@ -1,6 +1,14 @@
-import sys, pygame
+import sys, pygame, logging
 sys.path.append("../")
-from Input import *
+from input import *
+
+logger = logging.getLogger('input_test')
+logger.setLevel(logging.DEBUG)
+console = logging.StreamHandler()
+console.setLevel(logging.DEBUG)
+formatter = logging.Formatter('[%(levelname)-s] %(name)-12s\n    %(message)s')
+console.setFormatter(formatter)
+logger.addHandler(console)
 
 def main():
 	keyboard = KeyHandler()
@@ -36,7 +44,7 @@ def main():
 			if keyboard.key_repeat[i]:
 				key_name += '(repeat)'
 			if any_pressed:
-				print('[info] Pressed {}'.format(key_name))
+				logger.info('Pressed {}'.format(key_name))
 
 
 if __name__ == '__main__':
