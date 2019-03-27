@@ -1,13 +1,14 @@
 import sys, pygame, os
 sys.path.append("../")
 
-from Input import MouseHandler
+from input import MouseHandler
 from font import *
 
 
 display_width = 800
 display_height = 600
 store = []
+
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
 		super().__init__(title, size, win_flag)
@@ -22,19 +23,20 @@ class App(Window):
 
 
 	def update(self):
-		pass
+		if self.mouse.btn[MOUSE_L]:
+			store.append((self.mouse.x, self.mouse.y))
+
 
 	def render(self):
 
-		if self.mouse.btn[MOUSE_L]:
+		for i in store:
+			self.font.draw_str(i[0],i[1])
+			print()
 			# self.font.draw_str(self.mouse.x,self.mouse.y)
-			store.append(self.mouse)
-			for i in store:
-				self.font.draw_str(i.x,i.y)
 
 
 
-		
+
 
 	def ask_quit(self):
 		print('On quit')

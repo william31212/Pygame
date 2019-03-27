@@ -4,7 +4,7 @@ import draw_premitive
 
 sys.path.append("../")
 from clock import Clock
-from Input import *
+from input import *
 from asset import *
 from utils import *
 from tile import *
@@ -12,7 +12,7 @@ from shape import *
 from player import *
 from window import *
 
-
+from OpenGL.GL import *
 
 class Font:
 
@@ -21,10 +21,12 @@ class Font:
 		self.style = style
 		self.size = size
 		self.color = color
+		self.my_font = pygame.font.SysFont(self.style, self.size)
 
 	def draw_str(self, x, y):
-		my_font = pygame.font.SysFont(self.style, self.size)
-		textSurface = my_font.render(self.string, True, self.color)
+		textSurface = self.my_font.render(self.string, True, self.color)
 		word_rect = textSurface.get_rect()
 		tmp = pygame_surface_to_image(textSurface)
 		tmp.draw(x , y)
+
+		glDeleteTextures([tmp.img])
