@@ -8,7 +8,16 @@ from input import *
 
 import draw_premitive
 
-pos_rect = []
+shape_list = []
+
+S_CIRCLE = 0
+S_RECT   = 1
+
+class shape:
+	def __init__(self, shape_type):
+		self.type = shape_type
+	def __setattr__(self, name, value):
+		self.__dict__[name] = value
 
 SET_ROOT('..')
 
@@ -28,8 +37,20 @@ class App(Window):
 		mouse = self.mouse
 		keyboard = self.keyboard
 
-		if mouse.btn[MOUSE_L]:
-			pos_rect.append([(mouse.x, mouse.y), (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))])
+		if keyboard.key_state[KEY_a]:
+			for _ in range(5):
+				cir = shape(S_CIRCLE)
+				cir.pos = (random.randint(0, 800), random.randint(0, 600))
+				cir.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+				cir.radius = random.randint(1, 16)
+				shape_list.append(cir)
+
+				rect = shape(S_RECT)
+				rect.pos = (random.randint(0, 800), random.randint(0, 600))
+				rect.color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+				rect.size = (random.randint(1, 100), random.randint(1, 100))
+				shape_list.append(rect)
+				
 
 	def render(self):
 		draw_premitive.rect((255, 0, 0), (0, 0, 100, 100))
@@ -41,8 +62,11 @@ class App(Window):
 
 		draw_premitive.line((0x19, 0x19, 0x70), (400, 300), (300, 400), 5)
 
-		for i in pos_rect:
-			draw_premitive.circle(i[1], i[0], 8)
+		for i in shape_list:
+			if i.type == S_CIRCLE:
+				draw_premitive.circle(i.color, i.pos, i.radius)
+			elif i.type == S_RECT:
+				draw_premitive.rect(i.color, (*i.pos, *i.size))
 
 	def ask_quit(self):
 		self.quit()
