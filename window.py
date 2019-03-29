@@ -13,7 +13,7 @@ def _init():
 	pygame.mixer.init()
 
 # TODO(roy4801): Have own event queue
-#
+
 '''Window
 
 Manage the window
@@ -38,6 +38,9 @@ class Window:
 		self.set_caption(title)
 		self.fps_timer = pygame.time.Clock()
 		self.target_fps = fps
+
+		# DEBUG
+		self.debug_flag = False
 
 		if win_flag & W_OPENGL:
 			glEnable(GL_TEXTURE_2D)
@@ -68,6 +71,8 @@ class Window:
 		for e in pygame.event.get():
 			if e.type == pygame.QUIT:
 				self.ask_quit()
+			elif e.type == pygame.KEYDOWN and e.key == pygame.K_BACKQUOTE:
+				self.debug_flag = ~self.debug_flag
 			# TODO(roy4801): process events
 			for handle in self.handle_list:
 				handle(e)
