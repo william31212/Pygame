@@ -9,7 +9,10 @@ KEY_LEFT  = 2
 KEY_RIGHT = 3
 KEY_ESC   = 4
 KEY_a     = 5
-KEY_TOTAL = 6
+KEY_w     = 6
+KEY_s     = 7
+KEY_d     = 8
+KEY_TOTAL = 9
 
 def _keyboard_handle(keyboard, e):
 	# Keydown
@@ -30,11 +33,14 @@ class KeyHandler:
 			pygame.K_LEFT   : KEY_LEFT,
 			pygame.K_RIGHT  : KEY_RIGHT,
 			pygame.K_ESCAPE : KEY_ESC,
+			pygame.K_w      : KEY_w,
+			pygame.K_s      : KEY_s,
+			pygame.K_d      : KEY_d,
 			pygame.K_a      : KEY_a
 		}
 		self.key_state  = [False] * KEY_TOTAL
 		self.key_repeat = [False] * KEY_TOTAL
-	
+
 	def set_key_state(self, key, press, repeat):
 		if not key in self.keymap:
 			# TODO(roy4801): Replace with the logger

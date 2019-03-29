@@ -35,9 +35,6 @@ class App(Window):
 			# self.font.draw_str(self.mouse.x,self.mouse.y)
 
 
-
-
-
 	def ask_quit(self):
 		print('On quit')
 		self.quit()

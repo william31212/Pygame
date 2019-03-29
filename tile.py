@@ -52,11 +52,12 @@ class TiledMap:
 	def draw(self, func_draw_char):
 		for i in lists:
 			if i.name == 'character':
-				func_draw_char()
+				for func in func_draw_char:
+					func()
 			else:
 				draw_layer(i, self.tex_map, (self.get_tile_width(), self.get_tile_height()))
 	# TODO: Refactor for performance
-	def tile_object(self, obs_box, state, func_change):
+	def tile_object(self, obs_box, state, func_change, num=0):
 		for layer in self.tmxdata.layers:
 			if isinstance(layer, pytmx.TiledObjectGroup) == True:
 				if layer.properties['collision'] == 1:
@@ -64,13 +65,13 @@ class TiledMap:
 						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
 						# print(obs_box.x, obs_box.y)
 						if obs_rec.check_rect(obs_box) == True and (state == 1):
-							func_change()
+							func_change(num)
 						if obs_rec.check_rect(obs_box) == True and (state == 2):
-							func_change()
+							func_change(num)
 						if obs_rec.check_rect(obs_box) == True and (state == 3):
-							func_change()
+							func_change(num)
 						if obs_rec.check_rect(obs_box) == True and (state == 4):
-							func_change()
+							func_change(num)
 	# BUG(roy4801): draw_premitive fucked up here
 	def dbg_draw_tile_object(self):
 		for layer in self.tmxdata.layers:
