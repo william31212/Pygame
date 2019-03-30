@@ -27,6 +27,8 @@ class Player:
         self.rifleman_right = Sprite(SP_ANIMATE, 'winchester_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_left = Sprite(SP_ANIMATE, 'winchester_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_up = Sprite(SP_ANIMATE, 'winchester_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.shoot_left = Sprite(SP_ANIMATE, 'shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.shoot_right = Sprite(SP_ANIMATE, 'shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         # self.blood = Sprite(SP_ANIMATE, 'winchester_up', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
 
     def update_state(self, x, y, state):
@@ -43,6 +45,10 @@ class Player:
         elif state == 4:
             self.x = x + 10
             self.state = 4
+        elif state == 5:
+            self.state = 5
+        elif state == 6:
+            self.state = 6
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
         self.atk_box = Rect(self.x, self.y, 100, 100)
 
@@ -73,3 +79,10 @@ class Player:
             self.rifleman_left.draw(self.x, self.y)
         elif self.state == 4:
             self.rifleman_right.draw(self.x, self.y)
+        elif self.state == 5:
+            self.shoot_left.draw(self.x, self.y)
+            self.state = 3
+        elif self.state == 6:
+            self.shoot_right.draw(self.x, self.y)
+            self.state = 4
+

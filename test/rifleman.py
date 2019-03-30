@@ -51,6 +51,10 @@ class App(Window):
 			player.update_state(player.x, player.y, 3)
 		if keyboard.key_state[KEY_RIGHT]:
 			player.update_state(player.x, player.y, 4)
+		if keyboard.key_state[KEY_SPACE]:
+			player.update_state(player.x, player.y, 5)
+		if keyboard.key_state[KEY_b]:
+			player.update_state(player.x, player.y, 6)
 
 		if keyboard.key_state[KEY_w]:
 			player2.update_state(player2.x, player2.y, 1)

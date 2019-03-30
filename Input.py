@@ -12,7 +12,9 @@ KEY_a     = 5
 KEY_w     = 6
 KEY_s     = 7
 KEY_d     = 8
-KEY_TOTAL = 9
+KEY_b     = 9
+KEY_SPACE = 10
+KEY_TOTAL = 11
 
 def _keyboard_handle(keyboard, e):
 	# Keydown
@@ -36,7 +38,9 @@ class KeyHandler:
 			pygame.K_w      : KEY_w,
 			pygame.K_s      : KEY_s,
 			pygame.K_d      : KEY_d,
-			pygame.K_a      : KEY_a
+			pygame.K_a      : KEY_a,
+			pygame.K_b      : KEY_b,
+			pygame.K_SPACE  : KEY_SPACE
 		}
 		self.key_state  = [False] * KEY_TOTAL
 		self.key_repeat = [False] * KEY_TOTAL
