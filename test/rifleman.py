@@ -29,7 +29,7 @@ class App(Window):
 
 	def setup(self):
 		self.player = Player(0, 0, 100, 100, 2)
-		self.player2 = Player(300, 500, 100, 100, 2)
+		self.player2 = Player(600, 600, 100, 100, 2)
 		self.maps = TiledMap("./level2.tmx")
 		self.maps.pick_layer()
 
@@ -70,8 +70,8 @@ class App(Window):
 			sys.exit()
 
 
-		maps.tile_object(player.obs_box, player.state, player.release_state,0)
-		maps.tile_object(player2.obs_box, player2.state, player2.release_state,1)
+		maps.tile_object(player.obs_box, player.state, player.release_state, player.blood_update, 0)
+		maps.tile_object(player2.obs_box, player2.state, player2.release_state, player2.blood_update, 1)
 
 		if player.x <= -30:
 			player.x = 760
@@ -114,6 +114,8 @@ class App(Window):
 
 
 def main():
+
+
 	app = App('rifleman', (display_width, display_height), W_OPENGL)
 	app.run()
 

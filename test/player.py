@@ -12,6 +12,7 @@ from asset import *
 
 
 store_arr = []
+blood_arr = []
 
 
 class Player:
@@ -29,7 +30,14 @@ class Player:
         self.rifleman_up = Sprite(SP_ANIMATE, 'winchester_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_left = Sprite(SP_ANIMATE, 'shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_right = Sprite(SP_ANIMATE, 'shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        # self.blood = Sprite(SP_ANIMATE, 'winchester_up', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.blood_state = 200
+        self.blood_img_100 = Sprite(SP_ANIMATE, 'blood_100original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+        self.blood_img_80 = Sprite(SP_ANIMATE, 'blood_80original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+        self.blood_img_60 = Sprite(SP_ANIMATE, 'blood_60original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+        self.blood_img_40 = Sprite(SP_ANIMATE, 'blood_40original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+        self.blood_img_20 = Sprite(SP_ANIMATE, 'blood_20original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+        self.blood_img_0 = Sprite(SP_ANIMATE, 'blood_0original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+
 
     def update_state(self, x, y, state):
 
@@ -55,12 +63,9 @@ class Player:
     def store_state(self, num=0):
 
         store_arr.append([self.x, self.y, self.state])
-        # hold_x = self.x
-        # hold_y = self.y
-        # hold_state = self.state
+        blood_arr.append([self.blood_state])
 
     def release_state(self, num):
-        # global hold_x,hold_y,hold_state
         self.x = store_arr[num][0]
         self.y = store_arr[num][1]
         self.state = store_arr[num][2]
@@ -69,8 +74,12 @@ class Player:
 
     def store_clear(self):
         store_arr.clear()
+        blood_arr.clear()
 
     def draw_character(self):
+
+        self.draw_blood(self.blood_state)
+
         if self.state == 1:
             self.rifleman_up.draw(self.x, self.y)
         elif self.state == 2:
@@ -85,4 +94,23 @@ class Player:
         elif self.state == 6:
             self.shoot_right.draw(self.x, self.y)
             self.state = 4
+
+
+    def draw_blood(self, blood_state):
+        if blood_state <= 0:
+            self.blood_img_0.draw(self.x+20, self.y-20)
+        if blood_state >= 0:
+            self.blood_img_20.draw(self.x+20, self.y-20)
+        if blood_state >= 40:
+            self.blood_img_40.draw(self.x+20, self.y-20)
+        if blood_state >= 80:
+            self.blood_img_60.draw(self.x+20, self.y-20)
+        if blood_state >= 120:
+            self.blood_img_80.draw(self.x+20, self.y-20)
+        if blood_state >= 160:
+            self.blood_img_100.draw(self.x+20, self.y-20)
+
+    def blood_update(self, blood_state):
+        self.blood_state = self.blood_state - 1
+
 

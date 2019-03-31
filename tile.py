@@ -57,9 +57,26 @@ class TiledMap:
 			else:
 				draw_layer(i, self.tex_map, (self.get_tile_width(), self.get_tile_height()))
 	# TODO: Refactor for performance
-	def tile_object(self, obs_box, state, func_change, num=0):
+	def tile_object(self, obs_box, state, func_change, blood_change, num=0):
 		for layer in self.tmxdata.layers:
 			if isinstance(layer, pytmx.TiledObjectGroup) == True:
+				if layer.properties['kill'] == 1:
+					for object_iter in layer:
+						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
+						# print(obs_box.x, obs_box.y)
+						if obs_rec.check_rect(obs_box) == True and (state == 1):
+							blood_change(num)
+						if obs_rec.check_rect(obs_box) == True and (state == 2):
+							blood_change(num)
+						if obs_rec.check_rect(obs_box) == True and (state == 3):
+							blood_change(num)
+						if obs_rec.check_rect(obs_box) == True and (state == 4):
+							blood_change(num)
+						if obs_rec.check_rect(obs_box) == True and (state == 5):
+							blood_change(num)
+						if obs_rec.check_rect(obs_box) == True and (state == 6):
+							blood_change(num)
+
 				if layer.properties['collision'] == 1:
 					for object_iter in layer:
 						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
@@ -72,6 +89,11 @@ class TiledMap:
 							func_change(num)
 						if obs_rec.check_rect(obs_box) == True and (state == 4):
 							func_change(num)
+						if obs_rec.check_rect(obs_box) == True and (state == 5):
+							func_change(num)
+						if obs_rec.check_rect(obs_box) == True and (state == 6):
+							func_change(num)
+
 	# BUG(roy4801): draw_premitive fucked up here
 	def dbg_draw_tile_object(self):
 		for layer in self.tmxdata.layers:

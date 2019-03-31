@@ -3,6 +3,7 @@ import pygame, time
 '''
 KeyHandler: Process and handle the keyboard event
 '''
+
 KEY_UP    = 0
 KEY_DOWN  = 1
 KEY_LEFT  = 2
