@@ -33,8 +33,8 @@ class App(Window):
 	def setup(self):
 		self.player = Player(600, 600, 100, 100, 2)
 		self.player2 = Player(0, 0, 100, 100, 2)
-		self.bullet = Bullet(0, 0, 2, 10)
-		self.bullet2 = Bullet(0, 0, 2, 10)
+		self.bullet = Bullet(0, 0, 2, 20)
+		self.bullet2 = Bullet(0, 0, 2, 20)
 		self.maps = TiledMap("./level2.tmx")
 		self.maps.pick_layer()
 
@@ -110,8 +110,8 @@ class App(Window):
 			player2.y = -30
 
 		player.store_clear()
-		bullet.update_bullet()
-		bullet2.update_bullet()
+		bullet.update_bullet(player2.atk_box, player2.blood_update, player2.blood_state)
+		bullet2.update_bullet(player.atk_box, player.blood_update, player.blood_state)
 
 
 

@@ -65,17 +65,17 @@ class TiledMap:
 						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
 						# print(obs_box.x, obs_box.y)
 						if obs_rec.check_rect(obs_box) == True and (state == 1):
-							blood_change(num)
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 2):
-							blood_change(num)
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 3):
-							blood_change(num)
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 4):
-							blood_change(num)
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 5):
-							blood_change(num)
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 6):
-							blood_change(num)
+							blood_change(num,-1)
 
 				if layer.properties['collision'] == 1:
 					for object_iter in layer:

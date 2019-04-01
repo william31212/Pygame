@@ -14,9 +14,6 @@ from shape import *
 from asset import *
 from vector import *
 
-store = []
-store2 = []
-
 
 class Bullet:
     def __init__(self, x, y, state, speed):
@@ -45,13 +42,22 @@ class Bullet:
 
 
 
-    def update_bullet(self):
+    def update_bullet(self, atk_box, update_blood, blood_state):
 
+        # move the bullet
         for i in self.bullet_list:
             if i[2] == 1:
                 i[0] = i[0] + i[3]
             else:
                 i[0] = i[0] - i[3]
+
+        # kill to each other
+        for i in self.bullet_list:
+            bullet_rect = Rect(i[0], i[1], 30, 30)
+            if atk_box.check_rect(bullet_rect) == True:
+                update_blood(blood_state, -20)
+                self.bullet_list.remove(i)
+
 
 
     def shoot(self):
