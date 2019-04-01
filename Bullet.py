@@ -7,7 +7,7 @@ import time
 
 from player import *
 
-sys.path.append("../")
+sys.path.append("./RHframework")
 from clock import Clock
 from utils import *
 from shape import *

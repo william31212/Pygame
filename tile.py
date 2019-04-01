@@ -11,11 +11,11 @@ import draw_premitive
 import pprint # test
 pp = pprint.PrettyPrinter(indent=4)
 
-sys.path.append("../")
+
 
 # TODO: make them non-global
 lists = []
-
+sys.path.append("./RHframework")
 from utils import *
 from shape import *
 from asset import *

@@ -5,7 +5,7 @@ import sys
 import pytmx
 import time
 
-sys.path.append("../")
+sys.path.append("./RHframework")
 from utils import *
 from shape import *
 from asset import *

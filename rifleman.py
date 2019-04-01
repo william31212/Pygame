@@ -1,6 +1,7 @@
 import sys, pygame
 
-sys.path.append("../")
+
+sys.path.append("./RHframework")
 from clock import Clock
 from input import *
 from asset import *
@@ -11,10 +12,10 @@ from player import *
 from window import *
 from window import *
 from Bullet import *
+
+
+# SET_ROOT('..')
 import draw_premitive
-
-SET_ROOT('..')
-
 display_width = 800
 display_height = 640
 
