@@ -17,7 +17,7 @@ blood_arr = []
 
 
 class Player:
-    def __init__(self, x, y, width, height, state):
+    def __init__(self, x, y, width, height, state, Player):
         self.x = x
         self.y = y
         self.width = width
@@ -26,12 +26,12 @@ class Player:
         self.blood_state = 240
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
         self.atk_box = Rect(self.x, self.y, 100, 100)
-        self.rifleman_down = Sprite(SP_ANIMATE, 'winchester_down', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.rifleman_right = Sprite(SP_ANIMATE, 'winchester_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.rifleman_left = Sprite(SP_ANIMATE, 'winchester_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.rifleman_up = Sprite(SP_ANIMATE, 'winchester_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.shoot_left = Sprite(SP_ANIMATE, 'shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.shoot_right = Sprite(SP_ANIMATE, 'shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.rifleman_down = Sprite(SP_ANIMATE, Player+'_down', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.rifleman_right = Sprite(SP_ANIMATE, Player+'_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.rifleman_left = Sprite(SP_ANIMATE, Player+'_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.rifleman_up = Sprite(SP_ANIMATE, Player+'_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.shoot_left = Sprite(SP_ANIMATE, Player+'_shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        self.shoot_right = Sprite(SP_ANIMATE, Player+'_shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.blood_img_100 = Sprite(SP_ANIMATE, 'blood_100original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_80 = Sprite(SP_ANIMATE, 'blood_80original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_60 = Sprite(SP_ANIMATE, 'blood_60original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))

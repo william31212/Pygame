@@ -31,8 +31,8 @@ class App(Window):
 		self.maps = None
 
 	def setup(self):
-		self.player = Player(600, 600, 100, 100, 2)
-		self.player2 = Player(0, 0, 100, 100, 2)
+		self.player = Player(600, 600, 100, 100, 2, 'Player1')
+		self.player2 = Player(0, 0, 100, 100, 2, 'Player2')
 		self.bullet = Bullet(0, 0, 2, 20)
 		self.bullet2 = Bullet(0, 0, 2, 20)
 		self.maps = TiledMap("./level2.tmx")
@@ -140,6 +140,8 @@ class App(Window):
 	def ask_quit(self):
 		print('On quit')
 		self.quit()
+
+
 
 
 def main():
