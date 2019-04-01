@@ -57,7 +57,7 @@ class TiledMap:
 			else:
 				draw_layer(i, self.tex_map, (self.get_tile_width(), self.get_tile_height()))
 	# TODO: Refactor for performance
-	def tile_object(self, obs_box, state, func_change, blood_change, num=0):
+	def tile_object(self, obs_box, state, func_change, blood_change, bullet_list, bullet_update, num=0):
 		for layer in self.tmxdata.layers:
 			if isinstance(layer, pytmx.TiledObjectGroup) == True:
 				if layer.properties['kill'] == 1:
@@ -93,6 +93,14 @@ class TiledMap:
 							func_change(num)
 						if obs_rec.check_rect(obs_box) == True and (state == 6):
 							func_change(num)
+
+					for object_iter in layer:
+						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
+						for i in bullet_list:
+							bullet_rect = Rect(i[0], i[1], 30, 30)
+							if obs_rec.check_rect(bullet_rect):
+								bullet_update(i)
+
 
 	# BUG(roy4801): draw_premitive fucked up here
 	def dbg_draw_tile_object(self):

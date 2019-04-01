@@ -88,8 +88,8 @@ class App(Window):
 			sys.exit()
 
 
-		maps.tile_object(player.obs_box, player.state, player.release_state, player.blood_update, 0)
-		maps.tile_object(player2.obs_box, player2.state, player2.release_state, player2.blood_update, 1)
+		maps.tile_object(player.obs_box, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
+		maps.tile_object(player2.obs_box, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
 
 		if player.x <= -30:
 			player.x = 760
@@ -110,8 +110,8 @@ class App(Window):
 			player2.y = -30
 
 		player.store_clear()
-		bullet.update_bullet(player2.atk_box, player2.blood_update, player2.blood_state)
-		bullet2.update_bullet(player.atk_box, player.blood_update, player.blood_state)
+		bullet.hit_people(player2.atk_box, player2.blood_update, player2.blood_state)
+		bullet2.hit_people(player.atk_box, player.blood_update, player.blood_state)
 
 
 

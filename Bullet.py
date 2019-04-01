@@ -36,13 +36,13 @@ class Bullet:
 
         if len(self.bullet_list) == 0:
             self.new_bullet([self.x, self.y, self.state, self.speed])
-        if self.clock.getPassedSec() >= 0.5 and len(self.bullet_list) > 0:
+        if self.clock.getPassedSec() >= 0.2 and len(self.bullet_list) > 0:
             self.new_bullet([self.x, self.y, self.state, self.speed])
             self.clock.reset()
 
 
 
-    def update_bullet(self, atk_box, update_blood, blood_state):
+    def hit_people(self, atk_box, update_blood, blood_state):
 
         # move the bullet
         for i in self.bullet_list:
@@ -58,6 +58,8 @@ class Bullet:
                 update_blood(blood_state, -20)
                 self.bullet_list.remove(i)
 
+    def hit_thing(self, bullet_thing):
+        self.bullet_list.remove(bullet_thing)
 
 
     def shoot(self):
