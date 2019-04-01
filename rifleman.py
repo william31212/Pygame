@@ -34,6 +34,7 @@ class App(Window):
 		self.player = Player(600, 600, 100, 100, 2)
 		self.player2 = Player(0, 0, 100, 100, 2)
 		self.bullet = Bullet(0, 0, 2, 10)
+		self.bullet2 = Bullet(0, 0, 2, 10)
 		self.maps = TiledMap("./level2.tmx")
 		self.maps.pick_layer()
 
@@ -44,7 +45,7 @@ class App(Window):
 		player = self.player
 		player2 = self.player2
 		bullet	= self.bullet
-
+		bullet2	= self.bullet2
 
 		player.store_state(0)
 		player2.store_state(1)
@@ -60,10 +61,10 @@ class App(Window):
 		if keyboard.key_state[KEY_RIGHT]:
 			player.update_state(player.x, player.y, 4)
 		if keyboard.key_state[KEY_PERIOD]:
-			bullet.setting(player.x, player.y, 0, 1)
+			bullet.setting(player.x, player.y, 0)
 			player.update_state(player.x, player.y, 5)
 		if keyboard.key_state[KEY_SLASH]:
-			bullet.setting(player.x, player.y, 1, 1)
+			bullet.setting(player.x, player.y, 1)
 			player.update_state(player.x, player.y, 6)
 
 		#Player 2
@@ -76,10 +77,10 @@ class App(Window):
 		if keyboard.key_state[KEY_d]:
 			player2.update_state(player2.x, player2.y, 4)
 		if keyboard.key_state[KEY_v]:
-			bullet.setting(player2.x, player2.y, 0, 2)
+			bullet2.setting(player2.x, player2.y, 0)
 			player2.update_state(player2.x, player2.y, 5)
 		if keyboard.key_state[KEY_b]:
-			bullet.setting(player2.x, player2.y, 1, 2)
+			bullet2.setting(player2.x, player2.y, 1)
 			player2.update_state(player2.x, player2.y, 6)
 
 		if keyboard.key_state[KEY_ESC]:
@@ -110,6 +111,7 @@ class App(Window):
 
 		player.store_clear()
 		bullet.update_bullet()
+		bullet2.update_bullet()
 
 
 
@@ -119,10 +121,12 @@ class App(Window):
 		player = self.player
 		player2 = self.player2
 		bullet = self.bullet
+		bullet2 = self.bullet2
 
 
 		maps.draw([player.draw_character,player2.draw_character])
 		bullet.shoot()
+		bullet2.shoot()
 		# player.game_over(player.blood_state, 1)
 		# player2.game_over(player2.blood_state, 2)
 
