@@ -9,6 +9,7 @@ sys.path.append("../")
 from utils import *
 from shape import *
 from asset import *
+from font import *
 
 
 store_arr = []
@@ -30,12 +31,13 @@ class Player:
         self.rifleman_up = Sprite(SP_ANIMATE, 'winchester_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_left = Sprite(SP_ANIMATE, 'shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_right = Sprite(SP_ANIMATE, 'shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.blood_state = 200
+        self.blood_state = 240
         self.blood_img_100 = Sprite(SP_ANIMATE, 'blood_100original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_80 = Sprite(SP_ANIMATE, 'blood_80original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_60 = Sprite(SP_ANIMATE, 'blood_60original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_40 = Sprite(SP_ANIMATE, 'blood_40original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_20 = Sprite(SP_ANIMATE, 'blood_20original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+        self.blood_img_10 = Sprite(SP_ANIMATE, 'blood_10original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_0 = Sprite(SP_ANIMATE, 'blood_0original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
 
 
@@ -100,17 +102,27 @@ class Player:
         if blood_state <= 0:
             self.blood_img_0.draw(self.x+20, self.y-20)
         if blood_state >= 0:
-            self.blood_img_20.draw(self.x+20, self.y-20)
+            self.blood_img_10.draw(self.x+20, self.y-20)
         if blood_state >= 40:
-            self.blood_img_40.draw(self.x+20, self.y-20)
+            self.blood_img_20.draw(self.x+20, self.y-20)
         if blood_state >= 80:
-            self.blood_img_60.draw(self.x+20, self.y-20)
+            self.blood_img_40.draw(self.x+20, self.y-20)
         if blood_state >= 120:
-            self.blood_img_80.draw(self.x+20, self.y-20)
+            self.blood_img_60.draw(self.x+20, self.y-20)
         if blood_state >= 160:
+            self.blood_img_80.draw(self.x+20, self.y-20)
+        if blood_state >= 200:
             self.blood_img_100.draw(self.x+20, self.y-20)
 
-    def blood_update(self, blood_state):
+    def blood_update(self, blood):
         self.blood_state = self.blood_state - 1
 
+    def game_over(self, blood_state, who, quit):
+        self.p1_lose = Font("Player1 game over", "Georgia", (0,255,255), 50)
+        self.p2_lose = Font("Player2 game over", "Georgia", (0,255,255), 50)
 
+        if who == 1 and self.blood_state <= 0:
+            self.p1_lose.draw_str(200, 200)
+
+        if who == 2 and self.blood_state <= 0:
+            self.p2_lose.draw_str(200, 200)

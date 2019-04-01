@@ -9,6 +9,8 @@ from tile import *
 from shape import *
 from player import *
 from window import *
+from window import *
+from Bullet import *
 import draw_premitive
 
 SET_ROOT('..')
@@ -28,21 +30,26 @@ class App(Window):
 		self.maps = None
 
 	def setup(self):
-		self.player = Player(0, 0, 100, 100, 2)
-		self.player2 = Player(600, 600, 100, 100, 2)
+		self.player = Player(600, 600, 100, 100, 2)
+		self.player2 = Player(0, 0, 100, 100, 2)
+		self.bullet = Bullet(0, 0, 2, 10)
 		self.maps = TiledMap("./level2.tmx")
 		self.maps.pick_layer()
+
 
 	def update(self):
 		keyboard = self.keyboard
 		maps = self.maps
 		player = self.player
 		player2 = self.player2
+		bullet	= self.bullet
+
 
 		player.store_state(0)
 		player2.store_state(1)
 
 
+		#Player 1
 		if keyboard.key_state[KEY_UP]:
 			player.update_state(player.x, player.y, 1)
 		if keyboard.key_state[KEY_DOWN]:
@@ -51,11 +58,14 @@ class App(Window):
 			player.update_state(player.x, player.y, 3)
 		if keyboard.key_state[KEY_RIGHT]:
 			player.update_state(player.x, player.y, 4)
-		if keyboard.key_state[KEY_SPACE]:
+		if keyboard.key_state[KEY_PERIOD]:
+			bullet.setting(player.x, player.y, 0, 1)
 			player.update_state(player.x, player.y, 5)
-		if keyboard.key_state[KEY_b]:
+		if keyboard.key_state[KEY_SLASH]:
+			bullet.setting(player.x, player.y, 1, 1)
 			player.update_state(player.x, player.y, 6)
 
+		#Player 2
 		if keyboard.key_state[KEY_w]:
 			player2.update_state(player2.x, player2.y, 1)
 		if keyboard.key_state[KEY_s]:
@@ -64,6 +74,12 @@ class App(Window):
 			player2.update_state(player2.x, player2.y, 3)
 		if keyboard.key_state[KEY_d]:
 			player2.update_state(player2.x, player2.y, 4)
+		if keyboard.key_state[KEY_v]:
+			bullet.setting(player2.x, player2.y, 0, 2)
+			player2.update_state(player2.x, player2.y, 5)
+		if keyboard.key_state[KEY_b]:
+			bullet.setting(player2.x, player2.y, 1, 2)
+			player2.update_state(player2.x, player2.y, 6)
 
 		if keyboard.key_state[KEY_ESC]:
 			pygame.quit()
@@ -92,18 +108,26 @@ class App(Window):
 			player2.y = -30
 
 		player.store_clear()
+		bullet.update_bullet()
+
+
 
 
 	def render(self):
 		maps = self.maps
 		player = self.player
 		player2 = self.player2
+		bullet = self.bullet
 
 
 		maps.draw([player.draw_character,player2.draw_character])
+		bullet.shoot()
+		# player.game_over(player.blood_state, 1)
+		# player2.game_over(player2.blood_state, 2)
 
+
+		######debug#######
 		# player.draw_character()
-
 		# print()
 		# draw_premitive.rect((0, 255, 0), (self.player.obs_box.x, self.player.obs_box.y, self.player.obs_box.wid, self.player.obs_box.hei), 2)
 		# maps.dbg_draw_tile_object()
@@ -114,7 +138,6 @@ class App(Window):
 
 
 def main():
-
 
 	app = App('rifleman', (display_width, display_height), W_OPENGL)
 	app.run()

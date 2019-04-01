@@ -14,8 +14,13 @@ KEY_w     = 6
 KEY_s     = 7
 KEY_d     = 8
 KEY_b     = 9
-KEY_SPACE = 10
-KEY_TOTAL = 11
+KEY_z     = 10
+KEY_v     = 11
+KEY_x     = 12
+KEY_PERIOD   = 13
+KEY_SPACE = 14
+KEY_SLASH  = 15
+KEY_TOTAL = 16
 
 def _keyboard_handle(keyboard, e):
 	# Keydown
@@ -36,12 +41,18 @@ class KeyHandler:
 			pygame.K_LEFT   : KEY_LEFT,
 			pygame.K_RIGHT  : KEY_RIGHT,
 			pygame.K_ESCAPE : KEY_ESC,
-			pygame.K_w      : KEY_w,
-			pygame.K_s      : KEY_s,
-			pygame.K_d      : KEY_d,
 			pygame.K_a      : KEY_a,
 			pygame.K_b      : KEY_b,
+			pygame.K_d      : KEY_d,
+			pygame.K_s      : KEY_s,
+			pygame.K_w      : KEY_w,
+			pygame.K_x     : KEY_x,
+			pygame.K_z      : KEY_z,
+			pygame.K_v      : KEY_v,
+			pygame.K_SLASH : KEY_SLASH,
+			pygame.K_PERIOD  : KEY_PERIOD,
 			pygame.K_SPACE  : KEY_SPACE
+
 		}
 		self.key_state  = [False] * KEY_TOTAL
 		self.key_repeat = [False] * KEY_TOTAL
