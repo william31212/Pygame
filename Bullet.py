@@ -14,7 +14,6 @@ from shape import *
 from asset import *
 from vector import *
 
-
 class Bullet:
     def __init__(self, x, y, state, speed):
         self.x = x
@@ -40,17 +39,13 @@ class Bullet:
             self.new_bullet([self.x, self.y, self.state, self.speed])
             self.clock.reset()
 
-
-
     def hit_people(self, atk_box, update_blood, blood_state):
-
         # move the bullet
         for i in self.bullet_list:
             if i[2] == 1:
                 i[0] = i[0] + i[3]
             else:
                 i[0] = i[0] - i[3]
-
         # kill to each other
         for i in self.bullet_list:
             bullet_rect = Rect(i[0], i[1], 30, 30)
@@ -61,7 +56,6 @@ class Bullet:
     def hit_thing(self, bullet_thing):
         self.bullet_list.remove(bullet_thing)
 
-
     def shoot(self):
         for i in self.bullet_list:
             if i[2] == 1:
@@ -69,12 +63,5 @@ class Bullet:
             else:
                 self.bullet_left.draw(i[0], i[1])
 
-
-
     def new_bullet(self, new_bul):
         self.bullet_list.append(new_bul)
-
-
-
-
-

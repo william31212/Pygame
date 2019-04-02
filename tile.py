@@ -11,8 +11,6 @@ import draw_premitive
 import pprint # test
 pp = pprint.PrettyPrinter(indent=4)
 
-
-
 # TODO: make them non-global
 lists = []
 sys.path.append("./RHframework")
@@ -100,7 +98,6 @@ class TiledMap:
 							bullet_rect = Rect(i[0], i[1], 30, 30)
 							if obs_rec.check_rect(bullet_rect):
 								bullet_update(i)
-
 
 	# BUG(roy4801): draw_premitive fucked up here
 	def dbg_draw_tile_object(self):

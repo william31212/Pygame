@@ -12,13 +12,10 @@ from player import *
 from window import *
 from window import *
 from Bullet import *
-
-
-# SET_ROOT('..')
 import draw_premitive
+
 display_width = 800
 display_height = 640
-
 
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
@@ -87,7 +84,6 @@ class App(Window):
 			pygame.quit()
 			sys.exit()
 
-
 		maps.tile_object(player.obs_box, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
 		maps.tile_object(player2.obs_box, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
 
@@ -113,9 +109,6 @@ class App(Window):
 		bullet.hit_people(player2.atk_box, player2.blood_update, player2.blood_state)
 		bullet2.hit_people(player.atk_box, player.blood_update, player.blood_state)
 
-
-
-
 	def render(self):
 		maps = self.maps
 		player = self.player
@@ -123,13 +116,11 @@ class App(Window):
 		bullet = self.bullet
 		bullet2 = self.bullet2
 
-
 		maps.draw([player.draw_character,player2.draw_character])
 		bullet.shoot()
 		bullet2.shoot()
 		# player.game_over(player.blood_state, 1)
 		# player2.game_over(player2.blood_state, 2)
-
 
 		######debug#######
 		# player.draw_character()
@@ -141,11 +132,7 @@ class App(Window):
 		print('On quit')
 		self.quit()
 
-
-
-
 def main():
-
 	app = App('rifleman', (display_width, display_height), W_OPENGL)
 	app.run()
 

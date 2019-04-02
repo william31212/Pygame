@@ -1,5 +1,5 @@
 import sys, math, random
-sys.path.append("../")
+sys.path.append("../RHframework")
 
 from window import *
 from asset import *

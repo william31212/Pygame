@@ -11,10 +11,8 @@ from shape import *
 from asset import *
 from font import *
 
-
 store_arr = []
 blood_arr = []
-
 
 class Player:
     def __init__(self, x, y, width, height, state, Player):
@@ -40,9 +38,7 @@ class Player:
         self.blood_img_10 = Sprite(SP_ANIMATE, 'blood_10original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_0 = Sprite(SP_ANIMATE, 'blood_0original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
 
-
     def update_state(self, x, y, state):
-
         if state == 1:
             self.y = y - 10
             self.state = 1
@@ -63,7 +59,6 @@ class Player:
         self.atk_box = Rect(self.x, self.y, 100, 100)
 
     def store_state(self, num=0):
-
         store_arr.append([self.x, self.y, self.state])
         blood_arr.append([self.blood_state])
 
@@ -79,7 +74,6 @@ class Player:
         blood_arr.clear()
 
     def draw_character(self):
-
         self.draw_blood(self.blood_state)
 
         if self.state == 1:
@@ -96,7 +90,6 @@ class Player:
         elif self.state == 6:
             self.shoot_right.draw(self.x, self.y)
             self.state = 4
-
 
     def draw_blood(self, blood_state):
         if blood_state <= 0:
@@ -123,6 +116,5 @@ class Player:
 
         if who == 1 and self.blood_state <= 0:
             self.p1_lose.draw_str(200, 200)
-
         if who == 2 and self.blood_state <= 0:
             self.p2_lose.draw_str(200, 200)
