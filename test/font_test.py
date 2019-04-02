@@ -1,9 +1,11 @@
 import sys, pygame, os
-sys.path.append("../RHframework")
+sys.path.append("../RHframework/")
 
 from input import MouseHandler
 from font import *
+from utils import *
 
+SET_ROOT('..')
 
 display_width = 800
 display_height = 600
@@ -16,7 +18,7 @@ class App(Window):
 		self.add_event_handle(self.keyboard.handle_event)
 		self.mouse = MouseHandler()
 		self.add_event_handle(self.mouse.handle_event)
-		self.font = Font(GET_PATH(FONT_MAIN, "LucidaBrightDemiBold.ttf") ,(100,255,0) ,100)
+		self.font = Font(GET_PATH(FONT_MAIN, "LucidaBrightDemiBold.ttf"), (100,255,0) ,100)
 
 	def setup(self):
 		pass
@@ -27,9 +29,7 @@ class App(Window):
 
 	def render(self):
 		for i in store:
-			self.font.draw_str(i[0],i[1])
-			print()
-			# self.font.draw_str(self.mouse.x,self.mouse.y)
+			self.font.draw_str("hello", i[0],i[1])
 
 	def ask_quit(self):
 		print('On quit')

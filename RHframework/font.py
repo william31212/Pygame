@@ -22,8 +22,8 @@ class Font:
 		self.color = color
 		self.font_file = pygame.font.Font(self.style, self.size)
 
-	def draw_str(self, x, y):
-		textSurface = self.font_file.render(self.string, True, self.color)
+	def draw_str(self, string, x, y):
+		textSurface = self.font_file.render(string, True, self.color)
 		word_rect = textSurface.get_rect()
 		tmp = pygame_surface_to_image(textSurface)
 		tmp.draw(x , y)

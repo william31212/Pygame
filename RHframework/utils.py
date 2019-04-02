@@ -12,8 +12,8 @@ FONT_MAIN = 1
 ROOT = ''
 
 PATH = { \
-	IMG_SPRITE: 'assets/sprite/'
-	FONT_MAIN: 'font/'
+	IMG_SPRITE: 'assets/sprite/',
+	FONT_MAIN: 'assets/font/'
 }
 
 '''

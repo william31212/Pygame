@@ -90,7 +90,7 @@ class Image:
 			self.w = img[1][0]
 			self.h = img[1][1]
 
-		self.cent_pos = cent_pos      # [0.0, 1.0]
+		self.cent_pos = cent_pos       # [0.0, 1.0]
 		self.rotate_deg = rotate_deg
 		self.resize_size = resize_size # (float, float)
 
