@@ -96,15 +96,14 @@ class Image:
 
 	# BUG(roy4801): error
 	def __del__(self):
-		pass
-		# img = self.img
-		# try:
-		# 	glDeleteTextures([img])
-		# except error.GLerror:
-		# 	err = glGetError()
-		# 	if ( err != GL_NO_ERROR ):
-		# 		print('GLERROR: ', gluErrorString( err ))
-		# 		sys.exit()
+		img = self.img
+		try:
+			glDeleteTextures([img])
+		except error.GLerror:
+			err = glGetError()
+			if ( err != GL_NO_ERROR ):
+				print('GLERROR: ', gluErrorString( err ))
+				sys.exit()
 
 	def draw(self, x, y):
 		t_w = int(self.w * self.resize_size[0])

@@ -35,7 +35,6 @@ class App(Window):
 		self.maps = TiledMap("./level2.tmx")
 		self.maps.pick_layer()
 
-
 	def update(self):
 		keyboard = self.keyboard
 		maps = self.maps
@@ -46,7 +45,6 @@ class App(Window):
 
 		player.store_state(0)
 		player2.store_state(1)
-
 
 		#Player 1
 		if keyboard.key_state[KEY_UP]:

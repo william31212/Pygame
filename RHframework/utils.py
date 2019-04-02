@@ -7,12 +7,14 @@ def SET_ROOT(name):
 # Constants for resource path map
 IMG_SPRITE = 0
 
+FONT_MAIN = 1
+
 ROOT = ''
 
 PATH = { \
 	IMG_SPRITE: 'assets/sprite/'
+	FONT_MAIN: 'font/'
 }
-
 
 '''
 GET_PATH(type, name) -> str (path/name)
