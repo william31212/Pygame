@@ -3,7 +3,7 @@ from OpenGL.GLU import *
 import pygame, math
 from asset import pygame_surface_to_image
 
-# TODO(roy4801): Replace these with OpenGL premitives
+# TODO(roy4801): Be able to draw alpha
 
 def _gl_prologue():
 	glMatrixMode(GL_MODELVIEW)
@@ -18,13 +18,13 @@ def _gl_epilogue():
 def rect(color, Rect, width=0):
 	_gl_prologue()
 	glTranslatef(Rect[0], Rect[1], 0.0)
-	r, g, b = [x/0xff for x in color]
+	r, g, b, a = [x/0xff for x in color]
 	w, h = Rect[2], Rect[3]
 
 	if width != 0:
 		glLineWidth(width)
 		glBegin(GL_LINE_LOOP)
-		glColor3f(r, g, b)
+		glColor4f(r, g, b, a)
 		glVertex3f(0., 0., 0.)
 		glVertex3f(0., h, 0.)
 		glVertex3f(w, h, 0.)
@@ -33,7 +33,7 @@ def rect(color, Rect, width=0):
 		glLineWidth(1)
 	else:
 		glBegin(GL_TRIANGLE_FAN)
-		glColor3f(r, g, b)
+		glColor4f(r, g, b, a)
 		glVertex3f(0., 0., 0.)
 		glVertex3f(0., h, 0.)
 		glVertex3f(w, h, 0.)
@@ -46,7 +46,7 @@ def circle(color, pos, radius, width=0, segment=32):
 	_gl_prologue()
 	glTranslatef(pos[0], pos[1], 0.0)
 
-	r, g, b = [x/0xff for x in color]
+	r, g, b, a= [x/0xff for x in color]
 	pt = []
 	for i in range(segment+1):
 		theta = 2 * math.pi * i / segment
@@ -57,7 +57,7 @@ def circle(color, pos, radius, width=0, segment=32):
 	if width != 0:
 		glLineWidth(width)
 		glBegin(GL_LINE_LOOP)
-		glColor3f(r, g, b)
+		glColor4f(r, g, b, a)
 
 		for i in pt:
 			glVertex3f(i[0], i[1], 0.0)
@@ -66,7 +66,7 @@ def circle(color, pos, radius, width=0, segment=32):
 		glLineWidth(1.0)
 	else:
 		glBegin(GL_TRIANGLE_FAN)
-		glColor3f(r, g, b)
+		glColor4f(r, g, b, a)
 
 		glVertex3f(0, 0, 0)
 		for i in pt:
@@ -79,12 +79,12 @@ def circle(color, pos, radius, width=0, segment=32):
 # TODO(roy4801): width
 def line(color, start_pos, end_pos, width=1):
 	_gl_prologue()
-	r, g, b = [x/0xff for x in color]
+	r, g, b, a= [x/0xff for x in color]
 	
 	glLineWidth(float(width))
 	
 	glBegin(GL_LINES)
-	glColor3f(r, g, b)
+	glColor4f(r, g, b, a)
 	glVertex3i(*start_pos, 0)
 	glVertex3i(*end_pos, 0)
 	glEnd()

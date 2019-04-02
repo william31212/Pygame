@@ -53,14 +53,14 @@ class App(Window):
 				
 
 	def render(self):
-		draw_premitive.rect((255, 0, 0), (0, 0, 100, 100))
-		draw_premitive.rect((0, 255, 0), (100, 0, 100, 100))
+		draw_premitive.rect((255, 0, 0, 128), (0, 0, 100, 100))
+		draw_premitive.rect((0, 255, 0, 128), (50, 0, 100, 100))
 
-		draw_premitive.circle((255, 0, 0), (300, 300), 128)
-		draw_premitive.circle((0, 255, 0), (245, 248), 16)
-		draw_premitive.circle((0, 255, 0), (352, 253), 16)
+		draw_premitive.circle((255, 0, 0, 128), (300, 300), 128)
+		draw_premitive.circle((0, 255, 0, 128), (245, 248), 16)
+		draw_premitive.circle((0, 255, 0, 128), (352, 253), 16)
 
-		draw_premitive.line((0x19, 0x19, 0x70), (400, 300), (300, 400), 5)
+		draw_premitive.line((0x19, 0x19, 0x70, 128), (400, 300), (300, 400), 5)
 
 		for i in shape_list:
 			if i.type == S_CIRCLE:
