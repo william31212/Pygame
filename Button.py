@@ -11,7 +11,6 @@ from shape import *
 from player import *
 from window import *
 from window import *
-from Bullet import *
 
 
 class Button:
@@ -32,5 +31,19 @@ class Button:
 
 	def click_draw(self, x, y):
 		self.click.draw(x, y)
+
+
+	def hover_in_the_range(self, x, y):
+		#hover
+		if self.x <= x and x <= self.x + self.width:
+			if self.y <= y and y <= self.y + self.height:
+				return True
+			else:
+				return False
+		#normal
+		else:
+			return False
+
+
 
 

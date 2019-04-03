@@ -13,7 +13,7 @@ from shape import *
 from player import *
 from window import *
 from window import *
-from Bullet import *
+from bullet import *
 # import draw_premitive
 
 display_width = 800
@@ -59,6 +59,7 @@ class App(Window):
 				self.game_state = GAME_PLAY
 			if self.menu.click(mouse.x, mouse.y, mouse.btn[MOUSE_L]) == -1:
 				self.quit()
+
 
 		elif self.game_state == GAME_PLAY:
 			player.store_state(0)

@@ -1,7 +1,7 @@
 import sys, pygame
 
 
-from Button import *
+from button import *
 sys.path.append("./RHframework")
 from clock import Clock
 from input import *
@@ -11,8 +11,7 @@ from tile import *
 from shape import *
 from player import *
 from window import *
-from window import *
-from Bullet import *
+
 
 
 class Menu:
@@ -38,21 +37,13 @@ class Menu:
 	def draw_button(self, x, y, click):
 		if click == False:
 			#hover
-			if self.button_play.x <= x and x <= self.button_play.x + 300:
-				if self.button_play.y <= y and y <= self.button_play.y + 300:
-					self.button_play.hover_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
-				else:
-					self.button_play.normal_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
+			if self.button_play.hover_in_the_range(x, y) == True:
+				self.button_play.hover_draw(self.button_play.x, self.button_play.y)
+				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
 
-			elif self.button_quit.x <= x and x <= self.button_quit.x + 300:
-				if self.button_quit.y <= y and y <= self.button_quit.y + 300:
-					self.button_play.normal_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.hover_draw(self.button_quit.x, self.button_quit.y)
-				else:
-					self.button_play.normal_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
+			elif self.button_quit.hover_in_the_range(x, y) == True:
+				self.button_play.normal_draw(self.button_play.x, self.button_play.y)
+				self.button_quit.hover_draw(self.button_quit.x, self.button_quit.y)
 
 			#normal
 			else:
@@ -61,23 +52,15 @@ class Menu:
 
 		#click
 		else:
+			if self.button_play.hover_in_the_range(x, y) == True:
+				self.button_play.click_draw(self.button_play.x, self.button_play.y)
+				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
 
-			if self.button_play.x <= x and x <= self.button_play.x + 300:
-				if self.button_play.y <= y and y <= self.button_play.y + 300:
-					print('fucker')
-					self.button_play.click_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
-				else:
-					self.button_play.normal_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
+			elif self.button_quit.hover_in_the_range(x, y) == True:
+				self.button_play.click_draw(self.button_play.x, self.button_play.y)
+				self.button_quit.hover_draw(self.button_quit.x, self.button_quit.y)
 
-			elif self.button_quit.x <= x and x <= self.button_quit.x + 300:
-				if self.button_quit.y <= y and y <= self.button_quit.y + 300:
-					self.button_play.normal_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.click_draw(self.button_quit.x, self.button_quit.y)
-				else:
-					self.button_play.normal_draw(self.button_play.x, self.button_play.y)
-					self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
+			#normal
 			else:
 				self.button_play.normal_draw(self.button_play.x, self.button_play.y)
 				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
