@@ -8,11 +8,12 @@ from asset import *
 from utils import *
 from tile import *
 from shape import *
-from player import *
 from window import *
-from window import *
-from Bullet import *
 import draw_premitive
+#
+from player import *
+from Bullet import *
+from ui import *
 
 display_width = 800
 display_height = 640

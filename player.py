@@ -9,7 +9,7 @@ sys.path.append("./RHframework")
 from utils import *
 from shape import *
 from asset import *
-from font import *
+import ui
 
 store_arr = []
 blood_arr = []
@@ -30,6 +30,7 @@ class Player:
         self.rifleman_up = Sprite(SP_ANIMATE, Player+'_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_left = Sprite(SP_ANIMATE, Player+'_shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_right = Sprite(SP_ANIMATE, Player+'_shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
+        # TODO(roy4801): Use Image
         self.blood_img_100 = Sprite(SP_ANIMATE, 'blood_100original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_80 = Sprite(SP_ANIMATE, 'blood_80original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_60 = Sprite(SP_ANIMATE, 'blood_60original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
@@ -111,10 +112,8 @@ class Player:
         self.blood_state = self.blood_state + num
 
     def game_over(self, blood_state, who, quit):
-        self.p1_lose = Font("Player1 game over", "Georgia", (0,255,255), 50)
-        self.p2_lose = Font("Player2 game over", "Georgia", (0,255,255), 50)
-
+        notify_font = ui.notify_font # this should be refactored in the future
         if who == 1 and self.blood_state <= 0:
-            self.p1_lose.draw_str(200, 200)
+            notify_font.draw_str("Player1 game over", 200, 200)
         if who == 2 and self.blood_state <= 0:
-            self.p2_lose.draw_str(200, 200)
+            notify_font.draw_str("Player1 game over", 200, 200)
