@@ -13,6 +13,8 @@ from font import *
 
 store_arr = []
 blood_arr = []
+Player1_win = 0
+Player2_win = 0
 
 class Player:
     def __init__(self, x, y, width, height, state, Player):
@@ -23,7 +25,7 @@ class Player:
         self.state = state
         self.blood_state = 240
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 100, 100)
+        self.atk_box = Rect(self.x, self.y, 80, 70)
         self.rifleman_down = Sprite(SP_ANIMATE, Player+'_down', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_right = Sprite(SP_ANIMATE, Player+'_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_left = Sprite(SP_ANIMATE, Player+'_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
@@ -56,7 +58,7 @@ class Player:
         elif state == 6:
             self.state = 6
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 100, 100)
+        self.atk_box = Rect(self.x, self.y, 80, 70)
 
     def store_state(self, num=0):
         store_arr.append([self.x, self.y, self.state])
@@ -67,7 +69,7 @@ class Player:
         self.y = store_arr[num][1]
         self.state = store_arr[num][2]
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 100, 100)
+        self.atk_box = Rect(self.x, self.y, 80, 70)
 
     def store_clear(self):
         store_arr.clear()
@@ -109,6 +111,12 @@ class Player:
 
     def blood_update(self, blood, num=1):
         self.blood_state = self.blood_state + num
+
+    def check_who_win(self, player1_blood, plyaer2_blood):
+        if player1_blood == 0:
+            pass
+        if player2_blood == 0:
+            pass
 
     def game_over(self, blood_state, who, quit):
         self.p1_lose = Font("Player1 game over", "Georgia", (0,255,255), 50)
