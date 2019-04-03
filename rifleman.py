@@ -37,8 +37,8 @@ class App(Window):
 
 
 	def setup(self):
-		self.player = Player(600, 600, 100, 100, 2, 'Player1')
-		self.player2 = Player(0, 0, 100, 100, 2, 'Player2')
+		self.player = Player(250, 300, 100, 100, 2, 'Player1')
+		self.player2 = Player(500, 300, 100, 100, 2, 'Player2')
 		self.bullet = Bullet(0, 0, 2, 20)
 		self.bullet2 = Bullet(0, 0, 2, 20)
 		self.maps = TiledMap("./level2.tmx")
@@ -61,34 +61,34 @@ class App(Window):
 			player2.store_state(1)
 
 			#Player 1
-			if keyboard.key_state[KEY_UP]:
+			if keyboard.key_state[KEY_w]:
 				player.update_state(player.x, player.y, 1)
-			if keyboard.key_state[KEY_DOWN]:
+			if keyboard.key_state[KEY_s]:
 				player.update_state(player.x, player.y, 2)
-			if keyboard.key_state[KEY_LEFT]:
+			if keyboard.key_state[KEY_a]:
 				player.update_state(player.x, player.y, 3)
-			if keyboard.key_state[KEY_RIGHT]:
+			if keyboard.key_state[KEY_d]:
 				player.update_state(player.x, player.y, 4)
-			if keyboard.key_state[KEY_PERIOD]:
+			if keyboard.key_state[KEY_v]:
 				bullet.setting(player.x, player.y, 0)
 				player.update_state(player.x, player.y, 5)
-			if keyboard.key_state[KEY_SLASH]:
+			if keyboard.key_state[KEY_b]:
 				bullet.setting(player.x, player.y, 1)
 				player.update_state(player.x, player.y, 6)
 
 			#Player 2
-			if keyboard.key_state[KEY_w]:
+			if keyboard.key_state[KEY_UP]:
 				player2.update_state(player2.x, player2.y, 1)
-			if keyboard.key_state[KEY_s]:
+			if keyboard.key_state[KEY_DOWN]:
 				player2.update_state(player2.x, player2.y, 2)
-			if keyboard.key_state[KEY_a]:
+			if keyboard.key_state[KEY_LEFT]:
 				player2.update_state(player2.x, player2.y, 3)
-			if keyboard.key_state[KEY_d]:
+			if keyboard.key_state[KEY_RIGHT]:
 				player2.update_state(player2.x, player2.y, 4)
-			if keyboard.key_state[KEY_v]:
+			if keyboard.key_state[KEY_PERIOD]:
 				bullet2.setting(player2.x, player2.y, 0)
 				player2.update_state(player2.x, player2.y, 5)
-			if keyboard.key_state[KEY_b]:
+			if keyboard.key_state[KEY_SLASH]:
 				bullet2.setting(player2.x, player2.y, 1)
 				player2.update_state(player2.x, player2.y, 6)
 
@@ -120,7 +120,9 @@ class App(Window):
 			player.store_clear()
 			bullet.hit_people(player2.atk_box, player2.blood_update, player2.blood_state)
 			bullet2.hit_people(player.atk_box, player.blood_update, player.blood_state)
-			# player.check_who_win(player.blood_state, player2.blood_state)
+			if player.check_who_win(player.blood_state, player2.blood_state) == True:
+				player.reset_state(250,300)
+				player2.reset_state(500,300)
 
 		if self.game_state == GAME_MENU:
 			# btn_click

@@ -40,6 +40,11 @@ class Player:
         self.blood_img_10 = Sprite(SP_ANIMATE, 'blood_10original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
         self.blood_img_0 = Sprite(SP_ANIMATE, 'blood_0original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
 
+    def reset_state(self, x, y):
+        self.x = x
+        self.y = y
+        self.blood_state = 240
+
     def update_state(self, x, y, state):
         if state == 1:
             self.y = y - 10
@@ -112,11 +117,17 @@ class Player:
     def blood_update(self, blood, num=1):
         self.blood_state = self.blood_state + num
 
-    def check_who_win(self, player1_blood, plyaer2_blood):
-        if player1_blood == 0:
-            pass
-        if player2_blood == 0:
-            pass
+    def check_who_win(self, player1_blood, player2_blood):
+        global Player1_win ,Player2_win
+        print(Player1_win, Player2_win)
+        if player1_blood <= 0:
+            Player2_win += 1
+            return True
+        elif player2_blood <= 0:
+            Player1_win += 1
+            return True
+        else:
+            return False
 
     def game_over(self, blood_state, who, quit):
         self.p1_lose = Font("Player1 game over", "Georgia", (0,255,255), 50)
