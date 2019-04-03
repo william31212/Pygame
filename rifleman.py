@@ -19,8 +19,10 @@ from bullet import *
 display_width = 800
 display_height = 640
 
+GAME_LEAVE = -1
 GAME_MENU = 0
 GAME_PLAY = 1
+GAME_CLICK = 2
 
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
@@ -53,15 +55,8 @@ class App(Window):
 		bullet2	= self.bullet2
 		mouse = self.mouse
 
-		if self.game_state == GAME_MENU:
-			# btn_click
-			if self.menu.click(mouse.x, mouse.y, mouse.btn[MOUSE_L]) == 1:
-				self.game_state = GAME_PLAY
-			if self.menu.click(mouse.x, mouse.y, mouse.btn[MOUSE_L]) == -1:
-				self.quit()
 
-
-		elif self.game_state == GAME_PLAY:
+		if self.game_state == GAME_PLAY:
 			player.store_state(0)
 			player2.store_state(1)
 
@@ -127,6 +122,13 @@ class App(Window):
 			bullet2.hit_people(player.atk_box, player.blood_update, player.blood_state)
 			# player.check_who_win(player.blood_state, player2.blood_state)
 
+		if self.game_state == GAME_MENU:
+			# btn_click
+			if self.menu.click(mouse.x, mouse.y, mouse.btn[MOUSE_L]) == 1:
+				self.game_state = GAME_CLICK
+			if self.menu.click(mouse.x, mouse.y, mouse.btn[MOUSE_L]) == -1:
+				self.game_state = GAME_LEAVE
+
 
 
 	def render(self):
@@ -143,10 +145,19 @@ class App(Window):
 			# player.game_over(player.blood_state, 1)
 			# player2.game_over(player2.blood_state, 2)
 
-		if self.game_state == GAME_MENU:
-			# print(self.mouse.x, self.mouse.y)
+		elif self.game_state == GAME_MENU:
 			self.menu.draw_background()
-			self.menu.draw_button(self.mouse.x, self.mouse.y, self.mouse.btn[MOUSE_L])
+			self.menu.draw_button(self.mouse.x, self.mouse.y, self.game_state)
+
+		elif self.game_state == GAME_CLICK:
+			self.menu.draw_background()
+			self.menu.draw_button(self.mouse.x, self.mouse.y, self.game_state)
+			self.game_state = GAME_PLAY
+
+		elif self.game_state == GAME_LEAVE:
+			self.menu.draw_background()
+			self.menu.draw_button(self.mouse.x, self.mouse.y, self.game_state)
+			self.ask_quit()
 
 		######debug#######
 		# player.draw_character()
