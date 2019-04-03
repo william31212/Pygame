@@ -1,9 +1,6 @@
 import sys, pygame
 
-<<<<<<< HEAD
-from button import *
-=======
->>>>>>> 63b41eac05dd887f33911202e614d9f957fa046f
+from ui import *
 sys.path.append("./RHframework")
 
 from clock import Clock
@@ -24,48 +21,33 @@ class Menu:
 
 	def click(self, x, y, btn):
 		if btn == True:
-			if self.button_play.hover_in_the_range(x, y) == True:
+			if self.button_play.update([x, y], btn) == 0:
 					return 1
-			elif self.button_quit.hover_in_the_range(x, y) == True:
+			elif self.button_quit.update([x, y], btn) == 0:
 					return -1
 
 	def draw_background(self):
 		self.background.draw(0,0)
 
 	def draw_button(self, x, y, click):
-		if click == 0:
 			#hover
-			if self.button_play.hover_in_the_range(x, y) == True:
+			if self.button_play.update([x, y], click) == 1:
 				self.button_play.hover_draw(self.button_play.x, self.button_play.y)
 				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
 
-			elif self.button_quit.hover_in_the_range(x, y) == True:
+			elif self.button_quit.update([x, y], click) == 1:
 				self.button_play.normal_draw(self.button_play.x, self.button_play.y)
 				self.button_quit.hover_draw(self.button_quit.x, self.button_quit.y)
 
-			#normal
+			elif self.button_play.update([x, y], click) == 0:
+				self.button_play.click_draw(self.button_play.x, self.button_play.y)
+				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
+
+			elif self.button_quit.update([x, y], click) == 0:
+				self.button_play.normal_draw(self.button_play.x, self.button_play.y)
+				self.button_quit.click_draw(self.button_quit.x, self.button_quit.y)
+
 			else:
 				self.button_play.normal_draw(self.button_play.x, self.button_play.y)
 				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
 
-		#click
-		elif click == 2 or click == -1:
-			if self.button_play.hover_in_the_range(x, y) == True:
-				self.button_play.click_draw(self.button_play.x, self.button_play.y)
-				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
-
-			elif self.button_quit.hover_in_the_range(x, y) == True:
-				self.button_play.normal_draw(self.button_play.x, self.button_play.y)
-<<<<<<< HEAD
-				self.button_quit.click_draw(self.button_quit.x, self.button_quit.y)
-
-
-
-
-
-
-
-
-=======
-				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
->>>>>>> 63b41eac05dd887f33911202e614d9f957fa046f

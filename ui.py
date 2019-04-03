@@ -57,7 +57,25 @@ class Button:
 
 	def update(self, mouse_pos, click):
 		mx, my = mouse_pos
-		# TODO(roy4801): implement this
+		if click == False:
+			if self.x <= mx <= self.x + self.width:
+				if self.y <= my <= self.y + self.height:
+					return BTN_HOVER
+				else:
+					return BTN_NORMAL
+			else:
+				return BTN_NORMAL
+
+		elif click == True:
+			if self.x <= mx <= self.x + self.width:
+				if self.y <= my <= self.y + self.height:
+					return BTN_CLICK
+				else:
+					return BTN_NORMAL
+			else:
+				return BTN_NORMAL
+
+
 
 	def draw(self):
 		pass
