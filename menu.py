@@ -1,7 +1,11 @@
 import sys, pygame
 
+<<<<<<< HEAD
 from button import *
+=======
+>>>>>>> 63b41eac05dd887f33911202e614d9f957fa046f
 sys.path.append("./RHframework")
+
 from clock import Clock
 from input import *
 from asset import *
@@ -12,10 +16,8 @@ from player import *
 from window import *
 
 
-
 class Menu:
 	def __init__(self):
-		# self.surface = pygame.image.load('./assets/img/start2.png').convert()
 		self.background = Image('./assets/img/' + 'start2' + '.png', (5.95, 7.85))
 		self.button_play = Button(50, 450, 300, 70, Image('./assets/img/' + 'play' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'play_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'play_click' + '.png', (1.0, 1.0)))
 		self.button_quit = Button(450, 450, 300, 70, Image('./assets/img/' + 'quit' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_click' + '.png', (1.0, 1.0)))
@@ -54,6 +56,7 @@ class Menu:
 
 			elif self.button_quit.hover_in_the_range(x, y) == True:
 				self.button_play.normal_draw(self.button_play.x, self.button_play.y)
+<<<<<<< HEAD
 				self.button_quit.click_draw(self.button_quit.x, self.button_quit.y)
 
 
@@ -63,3 +66,6 @@ class Menu:
 
 
 
+=======
+				self.button_quit.normal_draw(self.button_quit.x, self.button_quit.y)
+>>>>>>> 63b41eac05dd887f33911202e614d9f957fa046f
