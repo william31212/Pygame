@@ -100,7 +100,7 @@ class Window:
 			glClear(GL_COLOR_BUFFER_BIT)
 		else:
 			pygame.display.get_surface().fill((128, 128, 128))
-	
+
 	def _flip(self):
 		pygame.display.flip()
 

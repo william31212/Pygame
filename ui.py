@@ -29,3 +29,54 @@ class Label:
 			size = font.get_size(self.text, self.text_color)
 		dp.rect(self.bg_color, (*self.pos, *size))
 		font.draw_str(self.pos, self.text, self.text_color)
+
+BTN_CLICK = 0
+BTN_HOVER = 1
+BTN_NORMAL = 2
+class Button:
+	def __init__(self, x, y, width, height, normal, hover, click):
+		self.normal = normal
+		self.hover = hover
+		self.click = click
+		self.now_state = BTN_NORMAL
+		self.x = x
+		self.y = y
+		self.width = width
+		self.height = height
+
+	# TODO(roy4801): deprecated
+	def normal_draw(self, x, y):
+		self.normal.draw(x, y)
+
+	def hover_draw(self, x, y):
+		self.hover.draw(x, y)
+
+	def click_draw(self, x, y):
+		self.click.draw(x, y)
+	############################
+
+	def update(self, mouse_pos, click):
+		mx, my = mouse_pos
+		if click == False:
+			if self.x <= mx <= self.x + self.width:
+				if self.y <= my <= self.y + self.height:
+					return BTN_HOVER
+				else:
+					return BTN_NORMAL
+			else:
+				return BTN_NORMAL
+
+		elif click == True:
+			if self.x <= mx <= self.x + self.width:
+				if self.y <= my <= self.y + self.height:
+					return BTN_CLICK
+				else:
+					return BTN_NORMAL
+			else:
+				return BTN_NORMAL
+
+
+
+	def draw(self):
+		pass
+		# TODO(roy4801): implement this

@@ -5,7 +5,7 @@ import sys
 import pytmx
 import time
 
-import draw_premitive
+# import draw_premitive
 
 
 import pprint # test
