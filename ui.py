@@ -30,53 +30,61 @@ class Label:
 		dp.rect(self.bg_color, (*self.pos, *size))
 		font.draw_str(self.pos, self.text, self.text_color)
 
-BTN_CLICK = 0
-BTN_HOVER = 1
-BTN_NORMAL = 2
+BTN_PRESS   = 0
+BTN_RELEASE = 1
+BTN_CLICK   = 2
+BTN_HOVER   = 3
+BTN_NORMAL  = 4
 class Button:
-	def __init__(self, x, y, width, height, normal, hover, click):
+	def __init__(self, x, y, width, height, normal, hover, press):
+		# image
 		self.normal = normal
 		self.hover = hover
-		self.click = click
+		self.press = press
+		# info
 		self.now_state = BTN_NORMAL
 		self.x = x
 		self.y = y
 		self.width = width
 		self.height = height
 
-	# TODO(roy4801): deprecated
-	def normal_draw(self, x, y):
+	def _normal_draw(self, x, y):
 		self.normal.draw(x, y)
 
-	def hover_draw(self, x, y):
+	def _hover_draw(self, x, y):
 		self.hover.draw(x, y)
 
-	def click_draw(self, x, y):
-		self.click.draw(x, y)
-	############################
+	def _press_draw(self, x, y):
+		self.press.draw(x, y)
 
-	def update(self, mouse_pos, click):
+	def update(self, mouse_pos, press):
 		mx, my = mouse_pos
-		if click == False:
-			if self.x <= mx <= self.x + self.width:
-				if self.y <= my <= self.y + self.height:
-					return BTN_HOVER
+		# print('mx={} my={} {}'.format(mx, my, press))
+		if self.x <= mx and mx <= self.x + self.width and self.y <= my and my <= self.y + self.height:
+			if press:
+				self.now_state = BTN_PRESS
+			else: # not press
+				if self.now_state == BTN_PRESS:
+					self.now_state = BTN_CLICK
 				else:
-					return BTN_NORMAL
-			else:
-				return BTN_NORMAL
-
-		elif click == True:
-			if self.x <= mx <= self.x + self.width:
-				if self.y <= my <= self.y + self.height:
-					return BTN_CLICK
-				else:
-					return BTN_NORMAL
-			else:
-				return BTN_NORMAL
-
-
+					self.now_state = BTN_HOVER
+		else:
+			self.now_state = BTN_NORMAL
 
 	def draw(self):
-		pass
-		# TODO(roy4801): implement this
+		state = self.now_state
+		x = self.x
+		y = self.y
+
+		if state == BTN_NORMAL:
+			self._normal_draw(x, y)
+		elif state == BTN_HOVER:
+			self._hover_draw(x, y)
+		elif state == BTN_PRESS:
+			self._press_draw(x, y)
+
+	def is_pressed(self):
+		return True if self.now_state == BTN_PRESS else False
+
+	def is_clicked(self):
+		return True if self.now_state == BTN_CLICK else False

@@ -1,9 +1,6 @@
 import sys, pygame
-
-
-from ui import *
-from menu import *
 sys.path.append("./RHframework")
+
 from clock import Clock
 from input import *
 from asset import *
@@ -16,6 +13,7 @@ import draw_premitive
 from player import *
 from Bullet import *
 from ui import *
+from menu import *
 
 display_width = 800
 display_height = 640
@@ -123,14 +121,14 @@ class App(Window):
 			bullet2.hit_people(player.atk_box, player.blood_update, player.blood_state)
 			# player.check_who_win(player.blood_state, player2.blood_state)
 
-		if self.game_state == GAME_MENU:
+		elif self.game_state == GAME_MENU:
+			self.menu.update(mouse)
 			# btn_click
-			if self.menu.click(mouse.x, mouse.y, mouse.btn[MOUSE_L]) == 1:
-				self.game_state = GAME_CLICK
-			if self.menu.click(mouse.x, mouse.y, mouse.btn[MOUSE_L]) == -1:
-				self.game_state = GAME_LEAVE
-
-
+			# TODO(roy4801): ugly
+			if self.menu.button_play.is_clicked():
+				self.game_state = GAME_PLAY
+			elif self.menu.button_quit.is_clicked():
+				self.ask_quit()
 
 	def render(self):
 		maps = self.maps
@@ -147,18 +145,7 @@ class App(Window):
 			# player2.game_over(player2.blood_state, 2)
 
 		elif self.game_state == GAME_MENU:
-			self.menu.draw_background()
-			self.menu.draw_button(self.mouse.x, self.mouse.y, self.game_state)
-
-		elif self.game_state == GAME_CLICK:
-			self.menu.draw_background()
-			self.menu.draw_button(self.mouse.x, self.mouse.y, self.game_state)
-			self.game_state = GAME_PLAY
-
-		elif self.game_state == GAME_LEAVE:
-			self.menu.draw_background()
-			self.menu.draw_button(self.mouse.x, self.mouse.y, self.game_state)
-			self.ask_quit()
+			self.menu.draw()
 
 		######debug#######
 		# player.draw_character()
