@@ -26,9 +26,9 @@ class Bullet:
         self.bullet_left = Sprite(SP_ANIMATE, 'bullet_left', 3, ANI_LOOP, (0.5, 0.5), 0, (3, 3))
 
     def setting(self, x, y, state):
-        if state == 1:
+        if state == 1 or state == 4:
             self.x = x + 13
-        else:
+        if state == 2 or state == 3:
             self.x = x - 2
         self.y = y + 14
         self.state = state
@@ -43,9 +43,9 @@ class Bullet:
     def hit_people(self, atk_box, update_blood, blood_state):
         # move the bullet
         for i in self.bullet_list:
-            if i[2] == 1:
+            if i[2] == 4:
                 i[0] = i[0] + i[3]
-            else:
+            if i[2] == 3:
                 i[0] = i[0] - i[3]
         # kill to each other
         for i in self.bullet_list:
@@ -65,9 +65,9 @@ class Bullet:
 
     def draw(self):
         for i in self.bullet_list:
-            if i[2] == 1:
+            if i[2] == 4:
                 self.bullet_right.draw(i[0], i[1])
-            else:
+            if i[2] == 3:
                 self.bullet_left.draw(i[0], i[1])
 
     def _new_bullet(self, new_bul):

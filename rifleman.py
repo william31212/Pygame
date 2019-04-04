@@ -84,35 +84,35 @@ class App(Window):
 
 			#Player 1
 			if keyboard.key_state[KEY_w]:
-				player.update_state(player.x, player.y, 1)
+				player.update_state(player.x, player.y, 1, False)
 			if keyboard.key_state[KEY_s]:
-				player.update_state(player.x, player.y, 2)
+				player.update_state(player.x, player.y, 2, False)
 			if keyboard.key_state[KEY_a]:
-				player.update_state(player.x, player.y, 3)
+				player.update_state(player.x, player.y, 3, False)
 			if keyboard.key_state[KEY_d]:
-				player.update_state(player.x, player.y, 4)
-			elif keyboard.key_state[KEY_v]:
-				bullet.setting(player.x, player.y, 0)
-				player.update_state(player.x, player.y, 5)
-			elif keyboard.key_state[KEY_b]:
-				bullet.setting(player.x, player.y, 1)
-				player.update_state(player.x, player.y, 6)
+				player.update_state(player.x, player.y, 4, False)
+			if keyboard.key_state[KEY_v]:
+				bullet.setting(player.x, player.y, player.state)
+				player.update_state(player.x, player.y, player.state, True)
+			# elif keyboard.key_state[KEY_b]:
+			# 	bullet.setting(player.x, player.y, 1)
+			# 	player.update_state(player.x, player.y, 6)
 
 			#Player 2
 			if keyboard.key_state[KEY_UP]:
-				player2.update_state(player2.x, player2.y, 1)
+				player2.update_state(player2.x, player2.y, 1, False)
 			if keyboard.key_state[KEY_DOWN]:
-				player2.update_state(player2.x, player2.y, 2)
+				player2.update_state(player2.x, player2.y, 2, False)
 			if keyboard.key_state[KEY_LEFT]:
-				player2.update_state(player2.x, player2.y, 3)
+				player2.update_state(player2.x, player2.y, 3, False)
 			if keyboard.key_state[KEY_RIGHT]:
-				player2.update_state(player2.x, player2.y, 4)
-			elif keyboard.key_state[KEY_PERIOD]:
-				bullet2.setting(player2.x, player2.y, 0)
-				player2.update_state(player2.x, player2.y, 5)
-			elif keyboard.key_state[KEY_SLASH]:
-				bullet2.setting(player2.x, player2.y, 1)
-				player2.update_state(player2.x, player2.y, 6)
+				player2.update_state(player2.x, player2.y, 4, False)
+			if keyboard.key_state[KEY_PERIOD]:
+				bullet2.setting(player2.x, player2.y, player2.state)
+				player2.update_state(player2.x, player2.y, player2.state, True)
+			# elif keyboard.key_state[KEY_SLASH]:
+			# 	bullet2.setting(player2.x, player2.y, 1)
+			# 	player2.update_state(player2.x, player2.y, 6)
 
 			if keyboard.key_state[KEY_ESC]:
 				pygame.quit()
@@ -122,23 +122,23 @@ class App(Window):
 			maps.tile_object(player.obs_box, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
 			maps.tile_object(player2.obs_box, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
 
-			if player.x <= -30:
-				player.x = 760
-			elif player.y <= -30:
-				player.y = 640
-			elif player.x >= 760:
-				player.x = -30
-			elif player.y >= 640:
-				player.y = -30
+			if player.x <= 0:
+				player.x = 0
+			elif player.y <= 0:
+				player.y = 0
+			elif player.x >= 800:
+				player.x = 800
+			elif player.y >= 600:
+				player.y = 600
 
-			if player2.x <= -30:
-				player2.x = 760
-			elif player2.y <= -30:
-				player2.y = 640
-			elif player2.x >= 760:
-				player2.x = -30
-			elif player2.y >= 640:
-				player2.y = -30
+			if player2.x <= 0:
+				player2.x = 0
+			elif player2.y <= 0:
+				player2.y = 0
+			elif player2.x >= 800:
+				player2.x = 800
+			elif player2.y >= 800:
+				player2.y = 800
 
 			bullet.hit_people(player2.atk_box, player2.blood_update, player2.blood_state)
 			bullet2.hit_people(player.atk_box, player.blood_update, player.blood_state)

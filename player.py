@@ -26,6 +26,7 @@ class Player:
         self.blood_state = 240
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
         self.atk_box = Rect(self.x, self.y, 80, 80)
+        self.shoot = False
         self.rifleman_down = Sprite(SP_ANIMATE, Player+'_down', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_right = Sprite(SP_ANIMATE, Player+'_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_left = Sprite(SP_ANIMATE, Player+'_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
@@ -48,23 +49,30 @@ class Player:
         time.sleep(1)
         self.blood_state = 240
 
-    def update_state(self, x, y, state):
-        if state == 1:
-            self.y = y - 10
-            self.state = 1
-        elif state == 2:
-            self.y = y + 10
-            self.state = 2
-        elif state == 3:
-            self.x = x - 10
-            self.state = 3
-        elif state == 4:
-            self.x = x + 10
-            self.state = 4
-        elif state == 5:
-            self.state = 5
-        elif state == 6:
-            self.state = 6
+    def update_state(self, x, y, state, shoot):
+        self.shoot = shoot
+
+        if shoot == False:
+            if state == 1:
+                self.y = y - 10
+                self.state = 1
+            elif state == 2:
+                self.y = y + 10
+                self.state = 2
+            elif state == 3:
+                self.x = x - 10
+                self.state = 3
+            elif state == 4:
+                self.x = x + 10
+                self.state = 4
+        else:
+            if state == 3:
+                self.x = x + 10
+                self.state = 3
+            if state == 4:
+                self.x = x - 10
+                self.state = 4
+
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
         self.atk_box = Rect(self.x, self.y, 80, 80)
 
@@ -85,21 +93,26 @@ class Player:
 
     def draw_character(self):
         self.draw_blood(self.blood_state)
-
-        if self.state == 1:
-            self.rifleman_up.draw(self.x, self.y)
-        elif self.state == 2:
-            self.rifleman_down.draw(self.x, self.y)
-        elif self.state == 3:
-            self.rifleman_left.draw(self.x, self.y)
-        elif self.state == 4:
-            self.rifleman_right.draw(self.x, self.y)
-        elif self.state == 5:
-            self.shoot_left.draw(self.x, self.y)
-            self.state = 3
-        elif self.state == 6:
-            self.shoot_right.draw(self.x, self.y)
-            self.state = 4
+        #sprite
+        if self.shoot == True:
+            if self.state == 1:
+                self.rifleman_up.draw(self.x, self.y)
+            elif self.state == 2:
+                self.rifleman_down.draw(self.x, self.y)
+            elif self.state == 3:
+                self.shoot_left.draw(self.x, self.y)
+            elif self.state == 4:
+                self.shoot_right.draw(self.x, self.y)
+        #normal
+        else:
+            if self.state == 1:
+                self.rifleman_up.draw(self.x, self.y)
+            elif self.state == 2:
+                self.rifleman_down.draw(self.x, self.y)
+            elif self.state == 3:
+                self.rifleman_left.draw(self.x, self.y)
+            elif self.state == 4:
+                self.rifleman_right.draw(self.x, self.y)
 
     def draw_blood(self, blood_state):
         if blood_state <= 0:
