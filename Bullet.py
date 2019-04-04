@@ -33,10 +33,11 @@ class Bullet:
         self.y = y + 14
         self.state = state
 
+        if self.clock.getPassedSec() >= 0.5 and len(self.bullet_list) > 0:
+            self._new_bullet([self.x, self.y, self.state, self.speed])
+            self.clock.reset()
         if len(self.bullet_list) == 0:
-            self.new_bullet([self.x, self.y, self.state, self.speed])
-        if self.clock.getPassedSec() >= 0.2 and len(self.bullet_list) > 0:
-            self.new_bullet([self.x, self.y, self.state, self.speed])
+            self._new_bullet([self.x, self.y, self.state, self.speed])
             self.clock.reset()
 
     def hit_people(self, atk_box, update_blood, blood_state):
@@ -56,12 +57,18 @@ class Bullet:
     def hit_thing(self, bullet_thing):
         self.bullet_list.remove(bullet_thing)
 
-    def shoot(self):
+    def out_of_bound(self, display_x, display_y):
+        for i in self.bullet_list:
+            bullet_rect = Rect(i[0], i[1], 30, 30)
+            if display_x <= i[0] or 0 >= i[0] or display_y <= i[1] or 0 >= i[1]:
+                self.bullet_list.remove(i)
+
+    def draw(self):
         for i in self.bullet_list:
             if i[2] == 1:
                 self.bullet_right.draw(i[0], i[1])
             else:
                 self.bullet_left.draw(i[0], i[1])
 
-    def new_bullet(self, new_bul):
+    def _new_bullet(self, new_bul):
         self.bullet_list.append(new_bul)

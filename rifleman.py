@@ -11,7 +11,7 @@ from window import *
 import draw_premitive
 #
 from player import *
-from Bullet import *
+from bullet import *
 from ui import *
 from menu import *
 
@@ -59,6 +59,11 @@ class App(Window):
 			player.store_state(0)
 			player2.store_state(1)
 
+			# reset the game
+			if player.blood_state <= 0 or player2.blood_state <= 0:
+				player.reset_state(250,300)
+				player2.reset_state(500,300)
+
 			#Player 1
 			if keyboard.key_state[KEY_w]:
 				player.update_state(player.x, player.y, 1)
@@ -68,10 +73,10 @@ class App(Window):
 				player.update_state(player.x, player.y, 3)
 			if keyboard.key_state[KEY_d]:
 				player.update_state(player.x, player.y, 4)
-			if keyboard.key_state[KEY_v]:
+			elif keyboard.key_state[KEY_v]:
 				bullet.setting(player.x, player.y, 0)
 				player.update_state(player.x, player.y, 5)
-			if keyboard.key_state[KEY_b]:
+			elif keyboard.key_state[KEY_b]:
 				bullet.setting(player.x, player.y, 1)
 				player.update_state(player.x, player.y, 6)
 
@@ -84,16 +89,17 @@ class App(Window):
 				player2.update_state(player2.x, player2.y, 3)
 			if keyboard.key_state[KEY_RIGHT]:
 				player2.update_state(player2.x, player2.y, 4)
-			if keyboard.key_state[KEY_PERIOD]:
+			elif keyboard.key_state[KEY_PERIOD]:
 				bullet2.setting(player2.x, player2.y, 0)
 				player2.update_state(player2.x, player2.y, 5)
-			if keyboard.key_state[KEY_SLASH]:
+			elif keyboard.key_state[KEY_SLASH]:
 				bullet2.setting(player2.x, player2.y, 1)
 				player2.update_state(player2.x, player2.y, 6)
 
 			if keyboard.key_state[KEY_ESC]:
 				pygame.quit()
 				sys.exit()
+
 
 			maps.tile_object(player.obs_box, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
 			maps.tile_object(player2.obs_box, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
@@ -116,12 +122,14 @@ class App(Window):
 			elif player2.y >= 640:
 				player2.y = -30
 
-			player.store_clear()
 			bullet.hit_people(player2.atk_box, player2.blood_update, player2.blood_state)
 			bullet2.hit_people(player.atk_box, player.blood_update, player.blood_state)
-			if player.check_who_win(player.blood_state, player2.blood_state) == True:
-				player.reset_state(250,300)
-				player2.reset_state(500,300)
+			bullet.out_of_bound(display_width, display_height)
+			bullet2.out_of_bound(display_width, display_height)
+			player.store_clear()
+
+			print(player.blood_state, player2.blood_state)
+			player.check_who_win(player.blood_state, player2.blood_state)
 
 		elif self.game_state == GAME_MENU:
 			self.menu.update(mouse)
@@ -141,8 +149,8 @@ class App(Window):
 
 		if self.game_state == GAME_PLAY:
 			maps.draw([player.draw_character,player2.draw_character])
-			bullet.shoot()
-			bullet2.shoot()
+			bullet.draw()
+			bullet2.draw()
 			# player.game_over(player.blood_state, 1)
 			# player2.game_over(player2.blood_state, 2)
 
