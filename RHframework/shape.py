@@ -34,6 +34,9 @@ class Rect:
 				continue
 		return False
 
+	def to_screen_space(self, pos):
+		return Rect(pos[0]+self.x, pos[1]+self.y, self.wid, self.hei)
+
 	def get_tuple(self):
 		return (self.x, self.y, self.wid, self.hei)
 	def get_list(self):

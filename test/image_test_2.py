@@ -42,16 +42,10 @@ class App(Window):
         lu = self.img.get_left_upper()
 
         # draw obs_box
-        obs_box_list = obs_box.get_list()
-        obs_box_list[0] += lu[0]
-        obs_box_list[1] += lu[1]
-        dp.rect((0xca, 0x0a, 0xff, 200), obs_box_list, 2)
+        dp.rect((0xca, 0x0a, 0xff, 200), obs_box.to_screen_space((lu[0], lu[1])).get_tuple(), 2)
 
         # draw atk_box
-        atk_box_list = atk_box.get_list()
-        atk_box_list[0] += lu[0]
-        atk_box_list[1] += lu[1]
-        dp.rect((0xca, 0x0a, 0xff, 200), atk_box_list, 2)
+        dp.rect((0xca, 0x0a, 0xff, 200), atk_box.to_screen_space((lu[0], lu[1])).get_tuple(), 2)
 
         self.img.draw(x, y) # draw the image
         self.img.dbg_draw(x, y) # draw the image border
