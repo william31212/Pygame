@@ -25,7 +25,7 @@ class Player:
         self.state = state
         self.blood_state = 240
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 80, 70)
+        self.atk_box = Rect(self.x, self.y, 80, 80)
         self.rifleman_down = Sprite(SP_ANIMATE, Player+'_down', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_right = Sprite(SP_ANIMATE, Player+'_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.rifleman_left = Sprite(SP_ANIMATE, Player+'_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
@@ -66,7 +66,7 @@ class Player:
         elif state == 6:
             self.state = 6
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 80, 70)
+        self.atk_box = Rect(self.x, self.y, 80, 80)
 
     def store_state(self, num=0):
         store_arr.append([self.x, self.y, self.state])
@@ -77,7 +77,7 @@ class Player:
         self.y = store_arr[num][1]
         self.state = store_arr[num][2]
         self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 80, 70)
+        self.atk_box = Rect(self.x, self.y, 80, 80)
 
     def store_clear(self):
         store_arr.clear()
