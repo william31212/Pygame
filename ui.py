@@ -10,7 +10,7 @@ LABEL_ALIGN_LEFT  = 0
 LABEL_ALIGN_MID   = 1
 LABEL_ALIGN_RIGHT = 2
 class Label:
-	def __init__(self, text, text_color, rect, bg_color=(0, 0, 0, 0), font_path=GET_PATH(FONT_MAIN, 'LucidaBrightDemiBold.ttf'), size=12):
+	def __init__(self, text, text_color, rect, size=12, bg_color=(0, 0, 0, 0), font_path=GET_PATH(FONT_MAIN, 'WhiteRabbit.otf')):
 		# font
 		self.font = Font(font_path, size)
 		self.font_size = size

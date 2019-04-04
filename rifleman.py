@@ -40,6 +40,8 @@ class App(Window):
 		self.player2 = Player(500, 300, 100, 100, 2, 'Player2')
 		self.bullet = Bullet(0, 0, 2, 20)
 		self.bullet2 = Bullet(0, 0, 2, 20)
+		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
+		self.message2 = Label('Player2: ' + str(self.player.get_player2_point()), (85, 107, 47), [604,30,200,50], 30)
 		self.maps = TiledMap("./level2.tmx")
 		self.maps.pick_layer()
 		self.menu = Menu()
@@ -53,9 +55,19 @@ class App(Window):
 		bullet	= self.bullet
 		bullet2	= self.bullet2
 		mouse = self.mouse
+		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
+		self.message2 = Label('Player2: ' + str(self.player.get_player2_point()), (85, 107, 47), [604,30,200,50], 30)
 
+		if self.game_state == GAME_MENU:
+			self.menu.update(mouse)
+			# btn_click
+			# TODO(roy4801): ugly
+			if self.menu.button_play.is_clicked():
+				self.game_state = GAME_PLAY
+			elif self.menu.button_quit.is_clicked():
+				self.ask_quit()
 
-		if self.game_state == GAME_PLAY:
+		elif self.game_state == GAME_PLAY:
 			player.store_state(0)
 			player2.store_state(1)
 
@@ -131,14 +143,6 @@ class App(Window):
 			print(player.blood_state, player2.blood_state)
 			player.check_who_win(player.blood_state, player2.blood_state)
 
-		elif self.game_state == GAME_MENU:
-			self.menu.update(mouse)
-			# btn_click
-			# TODO(roy4801): ugly
-			if self.menu.button_play.is_clicked():
-				self.game_state = GAME_PLAY
-			elif self.menu.button_quit.is_clicked():
-				self.ask_quit()
 
 	def render(self):
 		maps = self.maps
@@ -147,10 +151,13 @@ class App(Window):
 		bullet = self.bullet
 		bullet2 = self.bullet2
 
+
 		if self.game_state == GAME_PLAY:
 			maps.draw([player.draw_character,player2.draw_character])
 			bullet.draw()
 			bullet2.draw()
+			self.message1.draw()
+			self.message2.draw()
 			# player.game_over(player.blood_state, 1)
 			# player2.game_over(player2.blood_state, 2)
 

@@ -32,19 +32,19 @@ class Player:
         self.rifleman_up = Sprite(SP_ANIMATE, Player+'_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_left = Sprite(SP_ANIMATE, Player+'_shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
         self.shoot_right = Sprite(SP_ANIMATE, Player+'_shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        # TODO(roy4801): Use Image
-        self.blood_img_100 = Sprite(SP_ANIMATE, 'blood_100original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
-        self.blood_img_80 = Sprite(SP_ANIMATE, 'blood_80original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
-        self.blood_img_60 = Sprite(SP_ANIMATE, 'blood_60original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
-        self.blood_img_40 = Sprite(SP_ANIMATE, 'blood_40original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
-        self.blood_img_20 = Sprite(SP_ANIMATE, 'blood_20original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
-        self.blood_img_10 = Sprite(SP_ANIMATE, 'blood_10original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
-        self.blood_img_0 = Sprite(SP_ANIMATE, 'blood_0original', 1, ANI_LOOP, (0.5, 0.5), 0, (1, 1))
+        self.blood_img_100 = Image('./assets/sprite/' + 'blood_100original' + '.png', (1, 1))
+        self.blood_img_80 = Image('./assets/sprite/' + 'blood_80original' + '.png', (1, 1))
+        self.blood_img_60 = Image('./assets/sprite/' + 'blood_60original' + '.png', (1, 1))
+        self.blood_img_40 = Image('./assets/sprite/' + 'blood_40original' + '.png', (1, 1))
+        self.blood_img_20 = Image('./assets/sprite/' + 'blood_20original' + '.png', (1, 1))
+        self.blood_img_10 = Image('./assets/sprite/' + 'blood_10original' + '.png', (1, 1))
+        self.blood_img_0 = Image('./assets/sprite/' + 'blood_0original' + '.png', (1, 1))
+
 
     def reset_state(self, x, y):
         self.x = x
         self.y = y
-        self.blood_img_0.draw(self.x+20, self.y-20)
+        self.blood_img_0.draw(self.x-25, self.y-40)
         time.sleep(1)
         self.blood_state = 240
 
@@ -103,19 +103,19 @@ class Player:
 
     def draw_blood(self, blood_state):
         if blood_state <= 0:
-            self.blood_img_0.draw(self.x+20, self.y-20)
+            self.blood_img_0.draw(self.x-25, self.y-40)
         if blood_state > 0:
-            self.blood_img_10.draw(self.x+20, self.y-20)
+            self.blood_img_10.draw(self.x-25, self.y-40)
         if blood_state >= 40:
-            self.blood_img_20.draw(self.x+20, self.y-20)
+            self.blood_img_20.draw(self.x-25, self.y-40)
         if blood_state >= 80:
-            self.blood_img_40.draw(self.x+20, self.y-20)
+            self.blood_img_40.draw(self.x-25, self.y-40)
         if blood_state >= 120:
-            self.blood_img_60.draw(self.x+20, self.y-20)
+            self.blood_img_60.draw(self.x-25, self.y-40)
         if blood_state >= 160:
-            self.blood_img_80.draw(self.x+20, self.y-20)
+            self.blood_img_80.draw(self.x-25, self.y-40)
         if blood_state >= 200:
-            self.blood_img_100.draw(self.x+20, self.y-20)
+            self.blood_img_100.draw(self.x-25, self.y-40)
 
     def blood_update(self, blood, num=1):
         self.blood_state = self.blood_state + num
@@ -135,3 +135,8 @@ class Player:
         if who == 2 and self.blood_state <= 0:
             notify_font.draw_str("Player1 game over", 200, 200)
 
+    def get_player1_point(self):
+        return Player1_win
+
+    def get_player2_point(self):
+        return Player2_win
