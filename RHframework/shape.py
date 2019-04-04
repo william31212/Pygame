@@ -2,7 +2,7 @@ import sys,pygame
 import math
 
 from utils import GET_PATH
-
+import draw_premitive as dp
 
 # Todo change x, y, w, h
 class Rect:
@@ -34,6 +34,10 @@ class Rect:
 				continue
 		return False
 
+	def get_tuple(self):
+		return (self.x, self.y, self.wid, self.hei)
+	def get_list(self):
+		return [self.x, self.y, self.wid, self.hei]
 
 class Circle:
 	"""docstring for Circle"""

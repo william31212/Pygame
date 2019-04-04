@@ -76,7 +76,6 @@ def circle(color, pos, radius, width=0, segment=32):
 
 	_gl_epilogue()
 
-# TODO(roy4801): width
 def line(color, start_pos, end_pos, width=1):
 	_gl_prologue()
 	r, g, b, a= [x/0xff for x in color]
@@ -85,14 +84,13 @@ def line(color, start_pos, end_pos, width=1):
 	
 	glBegin(GL_LINES)
 	glColor4f(r, g, b, a)
-	glVertex3i(*start_pos, 0)
-	glVertex3i(*end_pos, 0)
+	glVertex3f(*start_pos, 0)
+	glVertex3f(*end_pos, 0)
 	glEnd()
 	glLineWidth(1.0)
 	
 	_gl_epilogue()
 
-# TODO(roy4801): width
 def lines(color, closed, pointlist, width=1):
 	for i in range(len(pointlist)-1):
 		line(color, pointlist[i], pointlist[i+1], width)

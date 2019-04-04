@@ -33,6 +33,8 @@ def _keyboard_handle(keyboard, e):
 	elif e.type == pygame.KEYUP:
 		keyboard.set_key_state(e.key, False, False)
 
+DBG_KEYBOARD_PRINT = False
+
 class KeyHandler:
 	def __init__(self):
 		self.keymap = {
@@ -46,13 +48,12 @@ class KeyHandler:
 			pygame.K_d      : KEY_d,
 			pygame.K_s      : KEY_s,
 			pygame.K_w      : KEY_w,
-			pygame.K_x     : KEY_x,
+			pygame.K_x      : KEY_x,
 			pygame.K_z      : KEY_z,
 			pygame.K_v      : KEY_v,
-			pygame.K_SLASH : KEY_SLASH,
-			pygame.K_PERIOD  : KEY_PERIOD,
+			pygame.K_SLASH  : KEY_SLASH,
+			pygame.K_PERIOD : KEY_PERIOD,
 			pygame.K_SPACE  : KEY_SPACE
-
 		}
 		self.key_state  = [False] * KEY_TOTAL
 		self.key_repeat = [False] * KEY_TOTAL
@@ -62,6 +63,8 @@ class KeyHandler:
 			# TODO(roy4801): Replace with the logger
 			print('[Warning] The key ({}) isn\'t in the keymap'.format(pygame.key.name(key)))
 		else:
+			if DBG_KEYBOARD_PRINT:
+				print('[Info] Pressed {} key'.format(pygame.key.name(key)))
 			idx = self.keymap[key]
 			self.key_state[idx] = press
 			self.key_repeat[idx] = repeat
@@ -72,6 +75,10 @@ class KeyHandler:
 		else:
 			idx = self.keymap[key]
 			return (self.key_state[idx], self.key_repeat[idx])
+
+	def set_dbg_print(self, flag):
+		global DBG_KEYBOARD_PRINT
+		DBG_KEYBOARD_PRINT = flag
 
 	def handle_event(self, e):
 		_keyboard_handle(self, e)

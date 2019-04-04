@@ -80,6 +80,8 @@ class Image:
 	def __init__(self, path: str, resize_size=(1., 1.), rotate_deg=0., cent_pos=(0., 0.)):
 		self.path = path
 		self.img = None
+		self.x = 0
+		self.y = 0
 		self.w = -1
 		self.h = -1
 
@@ -97,15 +99,18 @@ class Image:
 	# BUG(roy4801): error
 	def __del__(self):
 		img = self.img
-		try:
-			glDeleteTextures([img])
-		except error.GLerror:
-			err = glGetError()
-			if ( err != GL_NO_ERROR ):
-				print('GLERROR: ', gluErrorString( err ))
-				sys.exit()
+		if img != None:
+			try:
+				glDeleteTextures([img])
+			except error.GLerror:
+				err = glGetError()
+				if ( err != GL_NO_ERROR ):
+					print('GLERROR: ', gluErrorString( err ))
+					sys.exit()
 
 	def draw(self, x, y):
+		self.x = x
+		self.y = y
 		t_w = int(self.w * self.resize_size[0])
 		t_h = int(self.h * self.resize_size[1])
 		t_x = x - int(self.w * self.cent_pos[0])
@@ -136,12 +141,37 @@ class Image:
 		return info
 
 	# Getter/Setter
+	# TODO(roy4801): make these return non-orig ver
 	def get_width(self):
 		return self.w
 	def get_height(self):
 		return self.h
 	def get_size(self):
 		return (self.w, self.h)
+
+	def get_orig_width(self):
+		return self.w
+	def get_orig_height(self):
+		return self.h
+	def get_orig_size(self):
+		return (self.w, self.h)
+
+	def get_left_upper(self):
+		t_x = self.x - int(self.w * self.cent_pos[0])
+		t_y = self.y - int(self.h * self.cent_pos[1])
+		return (t_x, t_y)
+
+	# dbg
+	def dbg_draw(self, x, y):
+		import draw_premitive as dp
+		t_w = int(self.w * self.resize_size[0])
+		t_h = int(self.h * self.resize_size[1])
+		t_x = x - int(self.w * self.cent_pos[0])
+		t_y = y - int(self.h * self.cent_pos[1])
+		dp.rect((255, 0, 0, 204), (t_x, t_y, t_w, t_h), 1)
+
+		dp.circle((255, 0, 0, 204), (x, y), 3)
+		
 
 class Sprite:
 	def __init__(self, sprite_type, name, fps=0, animate_type=ANI_NONE, cent_pos=(0, 0), start_frame=0, resize_size=(1., 1.), rotate_deg=0., copy=False):
