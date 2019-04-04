@@ -33,6 +33,15 @@ class Rect:
 				continue
 		return False
 
+	def to_line_list(self):
+		l = []
+		x, y, w, h = self.x, self.y, self.wid, self.hei
+		l.append(Line(x, y))
+		l.append(Line(x+w, y))
+		l.append(Line(x, y+h))
+		l.append(Line(x+w, y+h))
+		return l
+
 	# pos must be the screen space coordinate of origin in image space
 	def to_screen_space(self, pos):
 		return Rect(pos[0]+self.x, pos[1]+self.y, self.wid, self.hei)
@@ -55,6 +64,24 @@ class Line:
 			self.m = (y_1 - y_0) / (x_1 - x_0)
 		else:
 			self.m = None
+
+	def get_dis_point(self, p):
+		m = self.m
+		x, y = p[0], -p[1]
+		x_0, y_0 = self.pt[0][0], -self.pt[0][1]
+
+		if m == None: # x = ?
+			return math.fabs(x_0 - x)
+		elif m == 0:
+			return math.fabs(y_0 - y)
+		#
+		a = -m
+		b = 1
+		c = m*x_0 - y_0
+		#
+		up = math.fabs(a*x + b*y + c)
+		down = math.sqrt(a*a + b*b)
+		return round(up / down, 15)
 
 	def check_point(self, p):
 		m = self.m
@@ -112,6 +139,9 @@ class Circle:
 
 	def check_rect(self, rect):
 		# TODO(roy4801): implement this
+		pass
+
+	def check_line(self, line):
 		pass
 
 	# pos must be the screen space coordinate of origin in image space

@@ -22,14 +22,14 @@ class App(Window):
 
     def setup(self):
         # self.line = Line((400, 0), (400, 600))
-        # self.line = Line((0, 300), (800, 300))
-        self.line = Line((0, 0), (800, 600))
+        self.line = Line((0, 300), (800, 300))
+        # self.line = Line((0, 0), (800, 600))
 
     def update(self):
         mouse = self.mouse
 
         d = self.line.check_point((mouse.x, mouse.y))
-        print(self.line.m)
+        print(self.line.get_dis_point((mouse.x, mouse.y)))
         if d == LINE_RIGHT:
             print('right')
         elif d == LINE_ON:
