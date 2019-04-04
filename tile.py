@@ -17,6 +17,7 @@ sys.path.append("./RHframework")
 from utils import *
 from shape import *
 from asset import *
+import draw_premitive
 
 def draw_layer(layer, tex_map, tile_size):
 	for x, y, gid in layer:
@@ -105,7 +106,7 @@ class TiledMap:
 			if isinstance(layer, pytmx.TiledObjectGroup) and layer.properties['collision'] == 1:
 				for obj_iter in layer:
 					# print((obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height))
-					draw_premitive.rect((255, 0, 0), (obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height), 1)
+					draw_premitive.rect((255, 0, 0, 255), (obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height), 1)
 
 	def get_map_width(self):
 		return self.width

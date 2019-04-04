@@ -135,7 +135,7 @@ class Player:
 
     def check_who_win(self, player1_blood, player2_blood):
         global Player1_win ,Player2_win
-        print(Player1_win, Player2_win)
+        # print(Player1_win, Player2_win)
         if player1_blood <= 0:
             Player2_win += 1
         elif player2_blood <= 0:

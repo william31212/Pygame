@@ -168,16 +168,15 @@ class App(Window):
 			home_button.draw()
 			# player.game_over(player.blood_state, 1)
 			# player2.game_over(player2.blood_state, 2)
+			draw_premitive.rect((0, 255, 0, 255), (self.player.obs_box.x, self.player.obs_box.y, self.player.obs_box.wid, self.player.obs_box.hei), 2)
+			draw_premitive.rect((0, 255, 0, 255), (self.player2.obs_box.x, self.player2.obs_box.y, self.player2.obs_box.wid, self.player2.obs_box.hei), 2)
+			maps.dbg_draw_tile_object()
 
 		elif self.game_state == GAME_MENU:
 			self.menu.draw()
 
 
 		######debug#######
-		# player.draw_character()
-		# print()
-		# draw_premitive.rect((0, 255, 0), (self.player.obs_box.x, self.player.obs_box.y, self.player.obs_box.wid, self.player.obs_box.hei), 2)
-		# maps.dbg_draw_tile_object()
 
 	def ask_quit(self):
 		print('On quit')
