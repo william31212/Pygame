@@ -17,6 +17,7 @@ class Menu:
 	def __init__(self):
 		self.background = Image('./assets/img/' + 'start2' + '.png', (5.95, 7.85))
 		self.button_play = Button(50, 450, 300, 70, Image('./assets/img/' + 'play' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'play_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'play_click' + '.png', (1.0, 1.0)))
+		# self.button_Into = Button(50, 600, 300, 70, Image('./assets/img/' + 'option' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'option_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'option_click' + '.png', (1.0, 1.0)))
 		self.button_quit = Button(450, 450, 300, 70, Image('./assets/img/' + 'quit' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_click' + '.png', (1.0, 1.0)))
 
 	def update(self, mouse):
