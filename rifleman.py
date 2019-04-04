@@ -42,6 +42,7 @@ class App(Window):
 		self.bullet2 = Bullet(0, 0, 2, 20)
 		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
 		self.message2 = Label('Player2: ' + str(self.player.get_player2_point()), (85, 107, 47), [604,30,200,50], 30)
+		self.home_button = Button(750, 50, 50, 50, Image('./assets/img/' + 'home' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_hover' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_click' + '.png', (0.2, 0.2)))
 		self.maps = TiledMap("./level2.tmx")
 		self.maps.pick_layer()
 		self.menu = Menu()
@@ -70,6 +71,11 @@ class App(Window):
 		elif self.game_state == GAME_PLAY:
 			player.store_state(0)
 			player2.store_state(1)
+
+			# click home
+			self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
+			if self.home_button.is_clicked():
+				self.game_state = GAME_MENU
 
 			# reset the game
 			if player.blood_state <= 0 or player2.blood_state <= 0:
@@ -150,6 +156,7 @@ class App(Window):
 		player2 = self.player2
 		bullet = self.bullet
 		bullet2 = self.bullet2
+		home_button = self.home_button
 
 
 		if self.game_state == GAME_PLAY:
@@ -158,11 +165,13 @@ class App(Window):
 			bullet2.draw()
 			self.message1.draw()
 			self.message2.draw()
+			home_button.draw()
 			# player.game_over(player.blood_state, 1)
 			# player2.game_over(player2.blood_state, 2)
 
 		elif self.game_state == GAME_MENU:
 			self.menu.draw()
+
 
 		######debug#######
 		# player.draw_character()
