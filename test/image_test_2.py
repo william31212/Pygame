@@ -35,6 +35,9 @@ class App(Window):
         x = display_width/2
         y = display_height/2
 
+        self.img.draw(x, y) # draw the image
+        self.img.dbg_draw(x, y) # draw the image border
+
         obs_box = Rect(29, 104, 31, 13) # image space
         atk_box = Rect(21, 14, 49, 104) # image space
 
@@ -47,8 +50,6 @@ class App(Window):
         # draw atk_box
         dp.rect((0xca, 0x0a, 0xff, 200), atk_box.to_screen_space((lu[0], lu[1])).get_tuple(), 2)
 
-        self.img.draw(x, y) # draw the image
-        self.img.dbg_draw(x, y) # draw the image border
         # display green line
         dp.line((0, 255, 0, 128), (x, 0), (x, display_height))
         dp.line((0, 255, 0, 128), (0, y), (display_width, y))

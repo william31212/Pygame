@@ -24,6 +24,8 @@ class App(Window):
         # self.line = Line((400, 0), (400, 600))
         self.line = Line((0, 300), (800, 300))
         # self.line = Line((0, 0), (800, 600))
+        
+        # TODO(roy4801): test circle hit line
 
     def update(self):
         mouse = self.mouse

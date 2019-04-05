@@ -36,10 +36,10 @@ class Rect:
 	def to_line_list(self):
 		l = []
 		x, y, w, h = self.x, self.y, self.wid, self.hei
-		l.append(Line(x, y))
-		l.append(Line(x+w, y))
-		l.append(Line(x, y+h))
-		l.append(Line(x+w, y+h))
+		l.append(Line((x, y), (x+w, y)))
+		l.append(Line((x+w, y), (x+w, y+h)))
+		l.append(Line((x+w, y+h), (x, y+h)))
+		l.append(Line((x, y+h), (x, y)))
 		return l
 
 	# pos must be the screen space coordinate of origin in image space
@@ -121,6 +121,14 @@ class Line:
 					return LINE_RIGHT
 				else:
 					return LINE_ON
+	# for print()
+	def __repr__(self):
+		return object.__repr__(self)
+	def __str__(self):
+		info = self.__repr__() + '\n    '
+		info += 'pt={}'.format(self.pt) + '\n    '
+		info += 'm={}'.format(self.m)
+		return info
 		
 
 class Circle:
@@ -140,12 +148,15 @@ class Circle:
 	def check_rect(self, rect):
 		# TODO(roy4801): implement this
 		pass
-
+	# circle撞到line
 	def check_line(self, line):
-		pass
+		if line.get_dis_point((self.cent_x, self.cent_y)) <= self.radius:
+			return True
+		else:
+			return False
 
 	# pos must be the screen space coordinate of origin in image space
-	def to_screen_surface(self, pos):
+	def to_screen_space(self, pos):
 		return Circle(pos[0]+self.cent_x, pos[1]+self.cent_y, self.radius)
 
 	def get_pos(self):
