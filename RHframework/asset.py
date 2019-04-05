@@ -111,10 +111,12 @@ class Image:
 	def draw(self, x, y):
 		self.x = x
 		self.y = y
-		t_w = int(self.w * self.resize_size[0])
-		t_h = int(self.h * self.resize_size[1])
-		t_x = x - int(self.w * self.cent_pos[0])
-		t_y = y - int(self.h * self.cent_pos[1])
+		# calc the resized width and height
+		t_w, t_h = self.get_size()
+		# calc the resized left upper
+		img_cent_x, img_cent_y = self.get_image_cent()
+		t_x = x - img_cent_x
+		t_y = y - img_cent_y
 		# print('Draw {} {} {} {}'.format(t_x, t_y, t_w, t_h))
 		_draw_image(self.img, t_x, t_y, t_w, t_h)
 
@@ -141,13 +143,12 @@ class Image:
 		return info
 
 	# Getter/Setter
-	# TODO(roy4801): make these return non-orig ver
 	def get_width(self):
-		return self.w
+		return self.w * self.resize_size[0]
 	def get_height(self):
-		return self.h
+		return self.h * self.resize_size[1]
 	def get_size(self):
-		return (self.w, self.h)
+		return (self.w * self.resize_size[0], self.h * self.resize_size[1])
 
 	def get_orig_width(self):
 		return self.w
@@ -156,20 +157,25 @@ class Image:
 	def get_orig_size(self):
 		return (self.w, self.h)
 
+	def get_resize(self):
+		return self.resize_size
+	def get_image_cent(self):
+		cent_pos = self.cent_pos
+		return (self.get_width()*cent_pos[0], self.get_height()*cent_pos[1])
+	def get_screen_cent(self):
+		return (self.x, self.y)
+
+	# return the screen space coordinate of the origin in image space
 	def get_left_upper(self):
-		t_x = self.x - int(self.w * self.cent_pos[0])
-		t_y = self.y - int(self.h * self.cent_pos[1])
+		t_x = self.x - self.get_width() * self.cent_pos[0]
+		t_y = self.y - self.get_height() * self.cent_pos[1]
 		return (t_x, t_y)
 
 	# dbg
 	def dbg_draw(self, x, y):
 		import draw_premitive as dp
-		t_w = int(self.w * self.resize_size[0])
-		t_h = int(self.h * self.resize_size[1])
-		t_x = x - int(self.w * self.cent_pos[0])
-		t_y = y - int(self.h * self.cent_pos[1])
-		dp.rect((255, 0, 0, 204), (t_x, t_y, t_w, t_h), 1)
-
+		t_w, t_h = self.get_size()
+		dp.rect((255, 0, 0, 204), (*self.get_left_upper(), t_w, t_h), 1)
 		dp.circle((255, 0, 0, 204), (x, y), 3)
 		
 

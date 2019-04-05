@@ -23,8 +23,7 @@ class App(Window):
 
     def setup(self):
         self.keyboard.set_dbg_print(True)
-        self.img = Image(GET_PATH(IMG_SPRITE, 'stand000.png'), (1., 1.), 0., (0.39, 0.468))
-        # 50, 60
+        self.img = Image(GET_PATH(IMG_SPRITE, 'Player1_down000.png'), (2., 2.), 0., (0.52, 0.56))
 
     def update(self):
         kb = self.keyboard
@@ -45,10 +44,10 @@ class App(Window):
         lu = self.img.get_left_upper()
 
         # draw obs_box
-        dp.rect((0xca, 0x0a, 0xff, 200), obs_box.to_screen_space((lu[0], lu[1])).get_tuple(), 2)
+        dp.rect((0, 0, 0xff, 200), obs_box.to_screen_space(self.img).get_tuple(), 2)
 
         # draw atk_box
-        dp.rect((0xca, 0x0a, 0xff, 200), atk_box.to_screen_space((lu[0], lu[1])).get_tuple(), 2)
+        dp.rect((0xca, 0x0a, 0xff, 200), atk_box.to_screen_space(self.img).get_tuple(), 2)
 
         # display green line
         dp.line((0, 255, 0, 128), (x, 0), (x, display_height))

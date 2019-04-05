@@ -43,8 +43,10 @@ class Rect:
 		return l
 
 	# pos must be the screen space coordinate of origin in image space
-	def to_screen_space(self, pos):
-		return Rect(pos[0]+self.x, pos[1]+self.y, self.wid, self.hei)
+	def to_screen_space(self, img):
+		resize = img.get_resize()
+		pos = img.get_left_upper()
+		return Rect(pos[0]+self.x*resize[0], pos[1]+self.y*resize[1], self.wid*resize[0], self.hei*resize[1])
 
 	def get_tuple(self):
 		return (self.x, self.y, self.wid, self.hei)
@@ -65,6 +67,7 @@ class Line:
 		else:
 			self.m = None
 
+	# 點到線的距離
 	def get_dis_point(self, p):
 		m = self.m
 		x, y = p[0], -p[1]
@@ -83,6 +86,7 @@ class Line:
 		down = math.sqrt(a*a + b*b)
 		return round(up / down, 15)
 
+	# 判斷點與線
 	def check_point(self, p):
 		m = self.m
 		# convert to math coordinate
