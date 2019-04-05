@@ -26,11 +26,15 @@ DBG_SHOW_IMAGE_BORDER = True
 '''
 Image
 '''
+tex_dict = {}
+
 def _load_image(path):
+	global tex_dict
 	image = pygame.image.load(path)
 	w, h = image.get_width(), image.get_height()
 
 	tex_id = _pygame_surface_to_tex(image)
+	tex_dict[tex_id] = True
 	return (tex_id, (w, h))
 
 def _draw_image(img, x, y, w, h):
@@ -99,7 +103,7 @@ class Image:
 	# BUG(roy4801): error
 	def __del__(self):
 		img = self.img
-		if img != None:
+		if tex_dict[img]:
 			try:
 				glDeleteTextures([img])
 			except error.GLerror:
@@ -107,6 +111,7 @@ class Image:
 				if ( err != GL_NO_ERROR ):
 					print('GLERROR: ', gluErrorString( err ))
 					sys.exit()
+			tex_dict[img] = False
 
 	def draw(self, x, y):
 		self.x = x
@@ -127,7 +132,13 @@ class Image:
 		raise NotImplementedError
 
 	def copy(self):
-		tmp = Image(self.path, self.resize_size, self.rotate_deg, self.cent_pos)
+		tmp = Image('', self.resize_size, self.rotate_deg, self.cent_pos)
+		tmp.x = self.x
+		tmp.y = self.y
+		tmp.w = self.w
+		tmp.h = self.h
+		tmp.img = self.img
+		tmp.path = self.path
 		return tmp
 
 	def __repr__(self):

@@ -160,8 +160,12 @@ class Circle:
 			return False
 
 	# pos must be the screen space coordinate of origin in image space
-	def to_screen_space(self, pos):
+	def to_screen_space(self, img):
+		pos = img.get_left_upper()
 		return Circle(pos[0]+self.cent_x, pos[1]+self.cent_y, self.radius)
 
 	def get_pos(self):
 		return (self.cent_x, self.cent_y)
+
+	def dbg_draw(self):
+		dp.circle((255, 255, 0, 200), self.get_pos(), self.radius, 1)
