@@ -45,10 +45,10 @@ class App(Window):
         lu = self.img.get_left_upper()
 
         # draw obs_box
-        dp.rect((0, 0, 0xff, 200), obs_box.to_screen_space((lu[0], lu[1]), self.img.get_resize()).get_tuple(), 2)
+        dp.rect((0, 0, 0xff, 200), obs_box.to_screen_space(self.img).get_tuple(), 2)
 
         # draw atk_box
-        dp.rect((0xca, 0x0a, 0xff, 200), atk_box.to_screen_space((lu[0], lu[1]), self.img.get_resize()).get_tuple(), 2)
+        dp.rect((0xca, 0x0a, 0xff, 200), atk_box.to_screen_space(self.img).get_tuple(), 2)
 
         # display green line
         dp.line((0, 255, 0, 128), (x, 0), (x, display_height))

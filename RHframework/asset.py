@@ -111,11 +111,12 @@ class Image:
 	def draw(self, x, y):
 		self.x = x
 		self.y = y
-		# resize width and height
-		t_w = self.w * self.resize_size[0]
-		t_h = self.h * self.resize_size[1]
-		t_x = x - t_w * self.cent_pos[0]
-		t_y = y - t_h * self.cent_pos[1]
+		# calc the resized width and height
+		t_w, t_h = self.get_size()
+		# calc the resized left upper
+		img_cent_x, img_cent_y = self.get_image_cent()
+		t_x = x - img_cent_x
+		t_y = y - img_cent_y
 		# print('Draw {} {} {} {}'.format(t_x, t_y, t_w, t_h))
 		_draw_image(self.img, t_x, t_y, t_w, t_h)
 
@@ -142,7 +143,6 @@ class Image:
 		return info
 
 	# Getter/Setter
-	# TODO(roy4801): make these return non-orig ver
 	def get_width(self):
 		return self.w * self.resize_size[0]
 	def get_height(self):
@@ -159,24 +159,24 @@ class Image:
 
 	def get_resize(self):
 		return self.resize_size
+	def get_image_cent(self):
+		cent_pos = self.cent_pos
+		return (self.get_width()*cent_pos[0], self.get_height()*cent_pos[1])
+	def get_screen_cent(self):
+		return (self.x, self.y)
 
+	# return the screen space coordinate of the origin in image space
 	def get_left_upper(self):
 		t_x = self.x - self.get_width() * self.cent_pos[0]
 		t_y = self.y - self.get_height() * self.cent_pos[1]
 		return (t_x, t_y)
 
-	def get_cent(self):
-		x, y = self.get_left_upper()
-		x += self.get_width() * self.cent_pos[0]
-		y += self.get_height() * self.cent_pos[1]
-		return (x, y)
 	# dbg
 	def dbg_draw(self, x, y):
 		import draw_premitive as dp
 		t_w, t_h = self.get_size()
-		cent_x, cent_y = self.get_cent()
 		dp.rect((255, 0, 0, 204), (*self.get_left_upper(), t_w, t_h), 1)
-		dp.circle((255, 0, 0, 204), (cent_x, cent_y), 3)
+		dp.circle((255, 0, 0, 204), (x, y), 3)
 		
 
 class Sprite:
