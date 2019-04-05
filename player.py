@@ -72,16 +72,13 @@ class Player:
         else:
             if state == LEFT:
                 self.x = x + 20
-                self.state = 3
             elif state == RIGHT:
                 self.x = x - 20
-                self.state = 4
 
 
     def store_state(self, num=0):
         store_arr.append([self.x, self.y, self.state])
         blood_arr.append([self.blood_state])
-
 
     def store_clear(self):
         store_arr.clear()
@@ -91,6 +88,7 @@ class Player:
         self.x = store_arr[num][0]
         self.y = store_arr[num][1]
         self.state = store_arr[num][2]
+
 
     def draw_character(self):
         self.draw_blood(self.blood_state)

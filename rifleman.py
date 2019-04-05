@@ -36,8 +36,8 @@ class App(Window):
 
 
 	def setup(self):
-		self.player = Player(250, 300, 100, 100, 3, 'Player1')
-		self.player2 = Player(500, 300, 100, 100, 4, 'Player2')
+		self.player = Player(250, 300, 100, 100, 4, 'Player1')
+		self.player2 = Player(500, 300, 100, 100, 3, 'Player2')
 		self.bullet = Bullet(0, 0, 2, 20)
 		self.bullet2 = Bullet(0, 0, 2, 20)
 		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
@@ -71,6 +71,11 @@ class App(Window):
 		elif self.game_state == GAME_PLAY:
 			player.store_state(0)
 			player2.store_state(1)
+			tmp1L = player.obs_box.to_screen_space(player.rifleman_left)
+			tmp1R = player.obs_box.to_screen_space(player.rifleman_right)
+			tmp2L = player2.obs_box.to_screen_space(player2.rifleman_left)
+			tmp2R = player2.obs_box.to_screen_space(player2.rifleman_right)
+
 
 			# click home
 			self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
@@ -114,15 +119,26 @@ class App(Window):
 				pygame.quit()
 				sys.exit()
 
-			if player.state == 3:
-				maps.tile_object(player.obs_box.to_screen_space(player.rifleman_left), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
-			elif player.state == 4:
-				maps.tile_object(player.obs_box.to_screen_space(player.rifleman_right), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
 
-			if player2.state == 3:
-				maps.tile_object(player2.obs_box.to_screen_space(player2.rifleman_left), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
-			elif player2.state == 4:
-				maps.tile_object(player2.obs_box.to_screen_space(player2.rifleman_right), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
+
+
+
+			if keyboard.key_state[KEY_w] or keyboard.key_state[KEY_s]:
+				if player.state == 3:
+					maps.tile_object(tmp1L, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
+				elif player.state == 4:
+					maps.tile_object(tmp1R, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
+
+				if player2.state == 3:
+					maps.tile_object(tmp2L, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
+				elif player2.state == 4:
+					maps.tile_object(tmp2R, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
+
+
+				time.sleep(0.2)
+
+
+			# time.sleep(0.2)
 
 			if player.x <= 50:
 				player.x = 50
@@ -144,17 +160,18 @@ class App(Window):
 
 			if player.state == 3:
 				bullet.hit_people(player2.atk_box.to_screen_space(player2.rifleman_left), player2.blood_update, player2.blood_state)
-			if player.state == 4:
+			elif player.state == 4:
 				bullet.hit_people(player2.atk_box.to_screen_space(player2.rifleman_right), player2.blood_update, player2.blood_state)
 
 			if player2.state == 3:
 				bullet2.hit_people(player.atk_box.to_screen_space(player.rifleman_left), player.blood_update, player.blood_state)
-			if player2.state == 4:
+			elif player2.state == 4:
 				bullet2.hit_people(player.atk_box.to_screen_space(player.rifleman_right), player.blood_update, player.blood_state)
 
 			bullet.out_of_bound(display_width, display_height)
 			bullet2.out_of_bound(display_width, display_height)
-			player.store_clear()
+
+
 
 			# print(player.x, player.y)
 			player.check_who_win(player.blood_state, player2.blood_state)
@@ -194,6 +211,7 @@ class App(Window):
 			if player2.state == 4:
 				draw_premitive.rect((0, 0, 0xff, 200), player2.obs_box.to_screen_space(player2.rifleman_right).get_tuple(), 2)
 				draw_premitive.rect((0xca, 0x0a, 0xff, 200), player2.atk_box.to_screen_space(player2.rifleman_right).get_tuple(), 2)
+
 
 
 			maps.dbg_draw_tile_object()

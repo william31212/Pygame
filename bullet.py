@@ -30,7 +30,7 @@ class Bullet:
             self.x = x + 13
         if state == 2 or state == 3:
             self.x = x - 2
-        self.y = y + 14
+        self.y = y + 1
         self.state = state
 
         if self.clock.getPassedSec() >= 0.5 and len(self.bullet_list) > 0:
