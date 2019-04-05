@@ -36,7 +36,7 @@ class Ball:
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        self.coll.to_screen_space(self.image).dbg_draw()
+        # self.coll.to_screen_space(self.image).dbg_draw()
 
 class App(Window):
     def __init__(self, title, size, win_flag=W_NONE):

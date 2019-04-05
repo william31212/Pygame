@@ -104,13 +104,15 @@ class Image:
 	def __del__(self):
 		img = self.img
 		if tex_dict[img]:
+			print('Delete')
 			try:
 				glDeleteTextures([img])
 			except error.GLerror:
-				err = glGetError()
-				if ( err != GL_NO_ERROR ):
-					print('GLERROR: ', gluErrorString( err ))
-					sys.exit()
+				pass
+				# err = glGetError()
+				# if ( err != GL_NO_ERROR ):
+				# 	print('GLERROR: ', gluErrorString( err ))
+				# 	sys.exit()
 			tex_dict[img] = False
 
 	def draw(self, x, y):
