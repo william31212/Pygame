@@ -37,8 +37,8 @@ class App(Window):
         self.img.draw(x, y) # draw the image
         self.img.dbg_draw(x, y) # draw the image border
 
-        obs_box = Rect(29, 104, 31, 13) # image space
-        atk_box = Rect(21, 14, 49, 104) # image space
+        obs_box = Rect(18, 33, 13, 7) # image space
+        atk_box = Rect(17, 9, 15, 32) # image space
 
         # get left upper point of the img
         lu = self.img.get_left_upper()
