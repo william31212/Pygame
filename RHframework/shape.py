@@ -43,8 +43,8 @@ class Rect:
 		return l
 
 	# pos must be the screen space coordinate of origin in image space
-	def to_screen_space(self, pos):
-		return Rect(pos[0]+self.x, pos[1]+self.y, self.wid, self.hei)
+	def to_screen_space(self, pos, resize):
+		return Rect(pos[0]+self.x*resize[0], pos[1]+self.y*resize[1], self.wid*resize[0], self.hei*resize[1])
 
 	def get_tuple(self):
 		return (self.x, self.y, self.wid, self.hei)
