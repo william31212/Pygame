@@ -79,19 +79,22 @@ class TiledMap:
 				if layer.properties['collision'] == 1:
 					for object_iter in layer:
 						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
-						# print(obs_box.x, obs_box.y)
-						if obs_rec.check_rect(obs_box) == True and (state == 1):
+						# if obs_rec.check_rect(obs_box) == True and (state == 1):
+						# 	func_change(num)
+						# if obs_rec.check_rect(obs_box) == True and (state == 2):
+						# 	func_change(num)
+						if obs_rec.check_rect(obs_box) and (state == 3):
+							print(obs_rec.x ,obs_rec.y)
+							print(obs_box.x ,obs_box.y)
 							func_change(num)
-						if obs_rec.check_rect(obs_box) == True and (state == 2):
+						elif obs_rec.check_rect(obs_box) and (state == 4):
+							print(obs_rec.x ,obs_rec.y)
+							print(obs_box.x ,obs_box.y)
 							func_change(num)
-						if obs_rec.check_rect(obs_box) == True and (state == 3):
-							func_change(num)
-						if obs_rec.check_rect(obs_box) == True and (state == 4):
-							func_change(num)
-						if obs_rec.check_rect(obs_box) == True and (state == 5):
-							func_change(num)
-						if obs_rec.check_rect(obs_box) == True and (state == 6):
-							func_change(num)
+						# if obs_rec.check_rect(obs_box) == True and (state == 5):
+						# 	func_change(num)
+						# if obs_rec.check_rect(obs_box) == True and (state == 6):
+						# 	func_change(num)
 
 					for object_iter in layer:
 						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)

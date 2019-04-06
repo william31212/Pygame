@@ -1,4 +1,4 @@
-import pygame, time
+import pygame, time, sys
 
 '''
 KeyHandler: Process and handle the keyboard event
@@ -36,6 +36,14 @@ def _keyboard_handle(keyboard, e):
 DBG_KEYBOARD_PRINT = False
 
 class KeyHandler:
+	KEYBOARD = None
+	@staticmethod
+	def get_keyboard():
+		if KeyHandler.KEYBOARD == None:
+			return KeyHandler()
+		else:
+			return KeyHandler.KEYBOARD
+
 	def __init__(self):
 		self.keymap = {
 			pygame.K_UP     : KEY_UP,
@@ -57,6 +65,11 @@ class KeyHandler:
 		}
 		self.key_state  = [False] * KEY_TOTAL
 		self.key_repeat = [False] * KEY_TOTAL
+
+		if KeyHandler.KEYBOARD != None:
+			print('There should only exist one keyboard instance\nPlease use KeyHandler.get_keyboard() instead')
+			sys.exit(1)
+		KeyHandler.KEYBOARD = self
 
 	def set_key_state(self, key, press, repeat):
 		if not key in self.keymap:
@@ -107,12 +120,25 @@ def _mouse_handle(m, e):
 		m.set_mbtn_up(e.pos, e.button)
 
 class MouseHandler:
+	MOUSE = None
+	@staticmethod
+	def get_mouse():
+		if MouseHandler.MOUSE == None:
+			return MouseHandler()
+		else:
+			return MouseHandler.MOUSE
+
 	def __init__(self):
 		self.x = 0
 		self.y = 0
 		self.rel_x = 0
 		self.rel_y = 0
 		self.btn = [False] * MOUSE_TOTAL
+
+		if MouseHandler.MOUSE != None:
+			print('There should only exist one MouseHandler instance\nPlease use MouseHandler.get_mouse() instead')
+			sys.exit(1)
+		MouseHandler.MOUSE = self
 
 	def set_motion(self, pos, rel, btns):
 		self.x = pos[0]

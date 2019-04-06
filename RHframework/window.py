@@ -19,10 +19,26 @@ def _init():
 Manage the window
 '''
 class Window:
+	WIDTH = None
+	HEIGHT = None
+
+	@staticmethod
+	def get_width():
+		return Window.WIDTH
+
+	@staticmethod
+	def get_height():
+		return Window.HEIGHT
+
+	@staticmethod
+	def get_size():
+		return (Window.WIDTH, Window.HEIGHT)
+
 	def __init__(self, title, size, win_flag=W_NONE, fps=60):
 		_init()
 		self.title = title
-		self.size = size
+		Window.WIDTH = size[0]
+		Window.HEIGHT = size[1]
 		self.win_flag = win_flag
 		self.running = True
 

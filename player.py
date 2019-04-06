@@ -9,10 +9,16 @@ sys.path.append("./RHframework")
 from utils import *
 from shape import *
 from asset import *
-import ui
+from ui import *
 
 store_arr = []
 blood_arr = []
+
+DIR_UP = 1
+DIR_DOWN = 2
+DIR_LEFT = 3
+DIR_RIGHT = 4
+
 Player1_win = 0
 Player2_win = 0
 
@@ -23,95 +29,84 @@ class Player:
         self.width = width
         self.height = height
         self.state = state
+        self.hori = 0
         self.blood_state = 240
-        self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 80, 80)
         self.shoot = False
-        self.rifleman_down = Sprite(SP_ANIMATE, Player+'_down', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.rifleman_right = Sprite(SP_ANIMATE, Player+'_right', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.rifleman_left = Sprite(SP_ANIMATE, Player+'_left', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.rifleman_up = Sprite(SP_ANIMATE, Player+'_up', 3, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.shoot_left = Sprite(SP_ANIMATE, Player+'_shoot_left', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.shoot_right = Sprite(SP_ANIMATE, Player+'_shoot_right', 1, ANI_LOOP, (0.5, 0.5), 0, (2.17, 2))
-        self.blood_img_100 = Image('./assets/sprite/' + 'blood_100original' + '.png', (1, 1))
-        self.blood_img_80 = Image('./assets/sprite/' + 'blood_80original' + '.png', (1, 1))
-        self.blood_img_60 = Image('./assets/sprite/' + 'blood_60original' + '.png', (1, 1))
-        self.blood_img_40 = Image('./assets/sprite/' + 'blood_40original' + '.png', (1, 1))
-        self.blood_img_20 = Image('./assets/sprite/' + 'blood_20original' + '.png', (1, 1))
-        self.blood_img_10 = Image('./assets/sprite/' + 'blood_10original' + '.png', (1, 1))
-        self.blood_img_0 = Image('./assets/sprite/' + 'blood_0original' + '.png', (1, 1))
+        self.rifleman_right = Image(GET_PATH(IMG_SPRITE, Player+'_right001.png'), (2., 2.), 0., (0.52, 0.56))
+        self.rifleman_left =  Image(GET_PATH(IMG_SPRITE, Player+'_left001.png'), (2., 2.), 0., (0.52, 0.56))
+        self.shoot_left =     Image(GET_PATH(IMG_SPRITE, Player+'_shoot_left000.png'), (2., 2.), 0., (0.52, 0.56))
+        self.shoot_right =    Image(GET_PATH(IMG_SPRITE, Player+'_shoot_right000.png'), (2., 2.), 0., (0.52, 0.56))
+        self.obs_box = Rect(20, 30, 10, 10) # image space
+        self.atk_box = Rect(10, 5, 30, 35) # image space
+        self.blood_img_100 =  Image(GET_PATH(IMG_SPRITE, 'blood_100original.png'), (1, 1))
+        self.blood_img_80 =   Image(GET_PATH(IMG_SPRITE, 'blood_80original.png'), (1, 1))
+        self.blood_img_60 =   Image(GET_PATH(IMG_SPRITE, 'blood_60original.png'), (1, 1))
+        self.blood_img_40 =   Image(GET_PATH(IMG_SPRITE, 'blood_40original.png'), (1, 1))
+        self.blood_img_20 =   Image(GET_PATH(IMG_SPRITE, 'blood_20original.png'), (1, 1))
+        self.blood_img_10 =   Image(GET_PATH(IMG_SPRITE, 'blood_10original.png'), (1, 1))
+        self.blood_img_0 =    Image(GET_PATH(IMG_SPRITE, 'blood_0original.png'), (1, 1))
 
+    def update(self):
+        pass
+
+    def draw(self):
+        pass
 
     def reset_state(self, x, y):
         self.x = x
         self.y = y
         self.blood_img_0.draw(self.x-25, self.y-40)
-        time.sleep(1)
+        self.obs_box = Rect(20, 30, 10, 10) # image space
+        self.atk_box = Rect(10, 5, 30, 35)  # image space
         self.blood_state = 240
 
-    def update_state(self, x, y, state, shoot):
+    def update_state(self, x, y, state, vertical, shoot):
         self.shoot = shoot
-
         if shoot == False:
-            if state == 1:
+            if (state == DIR_LEFT or state == DIR_RIGHT) and vertical == DIR_UP:
                 self.y = y - 10
-                self.state = 1
-            elif state == 2:
+            elif (state == DIR_LEFT or state == DIR_RIGHT) and vertical == DIR_DOWN:
                 self.y = y + 10
-                self.state = 2
-            elif state == 3:
+            elif state == DIR_LEFT:
                 self.x = x - 10
                 self.state = 3
-            elif state == 4:
+            elif state == DIR_RIGHT:
                 self.x = x + 10
                 self.state = 4
         else:
-            if state == 3:
-                self.x = x + 10
-                self.state = 3
-            if state == 4:
-                self.x = x - 10
-                self.state = 4
-
-        self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 80, 80)
+            if state == DIR_LEFT:
+                self.x = x + 20
+            elif state == DIR_RIGHT:
+                self.x = x - 20
 
     def store_state(self, num=0):
         store_arr.append([self.x, self.y, self.state])
         blood_arr.append([self.blood_state])
 
-    def release_state(self, num):
-        self.x = store_arr[num][0]
-        self.y = store_arr[num][1]
-        self.state = store_arr[num][2]
-        self.obs_box = Rect(self.x+20 , self.y+25 , 30, 20)
-        self.atk_box = Rect(self.x, self.y, 80, 80)
-
     def store_clear(self):
         store_arr.clear()
         blood_arr.clear()
+
+    def release_state(self, num):
+        print(store_arr)
+        self.x = store_arr[num][0]
+        self.y = store_arr[num][1]
+        self.state = store_arr[num][2]
 
     def draw_character(self):
         self.draw_blood(self.blood_state)
         #sprite
         if self.shoot == True:
-            if self.state == 1:
-                self.rifleman_up.draw(self.x, self.y)
-            elif self.state == 2:
-                self.rifleman_down.draw(self.x, self.y)
-            elif self.state == 3:
+            self.shoot = False
+            if self.state == DIR_LEFT:
                 self.shoot_left.draw(self.x, self.y)
-            elif self.state == 4:
+            elif self.state == DIR_RIGHT:
                 self.shoot_right.draw(self.x, self.y)
         #normal
         else:
-            if self.state == 1:
-                self.rifleman_up.draw(self.x, self.y)
-            elif self.state == 2:
-                self.rifleman_down.draw(self.x, self.y)
-            elif self.state == 3:
+            if self.state == DIR_LEFT:
                 self.rifleman_left.draw(self.x, self.y)
-            elif self.state == 4:
+            elif self.state == DIR_RIGHT:
                 self.rifleman_right.draw(self.x, self.y)
 
     def draw_blood(self, blood_state):
@@ -141,15 +136,24 @@ class Player:
         elif player2_blood <= 0:
             Player1_win += 1
 
-    def game_over(self, blood_state, who, quit):
-        notify_font = ui.notify_font # this should be refactored in the future
-        if who == 1 and self.blood_state <= 0:
-            notify_font.draw_str("Player1 game over", 200, 200)
-        if who == 2 and self.blood_state <= 0:
-            notify_font.draw_str("Player1 game over", 200, 200)
+    def game_over(self, point):
+        global Player1_win,Player2_win
+        if Player1_win >= point:
+            Player1_win = 0
+            Player2_win = 0
+            return 1
+        elif Player2_win >= point:
+            Player1_win = 0
+            Player2_win = 0
+            return 2
+        else:
+            return 0
 
     def get_player1_point(self):
         return Player1_win
 
     def get_player2_point(self):
         return Player2_win
+
+    def get_pos(self):
+        return (self.x, self.y)
