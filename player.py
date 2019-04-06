@@ -13,10 +13,11 @@ import ui
 
 store_arr = []
 blood_arr = []
-UP = 1
-DOWN = 2
-LEFT = 3
-RIGHT = 4
+
+DIR_UP = 1
+DIR_DOWN = 2
+DIR_LEFT = 3
+DIR_RIGHT = 4
 
 Player1_win = 0
 Player2_win = 0
@@ -55,26 +56,24 @@ class Player:
         # time.sleep(1)
         self.blood_state = 240
 
-
     def update_state(self, x, y, state, vertical, shoot):
         self.shoot = shoot
         if shoot == False:
-            if (state == LEFT or state == RIGHT) and vertical == UP:
+            if (state == DIR_LEFT or state == DIR_RIGHT) and vertical == DIR_UP:
                 self.y = y - 10
-            elif (state == LEFT or state == RIGHT) and vertical == DOWN:
+            elif (state == DIR_LEFT or state == DIR_RIGHT) and vertical == DIR_DOWN:
                 self.y = y + 10
-            elif state == LEFT:
+            elif state == DIR_LEFT:
                 self.x = x - 10
                 self.state = 3
-            elif state == RIGHT:
+            elif state == DIR_RIGHT:
                 self.x = x + 10
                 self.state = 4
         else:
-            if state == LEFT:
+            if state == DIR_LEFT:
                 self.x = x + 20
-            elif state == RIGHT:
+            elif state == DIR_RIGHT:
                 self.x = x - 20
-
 
     def store_state(self, num=0):
         store_arr.append([self.x, self.y, self.state])
@@ -95,16 +94,16 @@ class Player:
         #sprite
         if self.shoot == True:
             self.shoot = False
-            if self.state == LEFT:
+            if self.state == DIR_LEFT:
                 self.shoot_left.draw(self.x, self.y)
-            elif self.state == RIGHT:
+            elif self.state == DIR_RIGHT:
                 self.shoot_right.draw(self.x, self.y)
 
         #normal
         else:
-            if self.state == LEFT:
+            if self.state == DIR_LEFT:
                 self.rifleman_left.draw(self.x, self.y)
-            elif self.state == RIGHT:
+            elif self.state == DIR_RIGHT:
                 self.rifleman_right.draw(self.x, self.y)
 
 

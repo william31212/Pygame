@@ -62,6 +62,7 @@ def _pygame_surface_to_tex(surface):
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 	glPixelStorei(GL_PACK_ALIGNMENT, 1)
+	tex_dict[tex_id] = True
 	return tex_id
 
 '''pygame_surface_to_image(surface) -> Image

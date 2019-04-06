@@ -83,11 +83,11 @@ class TiledMap:
 						# 	func_change(num)
 						# if obs_rec.check_rect(obs_box) == True and (state == 2):
 						# 	func_change(num)
-						if obs_rec.check_rect(obs_box) == True and (state == 3):
+						if obs_rec.check_rect(obs_box) and (state == 3):
 							print(obs_rec.x ,obs_rec.y)
 							print(obs_box.x ,obs_box.y)
 							func_change(num)
-						elif obs_rec.check_rect(obs_box) == True and (state == 4):
+						elif obs_rec.check_rect(obs_box) and (state == 4):
 							print(obs_rec.x ,obs_rec.y)
 							print(obs_box.x ,obs_box.y)
 							func_change(num)
