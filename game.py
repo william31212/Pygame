@@ -50,11 +50,9 @@ class Game:
 
 		player.store_state(0)
 		player2.store_state(1)
-		tmp1L = player.obs_box.to_screen_space(player.rifleman_left)
-		tmp1R = player.obs_box.to_screen_space(player.rifleman_right)
-		tmp2L = player2.obs_box.to_screen_space(player2.rifleman_left)
-		tmp2R = player2.obs_box.to_screen_space(player2.rifleman_right)
 
+		# click home
+		self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 
 		# reset the game
 		if player.blood_state <= 0 or player2.blood_state <= 0:
@@ -127,14 +125,14 @@ class Game:
 			player2.y = 600
 
 		if player.state == DIR_LEFT:
-			bullet.hit_people(player2.atk_box.to_screen_space(player2.rifleman_left), player2.blood_update, player2.blood_state)
+			bullet.hit_people(player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.blood_update, player2.blood_state)
 		elif player.state == DIR_RIGHT:
-			bullet.hit_people(player2.atk_box.to_screen_space(player2.rifleman_right), player2.blood_update, player2.blood_state)
+			bullet.hit_people(player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_right), player2.blood_update, player2.blood_state)
 
 		if player2.state == DIR_LEFT:
-			bullet2.hit_people(player.atk_box.to_screen_space(player.rifleman_left), player.blood_update, player.blood_state)
+			bullet2.hit_people(player.atk_box.to_screen_space(player.get_pos(), player.rifleman_left), player.blood_update, player.blood_state)
 		elif player2.state == DIR_RIGHT:
-			bullet2.hit_people(player.atk_box.to_screen_space(player.rifleman_right), player.blood_update, player.blood_state)
+			bullet2.hit_people(player.atk_box.to_screen_space(player.get_pos(), player.rifleman_right), player.blood_update, player.blood_state)
 
 		bullet.out_of_bound(Window.get_width(), Window.get_height())
 		bullet2.out_of_bound(Window.get_width(), Window.get_height())
@@ -186,15 +184,15 @@ class Game:
 		self.maps.dbg_draw_tile_object()
 
 		if player.state == DIR_LEFT:
-			draw_premitive.rect((0, 0, 0xff, 200), player.obs_box.to_screen_space(player.rifleman_left).get_tuple(), 2)
-			draw_premitive.rect((0xca, 0x0a, 0xff, 200), player.atk_box.to_screen_space(player.rifleman_left).get_tuple(), 2)
+			player.obs_box.to_screen_space(player.get_pos(), player.rifleman_left).dbg_draw((0, 0, 0xff, 200))
+			player.atk_box.to_screen_space(player.get_pos(), player.rifleman_left).dbg_draw((0xca, 0x0a, 0xff, 200))
 		if player.state == DIR_RIGHT:
-			draw_premitive.rect((0, 0, 0xff, 200), player.obs_box.to_screen_space(player.rifleman_right).get_tuple(), 2)
-			draw_premitive.rect((0xca, 0x0a, 0xff, 200), player.atk_box.to_screen_space(player.rifleman_right).get_tuple(), 2)
+			player.obs_box.to_screen_space(player.get_pos(), player.rifleman_right).dbg_draw((0, 0, 0xff, 200))
+			player.atk_box.to_screen_space(player.get_pos(), player.rifleman_right).dbg_draw((0xca, 0x0a, 0xff, 200))
 
 		if player2.state == DIR_LEFT:
-			draw_premitive.rect((0, 0, 0xff, 200), player2.obs_box.to_screen_space(player2.rifleman_left).get_tuple(), 2)
-			draw_premitive.rect((0xca, 0x0a, 0xff, 200), player2.atk_box.to_screen_space(player2.rifleman_left).get_tuple(), 2)
+			player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_left).dbg_draw((0, 0, 0xff, 200))
+			player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_left).dbg_draw((0xca, 0x0a, 0xff, 200))
 		if player2.state == DIR_RIGHT:
-			draw_premitive.rect((0, 0, 0xff, 200), player2.obs_box.to_screen_space(player2.rifleman_right).get_tuple(), 2)
-			draw_premitive.rect((0xca, 0x0a, 0xff, 200), player2.atk_box.to_screen_space(player2.rifleman_right).get_tuple(), 2)
+			player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_right).dbg_draw((0, 0, 0xff, 200))
+			player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_right).dbg_draw((0xca, 0x0a, 0xff, 200))
