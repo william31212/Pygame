@@ -31,6 +31,10 @@ class Game:
 
 	def setup(self):
 		self.maps.pick_layer()
+		tmp1L = player.obs_box.to_screen_space(player.rifleman_left)
+		tmp1R = player.obs_box.to_screen_space(player.rifleman_right)
+		tmp2L = player2.obs_box.to_screen_space(player2.rifleman_left)
+		tmp2R = player2.obs_box.to_screen_space(player2.rifleman_right)
 
 	def update(self):
 		keyboard = self.keyboard
@@ -40,6 +44,9 @@ class Game:
 		player2 = self.player2
 		bullet	= self.bullet
 		bullet2	= self.bullet2
+		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
+		self.message2 = Label('Player2: ' + str(self.player.get_player2_point()), (85, 107, 47), [604,30,200,50], 30)
+
 
 		player.store_state(0)
 		player2.store_state(1)
@@ -49,15 +56,14 @@ class Game:
 		tmp2R = player2.obs_box.to_screen_space(player2.rifleman_right)
 
 
-		# click home
-		# self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
-		# if self.home_button.is_clicked():
-		# 	self.game_state = GAME_MENU
-
 		# reset the game
 		if player.blood_state <= 0 or player2.blood_state <= 0:
 			player.reset_state(250,300)
 			player2.reset_state(500,300)
+
+		self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
+		if self.home_button.is_clicked():
+			return False
 
 		#Player 1
 		# update_state(self, x, y, state, vertical, shoot)
@@ -102,9 +108,6 @@ class Game:
 			elif player2.state == DIR_RIGHT:
 				maps.tile_object(tmp2R, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
 
-
-			time.sleep(0.2)
-
 		if player.x <= 50:
 			player.x = 50
 		if player.y <= 30:
@@ -136,8 +139,21 @@ class Game:
 		bullet.out_of_bound(Window.get_width(), Window.get_height())
 		bullet2.out_of_bound(Window.get_width(), Window.get_height())
 
-		# print(player.x, player.y)
 		player.check_who_win(player.blood_state, player2.blood_state)
+
+
+		if  player.game_over(1) == 1:
+			notify_font_player1 = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
+			notify_font_player1.draw()
+			time.sleep(1)
+		elif player.game_over(1) == 2:
+			notify_font_player2 = Label('Player2 WIN ', (160, 82, 45), [300,300,500,250], 50)
+			notify_font_player2.draw()
+			time.sleep(1)
+
+
+		return True
+
 
 	def draw(self):
 		maps = self.maps
@@ -152,7 +168,12 @@ class Game:
 		bullet2.draw()
 		self.message1.draw()
 		self.message2.draw()
+		# notify_font_player1 = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
+		# notify_font_player1.draw()
 		home_button.draw()
+
+
+
 		# player.game_over(player.blood_state, 1)
 		# player2.game_over(player2.blood_state, 2)
 

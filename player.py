@@ -9,7 +9,7 @@ sys.path.append("./RHframework")
 from utils import *
 from shape import *
 from asset import *
-import ui
+from ui import *
 
 store_arr = []
 blood_arr = []
@@ -50,10 +50,8 @@ class Player:
     def reset_state(self, x, y):
         self.x = x
         self.y = y
-        self.blood_img_0.draw(self.x-25, self.y-40)
         self.obs_box = Rect(10, 30, 30, 10) # image space
         self.atk_box = Rect(10, 5, 30, 35) # image space
-        # time.sleep(1)
         self.blood_state = 240
 
     def update_state(self, x, y, state, vertical, shoot):
@@ -134,12 +132,20 @@ class Player:
         elif player2_blood <= 0:
             Player1_win += 1
 
-    def game_over(self, blood_state, who, quit):
-        notify_font = ui.notify_font # this should be refactored in the future
-        if who == 1 and self.blood_state <= 0:
-            notify_font.draw_str("Player1 game over", 200, 200)
-        if who == 2 and self.blood_state <= 0:
-            notify_font.draw_str("Player1 game over", 200, 200)
+    def game_over(self, point):
+        global Player1_win,Player2_win
+        if Player1_win >= point:
+            Player1_win = 0
+            Player2_win = 0
+            return 1
+        elif Player2_win >= point:
+            Player1_win = 0
+            Player2_win = 0
+            return 2
+        else:
+            return 0
+
+
 
     def get_player1_point(self):
         return Player1_win

@@ -51,7 +51,10 @@ class App(Window):
 				self.ask_quit()
 
 		elif self.game_state == GAME_PLAY:
-			self.game.update()
+			if self.game.update() == True:
+				pass
+			else:
+				self.game_state = GAME_MENU
 
 	def render(self):
 		if self.game_state == GAME_PLAY:
