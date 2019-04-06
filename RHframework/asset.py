@@ -85,8 +85,6 @@ class Image:
 	def __init__(self, path: str, resize_size=(1., 1.), rotate_deg=0., cent_pos=(0., 0.)):
 		self.path = path
 		self.img = None
-		self.x = 0
-		self.y = 0
 		self.w = -1
 		self.h = -1
 
@@ -115,15 +113,10 @@ class Image:
 			tex_dict[img] = False
 
 	def draw(self, x, y):
-		self.x = x
-		self.y = y
 		# calc the resized width and height
 		t_w, t_h = self.get_size()
 		# calc the resized left upper
-		img_cent_x, img_cent_y = self.get_image_cent()
-		t_x = x - img_cent_x
-		t_y = y - img_cent_y
-		# print('Draw {} {} {} {}'.format(t_x, t_y, t_w, t_h))
+		t_x, t_y = self.get_left_upper((x, y))
 		_draw_image(self.img, t_x, t_y, t_w, t_h)
 
 	def rotate(self, deg=0.):
@@ -134,8 +127,6 @@ class Image:
 
 	def copy(self):
 		tmp = Image('', self.resize_size, self.rotate_deg, self.cent_pos)
-		tmp.x = self.x
-		tmp.y = self.y
 		tmp.w = self.w
 		tmp.h = self.h
 		tmp.img = self.img
@@ -160,35 +151,28 @@ class Image:
 	def get_height(self):
 		return self.h * self.resize_size[1]
 	def get_size(self):
-		return (self.w * self.resize_size[0], self.h * self.resize_size[1])
+		return (self.get_width(), self.get_height())
 
 	def get_orig_width(self):
 		return self.w
 	def get_orig_height(self):
 		return self.h
 	def get_orig_size(self):
-		return (self.w, self.h)
+		return (self.get_orig_width(), self.get_orig_height())
 
 	def get_resize(self):
 		return self.resize_size
 	def get_image_cent(self):
 		cent_pos = self.cent_pos
 		return (self.get_width()*cent_pos[0], self.get_height()*cent_pos[1])
-	def get_screen_cent(self):
-		return (self.x, self.y)
 
 	# return the screen space coordinate of the origin in image space
-	def get_left_upper(self):
-		t_x = self.x - self.get_width() * self.cent_pos[0]
-		t_y = self.y - self.get_height() * self.cent_pos[1]
+	def get_left_upper(self, pos):
+		x, y = pos
+		img_cent_x, img_cent_y = self.get_image_cent()
+		t_x = x - img_cent_x
+		t_y = y - img_cent_y
 		return (t_x, t_y)
-
-	# dbg
-	def dbg_draw(self, x, y):
-		import draw_premitive as dp
-		t_w, t_h = self.get_size()
-		dp.rect((255, 0, 0, 204), (*self.get_left_upper(), t_w, t_h), 1)
-		dp.circle((255, 0, 0, 204), (x, y), 3)
 		
 
 class Sprite:

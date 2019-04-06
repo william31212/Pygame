@@ -46,12 +46,17 @@ class Player:
         self.blood_img_10 =   Image(GET_PATH(IMG_SPRITE, 'blood_10original.png'), (1, 1))
         self.blood_img_0 =    Image(GET_PATH(IMG_SPRITE, 'blood_0original.png'), (1, 1))
 
+    def update(self):
+        pass
+
+    def draw(self):
+        pass
 
     def reset_state(self, x, y):
         self.x = x
         self.y = y
         self.blood_img_0.draw(self.x-25, self.y-40)
-        self.obs_box = Rect(10, 30, 30, 10) # image space
+        self.obs_box = Rect(20, 30, 10, 10) # image space
         self.atk_box = Rect(10, 5, 30, 35) # image space
         # time.sleep(1)
         self.blood_state = 240
@@ -146,3 +151,6 @@ class Player:
 
     def get_player2_point(self):
         return Player2_win
+
+    def get_pos(self):
+        return (self.x, self.y)

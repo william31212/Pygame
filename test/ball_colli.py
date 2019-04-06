@@ -23,7 +23,6 @@ class Ball:
         self.theta = theta
         self.coll = Circle(7, 7, 8)
         self.speed = 1.0
-        self.image = self.img.copy()
 
     def update(self):
         theta = self.theta
@@ -31,12 +30,12 @@ class Ball:
         self.y += self.speed * self.moveUnit * math.sin(math.radians(theta))
 
     def is_hit(self, line):
-        obs_cir = self.coll.to_screen_space(self.image)
+        obs_cir = self.coll.to_screen_space((self.x, self.y), Ball.img)
         return obs_cir.check_line(line)
 
     def draw(self):
-        self.image.draw(self.x, self.y)
-        self.coll.to_screen_space(self.image).dbg_draw()
+        Ball.img.draw(self.x, self.y)
+        # self.coll.to_screen_space((self.x, self.y), Ball.img)
 
 class App(Window):
     def __init__(self, title, size, win_flag=W_NONE):

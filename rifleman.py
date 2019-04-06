@@ -40,6 +40,7 @@ class App(Window):
 	def update(self):
 		keyboard = self.keyboard
 		mouse = self.mouse
+		game = self.game
 
 		if self.game_state == GAME_MENU:
 			self.menu.update(mouse)
@@ -51,7 +52,10 @@ class App(Window):
 				self.ask_quit()
 
 		elif self.game_state == GAME_PLAY:
-			self.game.update()
+			game.update()
+			
+			if game.home_button.is_clicked():
+				self.game_state = GAME_MENU
 
 	def render(self):
 		if self.game_state == GAME_PLAY:
