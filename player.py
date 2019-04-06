@@ -88,6 +88,7 @@ class Player:
         blood_arr.clear()
 
     def release_state(self, num):
+        print(store_arr)
         self.x = store_arr[num][0]
         self.y = store_arr[num][1]
         self.state = store_arr[num][2]

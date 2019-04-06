@@ -88,16 +88,15 @@ class Game:
 			pygame.quit()
 			sys.exit()
 
-		if keyboard.key_state[KEY_w] or keyboard.key_state[KEY_s]:
-			if player.state == DIR_LEFT:
-				maps.tile_object(tmp1L, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
-			elif player.state == DIR_RIGHT:
-				maps.tile_object(tmp1R, player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
+		if player.state == DIR_LEFT:
+			maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_left), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
+		elif player.state == DIR_RIGHT:
+			maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_right), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
 
-			if player2.state == DIR_LEFT:
-				maps.tile_object(tmp2L, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
-			elif player2.state == DIR_RIGHT:
-				maps.tile_object(tmp2R, player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
+		if player2.state == DIR_LEFT:
+			maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
+		elif player2.state == DIR_RIGHT:
+			maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_right), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
 
 		if player.x <= 50:
 			player.x = 50
@@ -129,18 +128,21 @@ class Game:
 
 		bullet.out_of_bound(Window.get_width(), Window.get_height())
 		bullet2.out_of_bound(Window.get_width(), Window.get_height())
-
+		player.store_clear()
 		player.check_who_win(player.blood_state, player2.blood_state)
 
 
-		if  player.game_over(1) == 1:
+		if  player.game_over(3) == 1:
 			notify_font_player1 = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
 			notify_font_player1.draw()
 			time.sleep(1)
-		elif player.game_over(1) == 2:
+		elif player.game_over(3) == 2:
 			notify_font_player2 = Label('Player2 WIN ', (160, 82, 45), [300,300,500,250], 50)
 			notify_font_player2.draw()
 			time.sleep(1)
+
+
+
 
 	def draw(self):
 		maps = self.maps
