@@ -31,10 +31,10 @@ class Game:
 
 	def setup(self):
 		self.maps.pick_layer()
-		tmp1L = player.obs_box.to_screen_space(player.rifleman_left)
-		tmp1R = player.obs_box.to_screen_space(player.rifleman_right)
-		tmp2L = player2.obs_box.to_screen_space(player2.rifleman_left)
-		tmp2R = player2.obs_box.to_screen_space(player2.rifleman_right)
+
+	def reset(self):
+		self.player.reset_state(250,300)
+		self.player2.reset_state(500,300)
 
 	def update(self):
 		keyboard = self.keyboard
@@ -47,21 +47,14 @@ class Game:
 		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
 		self.message2 = Label('Player2: ' + str(self.player.get_player2_point()), (85, 107, 47), [604,30,200,50], 30)
 
-
 		player.store_state(0)
 		player2.store_state(1)
 
-		# click home
-		self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
-
 		# reset the game
 		if player.blood_state <= 0 or player2.blood_state <= 0:
-			player.reset_state(250,300)
-			player2.reset_state(500,300)
+			self.reset()
 
 		self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
-		if self.home_button.is_clicked():
-			return False
 
 		#Player 1
 		# update_state(self, x, y, state, vertical, shoot)
@@ -149,10 +142,6 @@ class Game:
 			notify_font_player2.draw()
 			time.sleep(1)
 
-
-		return True
-
-
 	def draw(self):
 		maps = self.maps
 		player = self.player
@@ -169,8 +158,6 @@ class Game:
 		# notify_font_player1 = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
 		# notify_font_player1.draw()
 		home_button.draw()
-
-
 
 		# player.game_over(player.blood_state, 1)
 		# player2.game_over(player2.blood_state, 2)

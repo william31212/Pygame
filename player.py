@@ -55,13 +55,9 @@ class Player:
     def reset_state(self, x, y):
         self.x = x
         self.y = y
-<<<<<<< HEAD
-        self.obs_box = Rect(10, 30, 30, 10) # image space
-=======
         self.blood_img_0.draw(self.x-25, self.y-40)
         self.obs_box = Rect(20, 30, 10, 10) # image space
->>>>>>> db5130f54641264c5428fa52190c62882125b41f
-        self.atk_box = Rect(10, 5, 30, 35) # image space
+        self.atk_box = Rect(10, 5, 30, 35)  # image space
         self.blood_state = 240
 
     def update_state(self, x, y, state, vertical, shoot):
@@ -96,7 +92,6 @@ class Player:
         self.y = store_arr[num][1]
         self.state = store_arr[num][2]
 
-
     def draw_character(self):
         self.draw_blood(self.blood_state)
         #sprite
@@ -106,14 +101,12 @@ class Player:
                 self.shoot_left.draw(self.x, self.y)
             elif self.state == DIR_RIGHT:
                 self.shoot_right.draw(self.x, self.y)
-
         #normal
         else:
             if self.state == DIR_LEFT:
                 self.rifleman_left.draw(self.x, self.y)
             elif self.state == DIR_RIGHT:
                 self.rifleman_right.draw(self.x, self.y)
-
 
     def draw_blood(self, blood_state):
         if blood_state <= 0:
@@ -154,8 +147,6 @@ class Player:
             return 2
         else:
             return 0
-
-
 
     def get_player1_point(self):
         return Player1_win
