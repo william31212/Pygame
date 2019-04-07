@@ -56,14 +56,14 @@ class App(Window):
 			elif self.menu.button_intro.is_clicked():
 				self.game_state = GAME_INTRO
 
-		elif self.game_state == GAME_PLAY:
+		if self.game_state == GAME_PLAY:
 			game.update()
 
 			if game.home_button.is_clicked():
 				self.game.reset()
 				self.game_state = GAME_MENU
 
-		elif self.game_state == GAME_INTRO:
+		if self.game_state == GAME_INTRO:
 			self.intro.update(mouse)
 			if self.intro.button_quit.is_clicked():
 				self.game_state = GAME_MENU
@@ -73,9 +73,9 @@ class App(Window):
 	def render(self):
 		if self.game_state == GAME_PLAY:
 			self.game.draw()
-		elif self.game_state == GAME_MENU:
+		if self.game_state == GAME_MENU:
 			self.menu.draw()
-		elif self.game_state == GAME_INTRO:
+		if self.game_state == GAME_INTRO:
 			self.intro.draw()
 
 		######debug#######

@@ -1,20 +1,24 @@
 import pygame
-import pyscroll
 import pygame.locals
-import sys
-import pytmx
-import time
-
-from player import *
-
+import pytmx, pyscroll
+import sys, time, random
 sys.path.append("./RHframework")
+# RHframework import
 from clock import Clock
 from utils import *
 from shape import *
 from asset import *
 from vector import *
+from sound import *
+
+# rifleman import
+from player import *
 
 class Bullet:
+    # static
+    se_hit = []
+
+    # public
     def __init__(self, x, y, state, speed):
         self.x = x
         self.y = y
@@ -24,6 +28,9 @@ class Bullet:
         self.bullet_list = []
         self.bullet_right = Sprite(SP_ANIMATE, 'bullet_right', 3, ANI_LOOP, (0.5, 0.5), 0, (3, 3))
         self.bullet_left = Sprite(SP_ANIMATE, 'bullet_left', 3, ANI_LOOP, (0.5, 0.5), 0, (3, 3))
+        # load hit se
+        for i in range(3):
+            Bullet.se_hit.append(Sound(GET_PATH(SE_MAIN, 'hit' + str(i) + '.wav')))
 
     def setting(self, x, y, state):
         if state == 1 or state == 4:
@@ -53,6 +60,7 @@ class Bullet:
             if atk_box.check_rect(bullet_rect) == True:
                 update_blood(blood_state, -20)
                 self.bullet_list.remove(i)
+                random.choice(Bullet.se_hit).play()
 
     def hit_thing(self, bullet_thing):
         self.bullet_list.remove(bullet_thing)
