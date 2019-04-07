@@ -106,13 +106,21 @@ class Sound(SoundFile):
 		self.channel = None
 
 	def play(self):
-		self.channel = self.sound_file.play()
+		loop = 0
+		if self.play_type == S_PLAY_INF:
+			loop = -1
+		if self.channel == None:
+			self.channel = self.sound_file.play(loop)
+		else:
+			self.channel.play(self.sound_file, loop)
 	
 	def stop(self):
-		self.sound_file.stop()
+		if self.channel:
+			self.channel.stop()
 	
 	def fade_out(self, ms):
-		self.sound_file.fadeout(ms)
+		if self.channel:
+			self.channel.fadeout(ms)
 	
 	def pause(self):
 		if self.channel != None and self.channel.get_sound() == self.sound_file:
