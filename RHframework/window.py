@@ -2,6 +2,8 @@ import pygame, sys
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+from debug_view import *
+
 W_NONE       = 0
 W_FULLSCREEN = 1<<0
 W_OPENGL     = 1<<1
@@ -57,6 +59,8 @@ class Window:
 
 		# DEBUG
 		self.debug_flag = False
+		self.debug_view = dbg_view(size)
+		self.add_event_handle(self.debug_view.handle_event)
 
 		if win_flag & W_OPENGL:
 			glEnable(GL_TEXTURE_2D)
@@ -76,10 +80,16 @@ class Window:
 		self.setup()
 
 		while self.running:
+			# process event
 			self.process_event()
+			# update
+			self.debug_view.update()
 			self.update()
+			# Render
 			self._clear_screen()
 			self.render()
+			if self.debug_flag:
+				self.debug_view.render()
 			self._flip()
 			self.fps_timer.tick(self.target_fps)
 

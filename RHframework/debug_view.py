@@ -4,16 +4,16 @@ import imgui
 class dbg_view:
 	def __init__(self, size):
 		io = imgui.get_io()
-	    io.fonts.add_font_default()
-	    io.display_size = size
+		io.fonts.add_font_default()
+		io.display_size = size
 
-	    self.renderer = PygameRenderer()
+		self.renderer = PygameRenderer()
 
-	def new_frame(self):
+	def update(self):
 		imgui.new_frame()
 
 	def render(self):
 		imgui.render()
 
 	def handle_event(self, e):
-		self.render.process_event(e)
+		self.renderer.process_event(e)

@@ -1,5 +1,5 @@
 import sys, math
-sys.path.append("../")
+sys.path.append("../RHframework")
 
 from window import *
 from asset import *
@@ -24,6 +24,7 @@ class App(Window):
 		mouse = self.mouse
 		keyboard = self.keyboard
 
+		imgui.show_test_window()
 		pass
 
 	def render(self):

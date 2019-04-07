@@ -4,6 +4,8 @@ import pygame, sys
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+sys.path.append('../RHframework')
+
 from imgui_pygame_intergation import PygameRenderer
 import imgui
 
