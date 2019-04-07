@@ -5,20 +5,19 @@ import sys
 import pytmx
 import time
 
-import draw_premitive
+# import draw_premitive
 
 
 import pprint # test
 pp = pprint.PrettyPrinter(indent=4)
 
-sys.path.append("../")
-
 # TODO: make them non-global
 lists = []
-
+sys.path.append("./RHframework")
 from utils import *
 from shape import *
 from asset import *
+import draw_premitive
 
 def draw_layer(layer, tex_map, tile_size):
 	for x, y, gid in layer:
@@ -52,32 +51,65 @@ class TiledMap:
 	def draw(self, func_draw_char):
 		for i in lists:
 			if i.name == 'character':
-				func_draw_char()
+				for func in func_draw_char:
+					func()
 			else:
 				draw_layer(i, self.tex_map, (self.get_tile_width(), self.get_tile_height()))
 	# TODO: Refactor for performance
-	def tile_object(self, obs_box, state, func_change):
+	def tile_object(self, obs_box, state, func_change, blood_change, bullet_list, bullet_update, num=0):
 		for layer in self.tmxdata.layers:
 			if isinstance(layer, pytmx.TiledObjectGroup) == True:
-				if layer.properties['collision'] == 1:
+				if layer.properties['kill'] == 1:
 					for object_iter in layer:
 						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
 						# print(obs_box.x, obs_box.y)
 						if obs_rec.check_rect(obs_box) == True and (state == 1):
-							func_change()
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 2):
-							func_change()
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 3):
-							func_change()
+							blood_change(num,-1)
 						if obs_rec.check_rect(obs_box) == True and (state == 4):
-							func_change()
+							blood_change(num,-1)
+						if obs_rec.check_rect(obs_box) == True and (state == 5):
+							blood_change(num,-1)
+						if obs_rec.check_rect(obs_box) == True and (state == 6):
+							blood_change(num,-1)
+
+				if layer.properties['collision'] == 1:
+					for object_iter in layer:
+						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
+						# if obs_rec.check_rect(obs_box) == True and (state == 1):
+						# 	func_change(num)
+						# if obs_rec.check_rect(obs_box) == True and (state == 2):
+						# 	func_change(num)
+						if obs_rec.check_rect(obs_box) and (state == 3):
+							print(obs_rec.x ,obs_rec.y)
+							print(obs_box.x ,obs_box.y)
+							func_change(num)
+						elif obs_rec.check_rect(obs_box) and (state == 4):
+							print(obs_rec.x ,obs_rec.y)
+							print(obs_box.x ,obs_box.y)
+							func_change(num)
+						# if obs_rec.check_rect(obs_box) == True and (state == 5):
+						# 	func_change(num)
+						# if obs_rec.check_rect(obs_box) == True and (state == 6):
+						# 	func_change(num)
+
+					for object_iter in layer:
+						obs_rec = Rect(object_iter.x, object_iter.y, object_iter.width, object_iter.height)
+						for i in bullet_list:
+							bullet_rect = Rect(i[0], i[1], 30, 30)
+							if obs_rec.check_rect(bullet_rect):
+								bullet_update(i)
+
 	# BUG(roy4801): draw_premitive fucked up here
 	def dbg_draw_tile_object(self):
 		for layer in self.tmxdata.layers:
 			if isinstance(layer, pytmx.TiledObjectGroup) and layer.properties['collision'] == 1:
 				for obj_iter in layer:
 					# print((obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height))
-					draw_premitive.rect((255, 0, 0), (obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height), 1)
+					draw_premitive.rect((255, 0, 0, 255), (obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height), 1)
 
 	def get_map_width(self):
 		return self.width
