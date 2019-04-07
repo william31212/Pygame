@@ -10,6 +10,7 @@ def _gl_prologue():
 	glPushMatrix()
 	glLoadIdentity()
 	glPushAttrib(GL_CURRENT_BIT)
+	glBindTexture(GL_TEXTURE_2D, 0)
 
 def _gl_epilogue():
 	glPopAttrib()

@@ -67,7 +67,7 @@ class Window:
 			glEnable(GL_BLEND)
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
-			glClearColor(0.5, 0.5, 0.5, 0.0)
+			glClearColor(0.5, 0.5, 0.5, 1)
 			#
 			glMatrixMode(GL_PROJECTION)
 			glLoadIdentity()
