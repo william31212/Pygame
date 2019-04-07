@@ -15,21 +15,25 @@ from bullet import *
 from ui import *
 from menu import *
 from sound import *
+from input import *
 
 class Game:
 	def __init__(self):
 		self.mouse = MouseHandler.get_mouse()
 		self.keyboard = KeyHandler.get_keyboard()
 		self.home_button = Button(750, 50, 50, 50, Image('./assets/img/' + 'home' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_hover' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_click' + '.png', (0.2, 0.2)))
+
+		# player
 		self.player = Player(250, 300, 100, 100, DIR_RIGHT, 'Player1')
 		self.player2 = Player(500, 300, 100, 100, DIR_LEFT, 'Player2')
+		self.player.set_key_map([KEY_w, KEY_s, KEY_a, KEY_d, KEY_v])
+		self.player2.set_key_map([KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_SLASH])
+
 		self.bullet = Bullet(0, 0, 2, 20)
 		self.bullet2 = Bullet(0, 0, 2, 20)
 		self.maps = TiledMap("./level2.tmx")
 		self.message1 = None
 		self.message2 = None
-		# TODO(roy4801): this is fucking ugly
-		self.ak47_se = Sound(GET_PATH(SE_MAIN, 'ak47.wav'), S_PLAY_ONCE, 0.5)
 
 		self.setup()
 
@@ -62,38 +66,14 @@ class Game:
 
 		#Player 1
 		# update_state(self, x, y, state, vertical, shoot)
-		if keyboard.key_state[KEY_w]:
-			player.update_state(player.x, player.y, player.state, 1, False)
-		elif keyboard.key_state[KEY_s]:
-			player.update_state(player.x, player.y, player.state, 2, False)
-		elif keyboard.key_state[KEY_a]:
-			player.update_state(player.x, player.y, DIR_LEFT, -1, False)
-		elif keyboard.key_state[KEY_d]:
-			player.update_state(player.x, player.y, DIR_RIGHT, -1, False)
-		elif keyboard.key_state[KEY_v]:
-			bullet.setting(player.x, player.y, player.state)
-			player.update_state(player.x, player.y, player.state, -1, True)
-			self.ak47_se.play()
-
-		#Player 2
-		# update_state(self, x, y, state, vertical, shoot)
-		if keyboard.key_state[KEY_UP]:
-			player2.update_state(player2.x, player2.y, player2.state, 1, False)
-		elif keyboard.key_state[KEY_DOWN]:
-			player2.update_state(player2.x, player2.y, player2.state, 2, False)
-		elif keyboard.key_state[KEY_LEFT]:
-			player2.update_state(player2.x, player2.y, DIR_LEFT, -1, False)
-		elif keyboard.key_state[KEY_RIGHT]:
-			player2.update_state(player2.x, player2.y, DIR_RIGHT, -1, False)
-		elif keyboard.key_state[KEY_SLASH]:
-			bullet2.setting(player2.x, player2.y, player2.state)
-			player2.update_state(player2.x, player2.y, player2.state, -1, True)
-			self.ak47_se.play()
-
+		player.update(bullet)
+		player2.update(bullet2)
+		
 		if keyboard.key_state[KEY_ESC]:
 			pygame.quit()
 			sys.exit()
 
+		# collision
 		if player.state == DIR_LEFT:
 			maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_left), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
 		elif player.state == DIR_RIGHT:

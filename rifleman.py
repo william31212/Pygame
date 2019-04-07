@@ -68,8 +68,6 @@ class App(Window):
 			if self.intro.button_quit.is_clicked():
 				self.game_state = GAME_MENU
 
-
-
 	def render(self):
 		if self.game_state == GAME_PLAY:
 			self.game.draw()
