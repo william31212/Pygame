@@ -106,7 +106,7 @@ class TiledMap:
 	# BUG(roy4801): draw_premitive fucked up here
 	def dbg_draw_tile_object(self):
 		for layer in self.tmxdata.layers:
-			if isinstance(layer, pytmx.TiledObjectGroup) and layer.properties['collision'] == 1:
+			if isinstance(layer, pytmx.TiledObjectGroup) and (layer.properties['collision'] == 1 or layer.properties['kill'] == 1):
 				for obj_iter in layer:
 					# print((obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height))
 					draw_premitive.rect((255, 0, 0, 255), (obj_iter.x, obj_iter.y, obj_iter.width, obj_iter.height), 1)

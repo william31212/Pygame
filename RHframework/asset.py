@@ -103,7 +103,7 @@ class Image:
 	def __del__(self):
 		img = self.img
 		if tex_dict[img]:
-			print('Delete')
+			# print('Delete')
 			try:
 				glDeleteTextures([img])
 			except error.GLerror:

@@ -40,13 +40,16 @@ class Player:
 		self.state = state
 		self.hori = 0
 		self.blood_state = 240
+		
+		# shoot
 		self.shoot = False
 		self.recoil = 20
+
 		self.obs_box = Rect(20, 30, 10, 10) # image space
 		self.atk_box = Rect(10, 5, 30, 35) # image space
 		self.key_map = None
 
-		self.ak47_se = Sound(GET_PATH(SE_MAIN, 'ak47.wav'), S_PLAY_ONCE, 0.5)
+		self.ak47_se = Sound(GET_PATH(SE_MAIN, 'ak47.wav'), S_PLAY_ONCE, 0.3)
 		self.rifleman_right = Image(GET_PATH(IMG_SPRITE, Player+'_right001.png'), (2., 2.), 0., (0.52, 0.56))
 		self.rifleman_left =  Image(GET_PATH(IMG_SPRITE, Player+'_left001.png'), (2., 2.), 0., (0.52, 0.56))
 		self.shoot_left =     Image(GET_PATH(IMG_SPRITE, Player+'_shoot_left000.png'), (2., 2.), 0., (0.52, 0.56))
@@ -79,7 +82,6 @@ class Player:
 
 		# DIR_UP/DIR_DOWN
 		if kb.key_state[km[Player.P_UP]]:
-			print('up')
 			self.y -= 10
 		elif kb.key_state[km[Player.P_DOWN]]:
 			self.y += 10
@@ -92,6 +94,7 @@ class Player:
 			self.state = DIR_RIGHT
 		# shoot
 		if kb.key_state[km[Player.P_SHOOT]]:
+			self.shoot = True
 			bullet.setting(self.x, self.y, self.state)
 			self.ak47_se.play()
 
@@ -100,7 +103,9 @@ class Player:
 				self.x += 20
 			elif self.state == DIR_RIGHT:
 				self.x -= 20
-
+		# limit play area
+		self.x = 0 if self.x < 0 else Window.get_width() if self.x > Window.get_width() else self.x
+		self.y = 0 if self.y < 0 else Window.get_height() if self.y > Window.get_height() else self.y
 
 	def store_state(self, num=0):
 		store_arr.append([self.x, self.y, self.state])

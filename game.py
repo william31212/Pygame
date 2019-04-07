@@ -64,8 +64,6 @@ class Game:
 
 		self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 
-		#Player 1
-		# update_state(self, x, y, state, vertical, shoot)
 		player.update(bullet)
 		player2.update(bullet2)
 		
@@ -83,24 +81,6 @@ class Game:
 			maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
 		elif player2.state == DIR_RIGHT:
 			maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_right), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
-
-		if player.x <= 50:
-			player.x = 50
-		if player.y <= 30:
-			player.y = 30
-		if player.x >= 750:
-			player.x = 750
-		if player.y >= 600:
-			player.y = 600
-
-		if player2.x <= 50:
-			player2.x = 50
-		if player2.y <= 30:
-			player2.y = 30
-		if player2.x >= 750:
-			player2.x = 750
-		if player2.y >= 600:
-			player2.y = 600
 
 		if player.state == DIR_LEFT:
 			bullet.hit_people(player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.blood_update, player2.blood_state)
@@ -126,9 +106,6 @@ class Game:
 			notify_font_player2 = Label('Player2 WIN ', (160, 82, 45), [300,300,500,250], 50)
 			notify_font_player2.draw()
 			time.sleep(1)
-
-
-
 
 	def draw(self):
 		maps = self.maps

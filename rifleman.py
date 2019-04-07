@@ -39,6 +39,9 @@ class App(Window):
 		self.menu = Menu()
 		self.intro = Intro()
 
+		######debug#######
+		self.toggle_dbg_draw = True
+
 	def update(self):
 		keyboard = self.keyboard
 		mouse = self.mouse
@@ -77,8 +80,16 @@ class App(Window):
 			self.intro.draw()
 
 		######debug#######
-		if self.game_state == GAME_PLAY:
-			self.game.dbg_draw()
+		imgui.begin('Option')
+		_, self.toggle_dbg_draw = imgui.checkbox('dbg draw', self.toggle_dbg_draw)
+
+		if imgui.button('Reset game'):
+			self.game.reset()
+		imgui.end()
+
+		if self.toggle_dbg_draw:
+			if self.game_state == GAME_PLAY:
+				self.game.dbg_draw()
 
 	def ask_quit(self):
 		print('On quit')
