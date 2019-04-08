@@ -65,6 +65,10 @@ class App(Window):
 			if game.home_button.is_clicked():
 				self.game.reset()
 				self.game_state = GAME_MENU
+			if game.quit_button.is_clicked():
+				self.game.reset()
+				self.game_state = GAME_MENU
+
 
 		if self.game_state == GAME_INTRO:
 			self.intro.update(mouse)

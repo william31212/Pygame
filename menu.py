@@ -19,17 +19,21 @@ class Menu:
 		self.button_play = Button(50, 450, 300, 70, Image('./assets/img/' + 'play' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'play_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'play_click' + '.png', (1.0, 1.0)))
 		self.button_intro = Button(450, 550, 300, 70, Image('./assets/img/' + 'intro' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'intro_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'intro_click' + '.png', (1.0, 1.0)))
 		self.button_quit = Button(450, 450, 300, 70, Image('./assets/img/' + 'quit' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_click' + '.png', (1.0, 1.0)))
+		self.button_about = Button(50, 550, 300, 70, Image('./assets/img/' + 'about' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'about_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'about_click' + '.png', (1.0, 1.0)))
+
 
 	def update(self, mouse):
 		self.button_play.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 		self.button_quit.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 		self.button_intro.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
+		self.button_about.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 
 	def draw(self):
 		self._draw_background()
 		self.button_play.draw()
 		self.button_quit.draw()
 		self.button_intro.draw()
+		self.button_about.draw()
 
 	# private
 	def _draw_background(self):
@@ -51,6 +55,8 @@ class Intro:
 
 	def _draw_background(self):
 		self.background.draw(0,0)
+
+
 
 
 

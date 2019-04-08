@@ -17,11 +17,23 @@ from menu import *
 from sound import *
 from input import *
 
+
+GI_PLAYING = 1
+GI_Player1_win = 2
+GI_Player2_win = 3
+
 class Game:
 	def __init__(self):
 		self.mouse = MouseHandler.get_mouse()
 		self.keyboard = KeyHandler.get_keyboard()
 		self.home_button = Button(750, 50, 50, 50, Image('./assets/img/' + 'home' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_hover' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_click' + '.png', (0.2, 0.2)))
+
+		# win_message
+		self.gi_state = GI_PLAYING
+		self.is_player1_win = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
+		self.is_player2_win = Label('Player2 WIN ', (160, 82, 45), [125,300,500,0], 100)
+		self.quit_button = Button(300, 500, 150, 50, Image('./assets/img/' + 'quit' + '.png', (0.5, 0.5)), Image('./assets/img/' + 'quit_hover' + '.png', (0.5, 0.5)), Image('./assets/img/' + 'quit_click' + '.png', (0.5, 0.5)))
+		self.renew_button = Button(500, 500, 150, 50, Image('./assets/img/' + 'renew' + '.png', (0.5, 0.5)), Image('./assets/img/' + 'renew_hover' + '.png', (0.5, 0.5)), Image('./assets/img/' + 'renew_click' + '.png', (0.5, 0.5)))
 
 		# player
 		self.player = Player(250, 300, 100, 100, DIR_RIGHT, 'Player1')
@@ -34,7 +46,6 @@ class Game:
 		self.maps = TiledMap("./level2.tmx")
 		self.message1 = None
 		self.message2 = None
-
 		self.setup()
 
 	def setup(self):
@@ -58,15 +69,14 @@ class Game:
 		player.store_state(0)
 		player2.store_state(1)
 
-		# reset the game
-		if player.blood_state <= 0 or player2.blood_state <= 0:
-			self.reset()
 
 		self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
+		self.quit_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
+		self.renew_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 
 		player.update(bullet)
 		player2.update(bullet2)
-		
+
 		if keyboard.key_state[KEY_ESC]:
 			pygame.quit()
 			sys.exit()
@@ -95,17 +105,22 @@ class Game:
 		bullet.out_of_bound(Window.get_width(), Window.get_height())
 		bullet2.out_of_bound(Window.get_width(), Window.get_height())
 		player.store_clear()
-		player.check_who_win(player.blood_state, player2.blood_state)
 
+		if player.check_who_win(player.blood_state, player2.blood_state) == True:
+			self.reset()
 
-		if  player.game_over(3) == 1:
-			notify_font_player1 = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
-			notify_font_player1.draw()
-			time.sleep(1)
-		elif player.game_over(3) == 2:
-			notify_font_player2 = Label('Player2 WIN ', (160, 82, 45), [300,300,500,250], 50)
-			notify_font_player2.draw()
-			time.sleep(1)
+		if player.is_game_over(3) == 1:
+			self.gi_state = GI_Player1_win
+			player.clear_point()
+		elif player2.is_game_over(3) == 2:
+			self.gi_state = GI_Player2_win
+			player2.clear_point()
+
+		if self.renew_button.is_clicked():
+			self.reset()
+			self.player.clear_point()
+			self.gi_state = GI_PLAYING
+
 
 	def draw(self):
 		maps = self.maps
@@ -115,14 +130,27 @@ class Game:
 		bullet2 = self.bullet2
 		home_button = self.home_button
 
-		maps.draw([player.draw_character,player2.draw_character])
-		bullet.draw()
-		bullet2.draw()
-		self.message1.draw()
-		self.message2.draw()
-		# notify_font_player1 = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
-		# notify_font_player1.draw()
-		home_button.draw()
+
+		if self.gi_state == GI_Player1_win or self.gi_state == GI_Player2_win:
+			maps.draw([player.draw_character,player2.draw_character])
+			if self.gi_state == GI_Player1_win:
+				self.is_player1_win.draw()
+			elif self.gi_state == GI_Player2_win:
+				self.is_player2_win.draw()
+			self.quit_button.draw()
+			self.renew_button.draw()
+
+		else:
+			maps.draw([player.draw_character,player2.draw_character])
+			bullet.draw()
+			bullet2.draw()
+			self.message1.draw()
+			self.message2.draw()
+			home_button.draw()
+
+
+
+
 
 		# player.game_over(player.blood_state, 1)
 		# player2.game_over(player2.blood_state, 2)
