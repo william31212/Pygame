@@ -27,9 +27,9 @@ class Game:
 		self.mouse = MouseHandler.get_mouse()
 		self.keyboard = KeyHandler.get_keyboard()
 		self.home_button = Button(750, 50, 50, 50, Image('./assets/img/' + 'home' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_hover' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_click' + '.png', (0.2, 0.2)))
+		self.gi_state = GI_PLAYING
 
 		# win_message
-		self.gi_state = GI_PLAYING
 		self.is_player1_win = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
 		self.is_player2_win = Label('Player2 WIN ', (160, 82, 45), [125,300,500,0], 100)
 		self.quit_button = Button(300, 500, 150, 50, Image('./assets/img/' + 'quit' + '.png', (0.5, 0.5)), Image('./assets/img/' + 'quit_hover' + '.png', (0.5, 0.5)), Image('./assets/img/' + 'quit_click' + '.png', (0.5, 0.5)))
@@ -66,60 +66,61 @@ class Game:
 		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
 		self.message2 = Label('Player2: ' + str(self.player.get_player2_point()), (85, 107, 47), [604,30,200,50], 30)
 
-		player.store_state(0)
-		player2.store_state(1)
+		if self.gi_state == GI_PLAYING:
+			player.store_state(0)
+			player2.store_state(1)
 
+			self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 
-		self.home_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
-		self.quit_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
-		self.renew_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
+			player.update(bullet)
+			player2.update(bullet2)
 
-		player.update(bullet)
-		player2.update(bullet2)
+			if keyboard.key_state[KEY_ESC]:
+				pygame.quit()
+				sys.exit()
 
-		if keyboard.key_state[KEY_ESC]:
-			pygame.quit()
-			sys.exit()
+			# collision
+			if player.state == DIR_LEFT:
+				maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_left), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
+			elif player.state == DIR_RIGHT:
+				maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_right), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
 
-		# collision
-		if player.state == DIR_LEFT:
-			maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_left), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
-		elif player.state == DIR_RIGHT:
-			maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_right), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)
+			if player2.state == DIR_LEFT:
+				maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
+			elif player2.state == DIR_RIGHT:
+				maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_right), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
 
-		if player2.state == DIR_LEFT:
-			maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
-		elif player2.state == DIR_RIGHT:
-			maps.tile_object(player2.obs_box.to_screen_space(player2.get_pos(), player2.rifleman_right), player2.state, player2.release_state, player2.blood_update, bullet2.bullet_list, bullet2.hit_thing, 1)
+			if player.state == DIR_LEFT:
+				bullet.hit_people(player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.blood_update, player2.blood_state)
+			elif player.state == DIR_RIGHT:
+				bullet.hit_people(player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_right), player2.blood_update, player2.blood_state)
 
-		if player.state == DIR_LEFT:
-			bullet.hit_people(player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_left), player2.blood_update, player2.blood_state)
-		elif player.state == DIR_RIGHT:
-			bullet.hit_people(player2.atk_box.to_screen_space(player2.get_pos(), player2.rifleman_right), player2.blood_update, player2.blood_state)
+			if player2.state == DIR_LEFT:
+				bullet2.hit_people(player.atk_box.to_screen_space(player.get_pos(), player.rifleman_left), player.blood_update, player.blood_state)
+			elif player2.state == DIR_RIGHT:
+				bullet2.hit_people(player.atk_box.to_screen_space(player.get_pos(), player.rifleman_right), player.blood_update, player.blood_state)
 
-		if player2.state == DIR_LEFT:
-			bullet2.hit_people(player.atk_box.to_screen_space(player.get_pos(), player.rifleman_left), player.blood_update, player.blood_state)
-		elif player2.state == DIR_RIGHT:
-			bullet2.hit_people(player.atk_box.to_screen_space(player.get_pos(), player.rifleman_right), player.blood_update, player.blood_state)
+			bullet.out_of_bound(Window.get_width(), Window.get_height())
+			bullet2.out_of_bound(Window.get_width(), Window.get_height())
+			player.store_clear()
 
-		bullet.out_of_bound(Window.get_width(), Window.get_height())
-		bullet2.out_of_bound(Window.get_width(), Window.get_height())
-		player.store_clear()
+			if player.check_who_win(player.blood_state, player2.blood_state) == True:
+				self.reset()
+			if player.is_game_over(3) == 1:
+				self.gi_state = GI_Player1_win
+				player.clear_point()
+			elif player2.is_game_over(3) == 2:
+				self.gi_state = GI_Player2_win
+				player2.clear_point()
 
-		if player.check_who_win(player.blood_state, player2.blood_state) == True:
-			self.reset()
+		elif self.gi_state == GI_Player1_win or self.gi_state == GI_Player2_win:
+			if self.renew_button.is_clicked():
+				self.reset()
+				self.player.clear_point()
+				self.gi_state = GI_PLAYING
 
-		if player.is_game_over(3) == 1:
-			self.gi_state = GI_Player1_win
-			player.clear_point()
-		elif player2.is_game_over(3) == 2:
-			self.gi_state = GI_Player2_win
-			player2.clear_point()
-
-		if self.renew_button.is_clicked():
-			self.reset()
-			self.player.clear_point()
-			self.gi_state = GI_PLAYING
+			self.quit_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
+			self.renew_button.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 
 
 	def draw(self):
@@ -130,7 +131,6 @@ class Game:
 		bullet2 = self.bullet2
 		home_button = self.home_button
 
-
 		if self.gi_state == GI_Player1_win or self.gi_state == GI_Player2_win:
 			maps.draw([player.draw_character,player2.draw_character])
 			if self.gi_state == GI_Player1_win:
@@ -140,17 +140,13 @@ class Game:
 			self.quit_button.draw()
 			self.renew_button.draw()
 
-		else:
+		elif self.gi_state == GI_PLAYING:
 			maps.draw([player.draw_character,player2.draw_character])
 			bullet.draw()
 			bullet2.draw()
 			self.message1.draw()
 			self.message2.draw()
 			home_button.draw()
-
-
-
-
 
 		# player.game_over(player.blood_state, 1)
 		# player2.game_over(player2.blood_state, 2)

@@ -44,16 +44,11 @@ class App(Window):
 		self.toggle_dbg_draw = True
 		self.toggle_dbg_print = True
 
-		self.cnt = 0
-
 	def update(self):
 		keyboard = self.keyboard
 		mouse = self.mouse
 		game = self.game
 		intro = self.intro
-
-		dbprint('hello {}'.format(self.cnt))
-		self.cnt += 1
 
 		if self.game_state == GAME_MENU:
 			self.menu.update(mouse)
@@ -69,12 +64,18 @@ class App(Window):
 		if self.game_state == GAME_PLAY:
 			game.update()
 
+			# this should refactor
 			if game.home_button.is_clicked():
 				self.game.reset()
 				self.game_state = GAME_MENU
+			# TODO(roy4801): this will reveaal the internal state which is *BAD*
 			if game.quit_button.is_clicked():
 				self.game.reset()
 				self.game_state = GAME_MENU
+				self.game.player.clear_point()
+				self.game.gi_state = GI_PLAYING
+
+				game.quit_button.reset() # ugly
 
 
 		if self.game_state == GAME_INTRO:
@@ -96,6 +97,11 @@ class App(Window):
 		_, self.toggle_dbg_print = imgui.checkbox('Debug logger', self.toggle_dbg_print)
 		if imgui.button('Reset game'):
 			self.game.reset()
+
+		if imgui.button('Let player 1 loses'):
+			for _ in range(3):
+				self.game.player.check_who_win(0, 100)
+			dbprint('player 1 lose')
 		imgui.end()
 
 		if self.toggle_dbg_draw:

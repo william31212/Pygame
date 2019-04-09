@@ -49,18 +49,18 @@ class Player:
 		self.atk_box = Rect(10, 5, 30, 35) # image space
 		self.key_map = None
 
-		self.ak47_se = Sound(GET_PATH(SE_MAIN, 'ak47.wav'), S_PLAY_ONCE, 0.3)
+		self.ak47_se        = Sound(GET_PATH(SE_MAIN, 'ak47.wav'), S_PLAY_ONCE, 0.3)
 		self.rifleman_right = Image(GET_PATH(IMG_SPRITE, Player+'_right001.png'), (2., 2.), 0., (0.52, 0.56))
-		self.rifleman_left =  Image(GET_PATH(IMG_SPRITE, Player+'_left001.png'), (2., 2.), 0., (0.52, 0.56))
-		self.shoot_left =     Image(GET_PATH(IMG_SPRITE, Player+'_shoot_left000.png'), (2., 2.), 0., (0.52, 0.56))
-		self.shoot_right =    Image(GET_PATH(IMG_SPRITE, Player+'_shoot_right000.png'), (2., 2.), 0., (0.52, 0.56))
-		self.blood_img_100 =  Image(GET_PATH(IMG_SPRITE, 'blood_100original.png'), (1, 1))
-		self.blood_img_80 =   Image(GET_PATH(IMG_SPRITE, 'blood_80original.png'), (1, 1))
-		self.blood_img_60 =   Image(GET_PATH(IMG_SPRITE, 'blood_60original.png'), (1, 1))
-		self.blood_img_40 =   Image(GET_PATH(IMG_SPRITE, 'blood_40original.png'), (1, 1))
-		self.blood_img_20 =   Image(GET_PATH(IMG_SPRITE, 'blood_20original.png'), (1, 1))
-		self.blood_img_10 =   Image(GET_PATH(IMG_SPRITE, 'blood_10original.png'), (1, 1))
-		self.blood_img_0 =    Image(GET_PATH(IMG_SPRITE, 'blood_0original.png'), (1, 1))
+		self.rifleman_left  = Image(GET_PATH(IMG_SPRITE, Player+'_left001.png'), (2., 2.), 0., (0.52, 0.56))
+		self.shoot_left     = Image(GET_PATH(IMG_SPRITE, Player+'_shoot_left000.png'), (2., 2.), 0., (0.52, 0.56))
+		self.shoot_right    = Image(GET_PATH(IMG_SPRITE, Player+'_shoot_right000.png'), (2., 2.), 0., (0.52, 0.56))
+		self.blood_img_100  = Image(GET_PATH(IMG_SPRITE, 'blood_100original.png'), (1, 1))
+		self.blood_img_80   = Image(GET_PATH(IMG_SPRITE, 'blood_80original.png'), (1, 1))
+		self.blood_img_60   = Image(GET_PATH(IMG_SPRITE, 'blood_60original.png'), (1, 1))
+		self.blood_img_40   = Image(GET_PATH(IMG_SPRITE, 'blood_40original.png'), (1, 1))
+		self.blood_img_20   = Image(GET_PATH(IMG_SPRITE, 'blood_20original.png'), (1, 1))
+		self.blood_img_10   = Image(GET_PATH(IMG_SPRITE, 'blood_10original.png'), (1, 1))
+		self.blood_img_0    = Image(GET_PATH(IMG_SPRITE, 'blood_0original.png'), (1, 1))
 
 	def draw(self):
 		pass

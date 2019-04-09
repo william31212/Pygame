@@ -88,3 +88,6 @@ class Button:
 
 	def is_clicked(self):
 		return True if self.now_state == BTN_CLICK else False
+
+	def reset(self):
+		self.now_state = BTN_NORMAL

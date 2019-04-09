@@ -19,9 +19,7 @@ class dbg_view:
 		self.renderer.process_event(e)
 
 def dbprint(s):
-	dbp = dbg_print.get_dbg_print()
-
-	dbp.add_str(s)
+	dbg_print.get_dbg_print().add_str(s)
 
 class dbg_print:
 	instance = None
@@ -43,7 +41,7 @@ class dbg_print:
 	def draw(self):
 		imgui.begin("log_window", flags=imgui.WINDOW_NO_RESIZE)
 		imgui.begin_child("log", 200, 300, border=True)
-		for i in range(len(self.str_list)-1, 0, -1):
+		for i in range(len(self.str_list)-1, -1, -1):
 			imgui.text(self.str_list[i])
 		imgui.end_child()
 		if imgui.button('Clear'):
