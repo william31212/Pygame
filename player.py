@@ -40,7 +40,7 @@ class Player:
 		self.state = state
 		self.hori = 0
 		self.blood_state = 240
-		
+
 		# shoot
 		self.shoot = False
 		self.recoil = 20
@@ -116,7 +116,6 @@ class Player:
 		blood_arr.clear()
 
 	def release_state(self, num):
-		print(store_arr)
 		self.x = store_arr[num][0]
 		self.y = store_arr[num][1]
 		self.state = store_arr[num][2]
@@ -158,24 +157,29 @@ class Player:
 
 	def check_who_win(self, player1_blood, player2_blood):
 		global Player1_win ,Player2_win
-		# print(Player1_win, Player2_win)
+
 		if player1_blood <= 0:
 			Player2_win += 1
+			return True
 		elif player2_blood <= 0:
 			Player1_win += 1
+			return True
+		else:
+			return False
 
-	def game_over(self, point):
-		global Player1_win,Player2_win
+	def is_game_over(self, point):
 		if Player1_win >= point:
-			Player1_win = 0
-			Player2_win = 0
 			return 1
 		elif Player2_win >= point:
-			Player1_win = 0
-			Player2_win = 0
 			return 2
 		else:
 			return 0
+
+	def clear_point(self):
+		global Player1_win,Player2_win
+		Player1_win = 0
+		Player2_win = 0
+
 
 	def get_player1_point(self):
 		return Player1_win
