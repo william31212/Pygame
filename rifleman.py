@@ -42,8 +42,8 @@ class App(Window):
 		self.about = About()
 
 		######debug#######
-		self.set_dbg_flag(True)
-		self.toggle_dbg_draw = True
+		self.set_dbg_flag(False)
+		self.toggle_dbg_draw = False
 		self.toggle_dbg_print = True
 
 	def update(self):
