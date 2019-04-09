@@ -17,3 +17,35 @@ class dbg_view:
 
 	def handle_event(self, e):
 		self.renderer.process_event(e)
+
+def dbprint(s):
+	dbp = dbg_print.get_dbg_print()
+
+	dbp.add_str(s)
+
+class dbg_print:
+	instance = None
+	line_limit = 10
+
+	@staticmethod
+	def get_dbg_print():
+		if not dbg_print.instance:
+			dbg_print.instance = dbg_print()
+		return dbg_print.instance
+
+	def __init__(self):
+		assert dbg_print.instance == None
+		self.str_list = []
+
+	def add_str(self, s):
+		self.str_list.append(s)
+
+	def draw(self):
+		imgui.begin("log_window", flags=imgui.WINDOW_NO_RESIZE)
+		imgui.begin_child("log", 200, 300, border=True)
+		for i in range(len(self.str_list)-1, 0, -1):
+			imgui.text(self.str_list[i])
+		imgui.end_child()
+		if imgui.button('Clear'):
+			self.str_list = []
+		imgui.end()

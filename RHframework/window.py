@@ -98,7 +98,7 @@ class Window:
 			if e.type == pygame.QUIT:
 				self.ask_quit()
 			elif e.type == pygame.KEYDOWN and e.key == pygame.K_BACKQUOTE:
-				self.debug_flag = ~self.debug_flag
+				self.debug_flag = not self.debug_flag
 			# TODO(roy4801): process events
 			for handle in self.handle_list:
 				handle(e)
@@ -152,3 +152,6 @@ class Window:
 
 	def iconify(self):
 		return pygame.display.iconify()
+
+	def set_dbg_flag(self, flag):
+		self.debug_flag = flag
