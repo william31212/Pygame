@@ -20,10 +20,11 @@ display_width = 800
 display_height = 640
 
 GAME_LEAVE = -1
-GAME_MENU = 0
-GAME_PLAY = 1
-GAME_CLICK = 2
+GAME_MENU  = 0
+GAME_PLAY  = 1
+# GAME_CLICK = 2
 GAME_INTRO = 3
+GAME_ABOUT = 4
 
 class App(Window):
 	def __init__(self, title, size, win_flag=W_NONE):
@@ -38,6 +39,7 @@ class App(Window):
 		self.game = Game()
 		self.menu = Menu()
 		self.intro = Intro()
+		self.about = About()
 
 		######debug#######
 		self.set_dbg_flag(True)
@@ -49,7 +51,7 @@ class App(Window):
 		mouse = self.mouse
 		game = self.game
 		intro = self.intro
-
+		# Menu
 		if self.game_state == GAME_MENU:
 			self.menu.update(mouse)
 			# btn_click
@@ -60,15 +62,17 @@ class App(Window):
 				self.ask_quit()
 			elif self.menu.button_intro.is_clicked():
 				self.game_state = GAME_INTRO
-
+			elif self.menu.button_about.is_clicked():
+				self.game_state = GAME_ABOUT
+		# Play
 		if self.game_state == GAME_PLAY:
 			game.update()
 
 			# this should refactor
-			if game.home_button.is_clicked():
+			if game.home_button.is_clicked() or keyboard.key_state[KEY_ESC]:
 				self.game.reset()
 				self.game_state = GAME_MENU
-			# TODO(roy4801): this will reveaal the internal state which is *BAD*
+			# TODO(roy4801): this will reveal the internal state which is *BAD*
 			if game.quit_button.is_clicked():
 				self.game.reset()
 				self.game_state = GAME_MENU
@@ -76,11 +80,16 @@ class App(Window):
 				self.game.gi_state = GI_PLAYING
 
 				game.quit_button.reset() # ugly
-
-
+		# Intro
 		if self.game_state == GAME_INTRO:
 			self.intro.update(mouse)
 			if self.intro.button_quit.is_clicked():
+				self.game_state = GAME_MENU
+		# About
+		if self.game_state == GAME_ABOUT:
+			self.about.update()
+
+			if self.about.button_quit.is_clicked():
 				self.game_state = GAME_MENU
 
 	def render(self):
@@ -90,6 +99,8 @@ class App(Window):
 			self.menu.draw()
 		if self.game_state == GAME_INTRO:
 			self.intro.draw()
+		if self.game_state == GAME_ABOUT:
+			self.about.draw()
 
 		######debug#######
 		imgui.begin('Option')
@@ -102,6 +113,9 @@ class App(Window):
 			for _ in range(3):
 				self.game.player.check_who_win(0, 100)
 			dbprint('player 1 lose')
+
+		state_str = {0 : 'GAME_MENU', 1 : 'GAME_PLAY', 3 : 'GAME_INTRO', 4 : 'GAME_ABOUT'}
+		imgui.text('Now state = {}'.format(state_str[self.game_state]))
 		imgui.end()
 
 		if self.toggle_dbg_draw:

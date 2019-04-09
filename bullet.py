@@ -40,7 +40,7 @@ class Bullet:
         self.y = y + 1
         self.state = state
 
-        if self.clock.getPassedSec() >= 0.5 and len(self.bullet_list) > 0:
+        if self.clock.getPassedSec() >= 0.3 and len(self.bullet_list) > 0:
             self._new_bullet([self.x, self.y, self.state, self.speed])
             self.clock.reset()
         if len(self.bullet_list) == 0:

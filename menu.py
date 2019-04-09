@@ -12,6 +12,8 @@ from shape import *
 from player import *
 from window import *
 
+import draw_premitive as dp
+
 class Menu:
 	# public
 	def __init__(self):
@@ -20,7 +22,6 @@ class Menu:
 		self.button_intro = Button(450, 550, 300, 70, Image('./assets/img/' + 'intro' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'intro_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'intro_click' + '.png', (1.0, 1.0)))
 		self.button_quit = Button(450, 450, 300, 70, Image('./assets/img/' + 'quit' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_click' + '.png', (1.0, 1.0)))
 		self.button_about = Button(50, 550, 300, 70, Image('./assets/img/' + 'about' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'about_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'about_click' + '.png', (1.0, 1.0)))
-
 
 	def update(self, mouse):
 		self.button_play.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
@@ -40,10 +41,9 @@ class Menu:
 		self.background.draw(0,0)
 
 class Intro:
-
 	def __init__(self):
 		self.background = Image('./assets/img/' + 'intro_page' + '.png', (5.5, 6.1))
-		self.button_quit = Button(10, 10, 300, 30, Image('./assets/img/' + 'quit' + '.png', (0.7, 0.7)), Image('./assets/img/' + 'quit_hover' + '.png', (0.7, 0.7)), Image('./assets/img/' + 'quit_click' + '.png', (0.7, 0.7)))
+		self.button_quit = Button(10, 10, 210, 56, Image('./assets/img/' + 'quit' + '.png', (0.7, 0.7)), Image('./assets/img/' + 'quit_hover' + '.png', (0.7, 0.7)), Image('./assets/img/' + 'quit_click' + '.png', (0.7, 0.7)))
 
 	def update(self, mouse):
 		self.button_quit.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
@@ -52,12 +52,19 @@ class Intro:
 		self._draw_background()
 		self.button_quit.draw()
 
-
 	def _draw_background(self):
 		self.background.draw(0,0)
 
+class About:
+	def __init__(self):
+		self.background = Image('./assets/img/' + 'start' + '.png', (5.93, 6.0))
+		self.button_quit = Button(295, 547, 210, 56, Image('./assets/img/' + 'quit' + '.png', (0.7, 0.7)), Image('./assets/img/' + 'quit_hover' + '.png', (0.7, 0.7)), Image('./assets/img/' + 'quit_click' + '.png', (0.7, 0.7)))
 
+	def update(self):
+		mouse = MouseHandler.get_mouse()
+		self.button_quit.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
 
-
-
-
+	def draw(self):
+		self.background.draw(0, 0)
+		dp.rect((0xa9, 0xa6, 0x5b, 0xff), (0, 510, 800, 130))
+		self.button_quit.draw()

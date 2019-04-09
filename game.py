@@ -75,10 +75,6 @@ class Game:
 			player.update(bullet)
 			player2.update(bullet2)
 
-			if keyboard.key_state[KEY_ESC]:
-				pygame.quit()
-				sys.exit()
-
 			# collision
 			if player.state == DIR_LEFT:
 				maps.tile_object(player.obs_box.to_screen_space(player.get_pos(), player.rifleman_left), player.state, player.release_state, player.blood_update, bullet.bullet_list, bullet.hit_thing, 0)

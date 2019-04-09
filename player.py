@@ -100,9 +100,9 @@ class Player:
 
 			# recoil
 			if self.state == DIR_LEFT:
-				self.x += 20
+				self.x += 5
 			elif self.state == DIR_RIGHT:
-				self.x -= 20
+				self.x -= 5
 		# limit play area
 		self.x = 0 if self.x < 0 else Window.get_width() if self.x > Window.get_width() else self.x
 		self.y = 0 if self.y < 0 else Window.get_height() if self.y > Window.get_height() else self.y
@@ -137,20 +137,22 @@ class Player:
 				self.rifleman_right.draw(self.x, self.y)
 
 	def draw_blood(self, blood_state):
+		offx = 55
+		offy = 60
 		if blood_state <= 0:
-			self.blood_img_0.draw(self.x-25, self.y-40)
+			self.blood_img_0.draw(self.x-offx, self.y-offy)
 		if blood_state > 0:
-			self.blood_img_10.draw(self.x-25, self.y-40)
+			self.blood_img_10.draw(self.x-offx, self.y-offy)
 		if blood_state >= 40:
-			self.blood_img_20.draw(self.x-25, self.y-40)
+			self.blood_img_20.draw(self.x-offx, self.y-offy)
 		if blood_state >= 80:
-			self.blood_img_40.draw(self.x-25, self.y-40)
+			self.blood_img_40.draw(self.x-offx, self.y-offy)
 		if blood_state >= 120:
-			self.blood_img_60.draw(self.x-25, self.y-40)
+			self.blood_img_60.draw(self.x-offx, self.y-offy)
 		if blood_state >= 160:
-			self.blood_img_80.draw(self.x-25, self.y-40)
+			self.blood_img_80.draw(self.x-offx, self.y-offy)
 		if blood_state >= 200:
-			self.blood_img_100.draw(self.x-25, self.y-40)
+			self.blood_img_100.draw(self.x-offx, self.y-offy)
 
 	def blood_update(self, blood, num=1):
 		self.blood_state = self.blood_state + num
