@@ -29,7 +29,7 @@ class Game:
 		self.home_button = Button(750, 50, 50, 50, Image('./assets/img/' + 'home' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_hover' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_click' + '.png', (0.2, 0.2)))
 		self.gi_state = GI_PLAYING
 
-		self.bgm = Sound(GET_PATH(MUSIC_MAIN, 'battle1.wav'), S_PLAY_INF, 0.7)
+		self.bgm = Sound(GET_PATH(MUSIC_MAIN, 'battle1.wav'), S_PLAY_INF, 1.0)
 
 		# win_message
 		self.is_player1_win = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
@@ -56,6 +56,7 @@ class Game:
 	def reset(self):
 		self.player.reset_state(250,300)
 		self.player2.reset_state(500,300)
+
 
 	def update(self):
 		keyboard = self.keyboard

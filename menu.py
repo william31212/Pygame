@@ -23,7 +23,7 @@ class Menu:
 		self.button_quit = Button(450, 450, 300, 70, Image('./assets/img/' + 'quit' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'quit_click' + '.png', (1.0, 1.0)))
 		self.button_about = Button(50, 550, 300, 70, Image('./assets/img/' + 'about' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'about_hover' + '.png', (1.0, 1.0)), Image('./assets/img/' + 'about_click' + '.png', (1.0, 1.0)))
 
-		self.bgm = Sound(GET_PATH(MUSIC_MAIN, 'csgo_8bit_menu.wav'), S_PLAY_INF, 0.3)
+		self.bgm = Sound(GET_PATH(MUSIC_MAIN, 'csgo_menu_8bit.wav'), S_PLAY_INF, 1.0)
 
 	def update(self, mouse):
 		self.button_play.update((mouse.x, mouse.y), mouse.btn[MOUSE_L])
