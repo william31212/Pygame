@@ -2,6 +2,6 @@
 __pycache__
 imgui.ini
 
-rifleman.spec
+*.spec
 dist/
 build/
