@@ -45,11 +45,11 @@ class Player:
 		self.shoot = False
 		self.recoil = 20
 
-		self.obs_box = Rect(20, 30, 10, 10) # image space
-		self.atk_box = Rect(10, 5, 30, 35) # image space
+		self.obs_box = Rect(22, 34, 5, 4) # image space
+		self.atk_box = Rect(21, 7, 7, 32) # image space
 		self.key_map = None
 
-		self.ak47_se        = Sound(GET_PATH(SE_MAIN, 'ak47.wav'), S_PLAY_ONCE, 0.3)
+		self.ak47_se        = Sound(GET_PATH(SE_MAIN, 'shoot_0.wav'), S_PLAY_ONCE, 0.2)
 		self.rifleman_right = Image(GET_PATH(IMG_SPRITE, Player+'_right001.png'), (2., 2.), 0., (0.52, 0.56))
 		self.rifleman_left  = Image(GET_PATH(IMG_SPRITE, Player+'_left001.png'), (2., 2.), 0., (0.52, 0.56))
 		self.shoot_left     = Image(GET_PATH(IMG_SPRITE, Player+'_shoot_left000.png'), (2., 2.), 0., (0.52, 0.56))
@@ -69,8 +69,6 @@ class Player:
 		self.x = x
 		self.y = y
 		self.blood_img_0.draw(self.x-25, self.y-40)
-		self.obs_box = Rect(20, 30, 10, 10) # image space
-		self.atk_box = Rect(10, 5, 30, 35)  # image space
 		self.blood_state = 240
 
 	def set_key_map(self, m):

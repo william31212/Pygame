@@ -57,6 +57,7 @@ class App(Window):
 			# btn_click
 			# TODO(roy4801): ugly
 			if self.menu.button_play.is_clicked():
+				self.menu.stop_bgm_if_needed()
 				self.game_state = GAME_PLAY
 			elif self.menu.button_quit.is_clicked():
 				self.ask_quit()
@@ -71,10 +72,12 @@ class App(Window):
 			# this should refactor
 			if game.home_button.is_clicked() or keyboard.key_state[KEY_ESC]:
 				self.game.reset()
+				self.game.stop_bgm_if_needed()
 				self.game_state = GAME_MENU
 			# TODO(roy4801): this will reveal the internal state which is *BAD*
 			if game.quit_button.is_clicked():
 				self.game.reset()
+				self.game.stop_bgm_if_needed()
 				self.game_state = GAME_MENU
 				self.game.player.clear_point()
 				self.game.gi_state = GI_PLAYING

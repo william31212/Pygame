@@ -30,7 +30,7 @@ class Bullet:
         self.bullet_left = Sprite(SP_ANIMATE, 'bullet_left', 3, ANI_LOOP, (0.5, 0.5), 0, (3, 3))
         # load hit se
         for i in range(3):
-            Bullet.se_hit.append(Sound(GET_PATH(SE_MAIN, 'hit' + str(i) + '.wav')))
+            Bullet.se_hit.append(Sound(GET_PATH(SE_MAIN, 'hit' + str(i) + '.wav'), S_PLAY_ONCE, 0.2))
 
     def setting(self, x, y, state):
         if state == 1 or state == 4:

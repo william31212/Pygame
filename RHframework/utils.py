@@ -8,13 +8,15 @@ def SET_ROOT(name):
 IMG_SPRITE = 0
 FONT_MAIN = 50
 SE_MAIN = 100
+MUSIC_MAIN = 200
 
 ROOT = ''
 
 PATH = { \
 	IMG_SPRITE: 'assets/sprite/',
 	FONT_MAIN: 'assets/font/',
-	SE_MAIN: 'assets/se/'
+	SE_MAIN: 'assets/se/',
+	MUSIC_MAIN: 'assets/music/'
 }
 
 '''

@@ -29,6 +29,8 @@ class Game:
 		self.home_button = Button(750, 50, 50, 50, Image('./assets/img/' + 'home' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_hover' + '.png', (0.2, 0.2)), Image('./assets/img/' + 'home_click' + '.png', (0.2, 0.2)))
 		self.gi_state = GI_PLAYING
 
+		self.bgm = Sound(GET_PATH(MUSIC_MAIN, 'battle1.wav'), S_PLAY_INF, 0.7)
+
 		# win_message
 		self.is_player1_win = Label('Player1 WIN ', (160, 82, 45), [125,300,500,0], 100)
 		self.is_player2_win = Label('Player2 WIN ', (160, 82, 45), [125,300,500,0], 100)
@@ -65,6 +67,9 @@ class Game:
 		bullet2	= self.bullet2
 		self.message1 = Label('Player1: ' + str(self.player.get_player1_point()), (160, 82, 45), [32,30,200,50], 30)
 		self.message2 = Label('Player2: ' + str(self.player.get_player2_point()), (85, 107, 47), [604,30,200,50], 30)
+
+		if not self.bgm.is_playing():
+			self.bgm.play()
 
 		if self.gi_state == GI_PLAYING:
 			player.store_state(0)
@@ -149,6 +154,10 @@ class Game:
 
 		# lu = player.rifleman_right.get_left_upper()
 		# print(player.state, player2.state,player.rifleman_left,player.rifleman_right)
+
+	def stop_bgm_if_needed(self):
+		if self.bgm.is_playing():
+			self.bgm.fade_out(100)
 
 	def dbg_draw(self):
 		player = self.player
